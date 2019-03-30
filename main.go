@@ -1,7 +1,7 @@
 package main
 
 func main() {
-	state := taskState{
+	task := Task{
 		supplyList: []int{30, 40, 20},
 		demandList: []int{20, 30, 30, 10},
 		costTable: [][]int{
@@ -9,7 +9,12 @@ func main() {
 			{3, 2, 5, 1},
 			{4, 3, 2, 6},
 		},
+		resultTable: [][]int{
+			{0, 0, 0, 0},
+			{0, 0, 0, 0},
+			{0, 0, 0, 0},
+		},
 	}
 
-	state.print()
+	task.print()
 }
