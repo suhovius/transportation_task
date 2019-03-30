@@ -1,16 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
-type taskState struct {
-	supplyList  []int
-	demandList  []int
-	costTable   [][]int
-	resultTable [][]int
-}
-
 func main() {
 	state := taskState{
 		supplyList: []int{30, 40, 20},
@@ -23,18 +12,4 @@ func main() {
 	}
 
 	state.print()
-}
-
-func pritnArrayOfArrays(arr [][]int) {
-	for _, row := range arr {
-		fmt.Println(row)
-	}
-}
-
-func (s taskState) print() {
-	fmt.Printf("supplyList = %v\n", s.supplyList)
-	fmt.Printf("demandList = %v\n", s.demandList)
-	fmt.Println("costTable =")
-	pritnArrayOfArrays(s.costTable)
-	pritnArrayOfArrays(s.resultTable)
 }
