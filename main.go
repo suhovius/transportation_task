@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 func main() {
 	task := Task{
 		supplyList: []int{30, 40, 20},
@@ -16,5 +18,9 @@ func main() {
 		},
 	}
 
+	fmt.Println("Initial State")
+	task.print()
+	fmt.Println("Base Plan calculated with North West Corner Method")
+	task.northWestCorner()
 	task.print()
 }
