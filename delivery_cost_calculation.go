@@ -6,10 +6,6 @@ func (c *tableCell) deliveryCost() float64 {
 
 func (t *Task) deliveryCost() float64 {
 	var cost float64
-	for _, row := range t.tableCells {
-		for _, cell := range row {
-			cost += cell.deliveryCost()
-		}
-	}
+	t.eachCell(func(i, j int) { cost += t.tableCells[i][j].deliveryCost() })
 	return cost
 }

@@ -8,9 +8,10 @@ type Task struct {
 }
 
 type tableOuterCell struct {
-	amount    float64
-	potential float64
-	isFake    bool
+	amount         float64
+	potential      float64
+	isPotentialSet bool
+	isFake         bool
 }
 
 type tableCell struct {

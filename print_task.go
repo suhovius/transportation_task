@@ -18,19 +18,20 @@ func fakeString(cell tableOuterCell) string {
 	return ""
 }
 
-func (t *Task) print() {
+// Print prints current task processing state in the form of ASCII table
+func (t *Task) Print() {
 	data := make([][]string, len(t.supplyList))
 
 	header := t.buildTableRow()
-	header[0] = "Supply\n--------\nDemand"
+	header[0] = "→ Supply →\n----------\n↓ Demand ↓"
 	for i, cell := range t.demandList {
-		header[i+1] = fmt.Sprintf("B= %f\nV= %f%s", cell.amount, cell.potential, fakeString(cell))
+		header[i+1] = fmt.Sprintf("B[%d]= %f\nV[%d]= %f%s", i, cell.amount, i, cell.potential, fakeString(cell))
 	}
 
 	for i, cellsRow := range t.tableCells {
 		row := t.buildTableRow()
 		supplier := t.supplyList[i]
-		row[0] = fmt.Sprintf("A= %f\nU= %f%s", supplier.amount, supplier.potential, fakeString(supplier))
+		row[0] = fmt.Sprintf("A[%d]= %f\nU[%d]= %f%s", i, supplier.amount, i, supplier.potential, fakeString(supplier))
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf("X= %f\nC= %f", cell.deliveryAmount, cell.cost)
 		}

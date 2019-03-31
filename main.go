@@ -48,7 +48,7 @@ func main() {
 	// ========= Create Task Struct ============================================
 	task := buildTaskFromParams(params)
 	fmt.Println("Initial State")
-	task.print()
+	task.Print()
 	printLine()
 
 	// ========= Perform Balancing =============================================
@@ -61,18 +61,18 @@ func main() {
 	case "fake_supply":
 		fmt.Println("Balancing: Add fake supply")
 	}
-	task.print()
+	task.Print()
 	printLine()
 
 	// ========= Degeneracy Prevention =========================================
 	fmt.Println("Degeneracy Prevention: Add small amount to prevent degeneracy")
 	task.preventDegeneracy()
-	task.print()
+	task.Print()
 	printLine()
 
 	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
 	task.northWestCorner()
-	task.print()
+	task.Print()
 	fmt.Printf("\nDelivery Cost: %f", task.deliveryCost())
 	printLine()
 
@@ -95,6 +95,11 @@ func main() {
 	}
 	fmt.Print(" is not Degenerate")
 	printLine()
+
+	// ========= Potentials Calculation ========================================
+	fmt.Println("Potentials Calculation")
+	task.calculatePotentials()
+	task.Print()
 
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
