@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"os"
-	"strconv"
 
 	"github.com/olekukonko/tablewriter"
 )
@@ -17,15 +16,16 @@ func (t Task) print() {
 
 	header := t.buildTableRow()
 	header[0] = "Supply \\ Demand"
-	for i, v := range t.demandList {
-		header[i+1] = strconv.Itoa(v)
+	for i, cell := range t.demandList {
+		header[i+1] = fmt.Sprintf("B= %d / V= %d", cell.amount, cell.potential)
 	}
 
-	for i, costLine := range t.costTable {
+	for i, cellsRow := range t.tableCells {
 		row := t.buildTableRow()
-		row[0] = strconv.Itoa(t.supplyList[i])
-		for j, v := range costLine {
-			row[j+1] = fmt.Sprintf("X= %d / C= %d", t.resultTable[i][j], v)
+		supplier := t.supplyList[i]
+		row[0] = fmt.Sprintf("B= %d / U= %d", supplier.amount, supplier.potential)
+		for j, cell := range cellsRow {
+			row[j+1] = fmt.Sprintf("X= %d / C= %d", cell.deliveryAmount, cell.cost)
 		}
 
 		data[i] = row

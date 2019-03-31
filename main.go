@@ -35,51 +35,32 @@ func main() {
 		return
 	}
 
-	task := buildTaskFromParams(params)
-
-	// Also here should be code which constructs this structure from parsed JSON
-	task := Task{
-		// It also needs some kind of stuct headerCell with value and potential maybe
-		supplyList: []int{30, 540, 20},
-		demandList: []int{20, 30, 30, 10},
-		// Add tableCell struct that will contain cost and deliveryAmount and other fields
-		// and use it as cells: [][]tableCell here
-		costTable: [][]int{
-			{2, 3, 2, 4},
-			{3, 2, 5, 1},
-			{4, 3, 2, 6},
-		},
-		// TODO: rename resultTable to deliveryTable
-		resultTable: [][]int{
-			{0, 0, 0, 0},
-			{0, 0, 0, 0},
-			{0, 0, 0, 0},
-		},
-	}
-
 	// TODO: Validate parameters cost table dimensions and supply demand list dimensions
+	// TODO: Validate parameters
+
+	task := buildTaskFromParams(params)
 
 	fmt.Println("Initial State")
 	task.print()
 	fmt.Println()
 
-	kind := task.performBalancing()
-	switch kind {
-	case "nothing":
-		fmt.Println("Balancing: Task is already balanced. Skip balancing")
-	case "fake_demand":
-		fmt.Println("Balancing: Add fake demand")
-	case "fake_supply":
-		fmt.Println("Balancing: Add fake supply")
-	}
-	task.print()
-	fmt.Println()
+	// kind := task.performBalancing()
+	// switch kind {
+	// case "nothing":
+	// 	fmt.Println("Balancing: Task is already balanced. Skip balancing")
+	// case "fake_demand":
+	// 	fmt.Println("Balancing: Add fake demand")
+	// case "fake_supply":
+	// 	fmt.Println("Balancing: Add fake supply")
+	// }
+	// task.print()
+	// fmt.Println()
 
-	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
-	task.northWestCorner()
-	task.print()
-	fmt.Printf("Delivery Cost: %d", task.deliveryCost())
-	fmt.Println()
+	// fmt.Println("Base Plan: Calculated with 'North West Corner' method")
+	// task.northWestCorner()
+	// task.print()
+	// fmt.Printf("Delivery Cost: %d", task.deliveryCost())
+	// fmt.Println()
 
 	// Transport potentials method starts here
 

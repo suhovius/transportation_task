@@ -15,7 +15,7 @@ type tableCell struct {
 }
 
 type tableOuterCell struct {
-	value     int
+	amount    int
 	potential int
 }
 
@@ -24,18 +24,20 @@ func buildTaskFromParams(params Params) Task {
 
 	task.supplyList = make([]tableOuterCell, len(params.SupplyList))
 	for i, val := range params.SupplyList {
-		task.supplyList[i] = tableOuterCell{value: val}
+		task.supplyList[i] = tableOuterCell{amount: val}
 	}
 
 	task.demandList = make([]tableOuterCell, len(params.DemandList))
 	for i, val := range params.DemandList {
-		task.supplyList[i] = tableOuterCell{value: val}
+		task.demandList[i] = tableOuterCell{amount: val}
 	}
 
 	task.tableCells = make([][]tableCell, len(params.SupplyList))
 	for i, row := range params.CostTable {
-		for j, value := range row {
-			task.tableCells[i][j] = tableCell{cost: value}
+		// assign table row
+		task.tableCells[i] = make([]tableCell, len(row))
+		for j, cost := range row {
+			task.tableCells[i][j] = tableCell{cost: cost}
 		}
 	}
 

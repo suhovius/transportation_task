@@ -12,7 +12,7 @@ type Params struct {
 }
 
 // ParseParams parses json and returns Params struct
-func ParseParams(JSONData []byte) (parsedParams Params, err error) {
+func ParseParams(jsonBlob []byte) (parsedParams Params, err error) {
 	err = json.Unmarshal(jsonBlob, &parsedParams)
 	return
 }
