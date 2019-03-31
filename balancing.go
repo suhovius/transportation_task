@@ -1,14 +1,14 @@
 package main
 
-func listAmountSum(list []tableOuterCell) int {
-	sum := 0
+func listAmountSum(list []tableOuterCell) float64 {
+	var sum float64
 	for _, cell := range list {
 		sum += cell.amount
 	}
 	return sum
 }
 
-func (t *Task) addFakeDemand(supplyExcess int) {
+func (t *Task) addFakeDemand(supplyExcess float64) {
 	// add fake demand value
 	t.demandList = append(t.demandList, tableOuterCell{amount: supplyExcess, isFake: true})
 	for i := range t.supplyList {
@@ -17,7 +17,7 @@ func (t *Task) addFakeDemand(supplyExcess int) {
 	}
 }
 
-func (t *Task) addFakeSupply(supplyDeficiency int) {
+func (t *Task) addFakeSupply(supplyDeficiency float64) {
 	// Add Fake Supplier
 	t.supplyList = append(t.supplyList, tableOuterCell{amount: supplyDeficiency, isFake: true})
 	// Add row with zero price
