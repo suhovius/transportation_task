@@ -101,6 +101,11 @@ func main() {
 	task.calculatePotentials()
 	task.Print()
 
+	// ========= Optimal Solution Check ========================================
+	fmt.Println("Optimal Solution Check")
+	task.optimalSolutionCheck()
+	task.Print()
+
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
 }

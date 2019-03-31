@@ -33,7 +33,7 @@ func (t *Task) Print() {
 		supplier := t.supplyList[i]
 		row[0] = fmt.Sprintf("A[%d]= %f\nU[%d]= %f%s", i, supplier.amount, i, supplier.potential, fakeString(supplier))
 		for j, cell := range cellsRow {
-			row[j+1] = fmt.Sprintf("X= %f\nC= %f", cell.deliveryAmount, cell.cost)
+			row[j+1] = fmt.Sprintf("X= %f\nC= %f\nD= %f", cell.deliveryAmount, cell.cost, cell.delta)
 		}
 
 		data[i] = row
