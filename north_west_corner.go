@@ -8,17 +8,17 @@ func (t *Task) northWestCorner() {
 	aD := make([]int, len(t.supplyList))
 
 	for u < len(t.supplyList) && v < len(t.demandList) {
-		if t.demandList[v]-aS[v] < t.supplyList[u]-aD[u] {
+		if t.demandList[v].amount-aS[v] < t.supplyList[u].amount-aD[u] {
 			// work with current row
-			x := t.demandList[v] - aS[v]
-			t.resultTable[u][v] = x
+			x := t.demandList[v].amount - aS[v]
+			t.tableCells[u][v].deliveryAmount = x
 			aS[v] += x
 			aD[u] += x
 			v++
 		} else {
 			// go to the next row
-			x := t.supplyList[u] - aD[u]
-			t.resultTable[u][v] = x
+			x := t.supplyList[u].amount - aD[u]
+			t.tableCells[u][v].deliveryAmount = x
 			aS[v] += x
 			aD[u] += x
 			u++

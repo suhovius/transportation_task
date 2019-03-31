@@ -56,11 +56,11 @@ func main() {
 	task.print()
 	fmt.Println()
 
-	// fmt.Println("Base Plan: Calculated with 'North West Corner' method")
-	// task.northWestCorner()
-	// task.print()
-	// fmt.Printf("Delivery Cost: %d", task.deliveryCost())
-	// fmt.Println()
+	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
+	task.northWestCorner()
+	task.print()
+	fmt.Printf("Delivery Cost: %d", task.deliveryCost())
+	fmt.Println()
 
 	// Transport potentials method starts here
 

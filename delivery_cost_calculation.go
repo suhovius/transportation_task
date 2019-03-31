@@ -1,10 +1,14 @@
 package main
 
-func (t Task) deliveryCost() int {
+func (c *tableCell) deliveryCost() int {
+	return c.cost * c.deliveryAmount
+}
+
+func (t *Task) deliveryCost() int {
 	cost := 0
-	for i, costRow := range t.costTable {
-		for j, costValue := range costRow {
-			cost += costValue * t.resultTable[i][j]
+	for _, row := range t.tableCells {
+		for _, cell := range row {
+			cost += cell.deliveryCost()
 		}
 	}
 	return cost
