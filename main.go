@@ -20,7 +20,22 @@ func main() {
 
 	fmt.Println("Initial State")
 	task.print()
-	fmt.Println("Base Plan calculated with North West Corner Method")
+	fmt.Println()
+
+	kind := task.performBalancing()
+	switch kind {
+	case "nothing":
+		fmt.Println("Balancing: Task is already balanced. Skip balancing")
+	case "fake_demand":
+		fmt.Println("Balancing: Add fake demand")
+	case "fake_supply":
+		fmt.Println("Balancing: Add fake supply")
+	}
+	task.print()
+	fmt.Println()
+
+	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
 	task.northWestCorner()
 	task.print()
+	fmt.Println()
 }

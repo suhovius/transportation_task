@@ -1,8 +1,6 @@
 package main
 
 func (t *Task) northWestCorner() {
-	// t.resultTable
-
 	u := 0 // supplier index
 	v := 0 // demand index
 	// already supllied sums
