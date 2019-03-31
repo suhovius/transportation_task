@@ -26,6 +26,8 @@ func testJSONData() []byte {
 }
 
 func main() {
+	// ========= Parse Input JSON ==============================================
+	// TODO: Parse json from server request parameters
 	printLine()
 	jsonBlob := testJSONData()
 	fmt.Println("Received JSON:")
@@ -36,17 +38,20 @@ func main() {
 		fmt.Println("ParseParams error:", err)
 		return
 	}
-
 	printLine()
 
+	// TODO: Move this code into separate service object or smth / that later will be used at server at main method
+	// ========= Parameters Validation =========================================
 	// TODO: Validate parameters cost table dimensions and supply demand list dimensions
 	// TODO: Validate parameters
 
+	// ========= Create Task Struct ============================================
 	task := buildTaskFromParams(params)
 	fmt.Println("Initial State")
 	task.print()
 	printLine()
 
+	// ========= Perform Balancing =============================================
 	kind := task.performBalancing()
 	switch kind {
 	case "nothing":
@@ -59,7 +64,7 @@ func main() {
 	task.print()
 	printLine()
 
-	// And might need to have added small floating point numbers here (0.001) to fix this degeneracy issue
+	// ========= Degeneracy Prevention =========================================
 	fmt.Println("Degeneracy Prevention: Add small amount to prevent degeneracy")
 	task.preventDegeneracy()
 	task.print()
@@ -71,6 +76,7 @@ func main() {
 	fmt.Printf("\nDelivery Cost: %f", task.deliveryCost())
 	printLine()
 
+	// ========= Amount distribution sum check =================================
 	fmt.Println("Amount distribution sum check")
 	err = task.amountDistributionCheck()
 	if err != nil {
@@ -80,7 +86,7 @@ func main() {
 	fmt.Print("Valid: Sum matched")
 	printLine()
 
-	// http://cyclowiki.org/wiki/%D0%92%D1%8B%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C_%D0%B2_%D1%82%D1%80%D0%B0%D0%BD%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%BD%D0%BE%D0%B9_%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B5
+	// ========= Degeneracy Check ==============================================
 	fmt.Print("Degeneracy Check:")
 	if task.isDegenerate() {
 		// TODO: Maybe return error here
