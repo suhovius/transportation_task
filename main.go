@@ -65,16 +65,24 @@ func main() {
 	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
 	task.northWestCorner()
 	task.print()
-	fmt.Printf("Delivery Cost: %f", task.deliveryCost())
-	fmt.Println()
+	fmt.Printf("Delivery Cost: %f\n", task.deliveryCost())
 
-	// Transport potentials method starts here
+	// Transport potentials method starts here. It should be loop
 
 	// 1 Size distribution sum check
 
 	// 2 Degeneracy check
 	// http://cyclowiki.org/wiki/%D0%92%D1%8B%D1%80%D0%BE%D0%B6%D0%B4%D0%B5%D0%BD%D0%BD%D0%BE%D1%81%D1%82%D1%8C_%D0%B2_%D1%82%D1%80%D0%B0%D0%BD%D1%81%D0%BF%D0%BE%D1%80%D1%82%D0%BD%D0%BE%D0%B9_%D0%B7%D0%B0%D0%B4%D0%B0%D1%87%D0%B5
 
-	// TODO: Round numners in api response generation and return int values there
+	fmt.Print("\nDegeneracy Check:")
+	if task.isDegenerate() {
+		// TODO: Maybe return error here
+		fmt.Println(" is Degenerate!")
+		return
+	}
+	fmt.Println(" is not Degenerate")
+	fmt.Println()
 
+	// TODO: Round numners in api response generation and return int values there
+	// https://yourbasic.org/golang/round-float-to-int/
 }
