@@ -1,11 +1,49 @@
 package main
 
-import "fmt"
+import (
+	"encoding/json"
+	"fmt"
+)
+
+// TODO: Remove this when frontend web server will be created
+// that will handle these requests with such parameters
+func testJSONData() []byte {
+	inputTest := Params{
+		SupplyList: []int{30, 540, 20},
+		DemandList: []int{20, 30, 30, 10},
+		CostTable: [][]int{
+			{2, 3, 2, 4},
+			{3, 2, 5, 1},
+			{4, 3, 2, 6},
+		},
+	}
+
+	jsonBlob, err := json.Marshal(inputTest)
+	if err != nil {
+		fmt.Println("Marshal error:", err)
+	}
+	fmt.Println("JSON:")
+	fmt.Println(string(jsonBlob))
+	return jsonBlob
+}
 
 func main() {
+	params, err := ParseParams(testJSONData())
+
+	if err != nil {
+		fmt.Println("ParseParams error:", err)
+		return
+	}
+
+	task := buildTaskFromParams(params)
+
+	// Also here should be code which constructs this structure from parsed JSON
 	task := Task{
-		supplyList: []int{30, 40, 20},
+		// It also needs some kind of stuct headerCell with value and potential maybe
+		supplyList: []int{30, 540, 20},
 		demandList: []int{20, 30, 30, 10},
+		// Add tableCell struct that will contain cost and deliveryAmount and other fields
+		// and use it as cells: [][]tableCell here
 		costTable: [][]int{
 			{2, 3, 2, 4},
 			{3, 2, 5, 1},
@@ -18,6 +56,8 @@ func main() {
 			{0, 0, 0, 0},
 		},
 	}
+
+	// TODO: Validate parameters cost table dimensions and supply demand list dimensions
 
 	fmt.Println("Initial State")
 	task.print()
