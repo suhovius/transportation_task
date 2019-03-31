@@ -103,7 +103,12 @@ func main() {
 
 	// ========= Optimal Solution Check ========================================
 	fmt.Println("Optimal Solution Check")
-	task.optimalSolutionCheck()
+	isOptimal := task.optimalSolutionCheck()
+	if isOptimal {
+		fmt.Println("is optimal")
+	} else {
+		fmt.Println("is not optimal")
+	}
 	task.Print()
 
 	// TODO: Round numners in api response generation and return int values there
