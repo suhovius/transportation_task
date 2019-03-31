@@ -7,16 +7,17 @@ type Task struct {
 	tableCells [][]tableCell
 }
 
+type tableOuterCell struct {
+	amount    int
+	potential int
+	isFake    bool
+}
+
 type tableCell struct {
 	cost           int
 	deliveryAmount int
 	delta          int
 	sign           rune
-}
-
-type tableOuterCell struct {
-	amount    int
-	potential int
 }
 
 func buildTaskFromParams(params Params) Task {

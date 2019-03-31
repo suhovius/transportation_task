@@ -9,7 +9,7 @@ import (
 // that will handle these requests with such parameters
 func testJSONData() []byte {
 	inputTest := Params{
-		SupplyList: []int{30, 540, 20},
+		SupplyList: []int{30, 40, 20},
 		DemandList: []int{20, 30, 30, 10},
 		CostTable: [][]int{
 			{2, 3, 2, 4},
@@ -44,17 +44,17 @@ func main() {
 	task.print()
 	fmt.Println()
 
-	// kind := task.performBalancing()
-	// switch kind {
-	// case "nothing":
-	// 	fmt.Println("Balancing: Task is already balanced. Skip balancing")
-	// case "fake_demand":
-	// 	fmt.Println("Balancing: Add fake demand")
-	// case "fake_supply":
-	// 	fmt.Println("Balancing: Add fake supply")
-	// }
-	// task.print()
-	// fmt.Println()
+	kind := task.performBalancing()
+	switch kind {
+	case "nothing":
+		fmt.Println("Balancing: Task is already balanced. Skip balancing")
+	case "fake_demand":
+		fmt.Println("Balancing: Add fake demand")
+	case "fake_supply":
+		fmt.Println("Balancing: Add fake supply")
+	}
+	task.print()
+	fmt.Println()
 
 	// fmt.Println("Base Plan: Calculated with 'North West Corner' method")
 	// task.northWestCorner()

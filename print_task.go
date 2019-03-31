@@ -7,23 +7,30 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-func (t Task) buildTableRow() []string {
+func (t *Task) buildTableRow() []string {
 	return make([]string, len(t.demandList)+1)
 }
 
-func (t Task) print() {
+func fakeString(cell tableOuterCell) string {
+	if cell.isFake {
+		return " (Fake)"
+	}
+	return ""
+}
+
+func (t *Task) print() {
 	data := make([][]string, len(t.supplyList))
 
 	header := t.buildTableRow()
 	header[0] = "Supply \\ Demand"
 	for i, cell := range t.demandList {
-		header[i+1] = fmt.Sprintf("B= %d / V= %d", cell.amount, cell.potential)
+		header[i+1] = fmt.Sprintf("B= %d / V= %d%s", cell.amount, cell.potential, fakeString(cell))
 	}
 
 	for i, cellsRow := range t.tableCells {
 		row := t.buildTableRow()
 		supplier := t.supplyList[i]
-		row[0] = fmt.Sprintf("B= %d / U= %d", supplier.amount, supplier.potential)
+		row[0] = fmt.Sprintf("A= %d / U= %d%s", supplier.amount, supplier.potential, fakeString(supplier))
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf("X= %d / C= %d", cell.deliveryAmount, cell.cost)
 		}
