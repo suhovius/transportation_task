@@ -11,13 +11,12 @@ func (t *Task) preventDegeneracy() {
 
 func (t *Task) basicCellsCount() int {
 	cellsCount := 0
-	for _, row := range t.tableCells {
-		for _, cell := range row {
-			if cell.deliveryAmount > 0 {
-				cellsCount++
-			}
+
+	t.eachCell(func(i, j int) {
+		if t.tableCells[i][j].deliveryAmount > 0 {
+			cellsCount++
 		}
-	}
+	})
 	return cellsCount
 }
 
