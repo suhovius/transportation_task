@@ -35,7 +35,7 @@ func (t *Task) Print() {
 	data := make([][]string, len(t.supplyList))
 
 	header := t.buildTableRow()
-	header[0] = "→ Supply →\n----------\n↓ Demand ↓"
+	header[0] = "→ Demand →\n----------\n↓ Supply ↓"
 	for i, cell := range t.demandList {
 		header[i+1] = fmt.Sprintf(
 			"B[%d]= %d\nV[%d]= %d%s", i, roundToInt(cell.amount),
