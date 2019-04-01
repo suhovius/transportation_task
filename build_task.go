@@ -2,9 +2,11 @@ package main
 
 // Task contains transportation task parameters and results
 type Task struct {
-	supplyList []tableOuterCell
-	demandList []tableOuterCell
-	tableCells [][]tableCell
+	supplyList                  []tableOuterCell
+	demandList                  []tableOuterCell
+	tableCells                  [][]tableCell
+	minNegativeDeltaCellPointer *tableCell
+	minDeltaCell                cellIndexes
 }
 
 type tableOuterCell struct {
@@ -19,6 +21,11 @@ type tableCell struct {
 	deliveryAmount float64
 	delta          float64
 	sign           rune
+}
+
+type cellIndexes struct {
+	i int
+	j int
 }
 
 func buildTaskFromParams(params Params) Task {

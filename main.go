@@ -104,12 +104,15 @@ func main() {
 	// ========= Optimal Solution Check ========================================
 	fmt.Println("Optimal Solution Check")
 	isOptimal := task.optimalSolutionCheck()
+	task.Print()
 	if isOptimal {
 		fmt.Println("is optimal")
 	} else {
 		fmt.Println("is not optimal")
+		i := task.minDeltaCell.i
+		j := task.minDeltaCell.j
+		fmt.Printf("Min Negative Delta Cell: D[%d][%d]= %f\n", i, j, task.tableCells[i][j].delta)
 	}
-	task.Print()
 
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
