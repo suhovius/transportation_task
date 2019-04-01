@@ -6,6 +6,7 @@ func setPotential(targetList, sourceList *[]tableOuterCell, i, j int, cellCost f
 }
 
 func (t *Task) calculatePotentials() {
+	// TODO nullify previously set potentials from previous step
 	// first potential is zero. U0= 0
 	t.supplyList[0].isPotentialSet = true
 	t.eachCell(

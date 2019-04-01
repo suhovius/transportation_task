@@ -67,6 +67,9 @@ func main() {
 	// ========= Degeneracy Prevention =========================================
 	fmt.Println("Degeneracy Prevention: Add small amount to prevent degeneracy")
 	task.preventDegeneracy()
+	// TODO: Make Print configurable with ability to print (or Print and PrintAccurate)
+	// read float values in the table to show these small disturbances
+	// that were added at this step
 	task.Print()
 	printLine()
 

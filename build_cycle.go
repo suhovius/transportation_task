@@ -7,5 +7,9 @@ func (t *Task) buildCycle() {
 	// During each iteration call the same fuction recursively with this newly
 	// selected point
 	// until the cycle is built then stop
-	// or stop when all variants have been checked (to be defined how to check this)
+	// or stop when all variants have been checked (
+	//	to be defined how to check this:
+	//  !!!it is easy to check when there is no any nearest vertexes
+	//  which ca nsatisfy the requirements
+	// )
 }
