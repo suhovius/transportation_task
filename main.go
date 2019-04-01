@@ -72,8 +72,7 @@ func main() {
 
 	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
 	task.northWestCorner()
-	task.Print()
-	fmt.Printf("\nDelivery Cost: %f", task.deliveryCost())
+	fmt.Printf("\nDelivery Cost: %d", roundToInt(task.deliveryCost()))
 	printLine()
 
 	// ========= Amount distribution sum check =================================
@@ -111,7 +110,7 @@ func main() {
 		fmt.Println("is not optimal")
 		i := task.minDeltaCell.i
 		j := task.minDeltaCell.j
-		fmt.Printf("Min Negative Delta Cell: D[%d][%d]= %f\n", i, j, task.tableCells[i][j].delta)
+		fmt.Printf("Min Negative Delta Cell: D[%d][%d]= %d\n", i, j, roundToInt(task.tableCells[i][j].delta))
 	}
 
 	// TODO: Round numners in api response generation and return int values there

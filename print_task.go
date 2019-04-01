@@ -38,8 +38,8 @@ func (t *Task) Print() {
 	header[0] = "→ Supply →\n----------\n↓ Demand ↓"
 	for i, cell := range t.demandList {
 		header[i+1] = fmt.Sprintf(
-			"B[%d]= %f\nV[%d]= %f%s", i, cell.amount,
-			i, cell.potential, fakeString(cell),
+			"B[%d]= %d\nV[%d]= %d%s", i, roundToInt(cell.amount),
+			i, roundToInt(cell.potential), fakeString(cell),
 		)
 	}
 
@@ -47,13 +47,14 @@ func (t *Task) Print() {
 		row := t.buildTableRow()
 		supplier := t.supplyList[i]
 		row[0] = fmt.Sprintf(
-			"A[%d]= %f\nU[%d]= %f%s", i, supplier.amount,
-			i, supplier.potential, fakeString(supplier),
+			"A[%d]= %d\nU[%d]= %d%s", i, roundToInt(supplier.amount),
+			i, roundToInt(supplier.potential), fakeString(supplier),
 		)
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf(
-				"X= %f\nC= %f\nD= %f%s", cell.deliveryAmount, cell.cost,
-				cell.delta, t.minDeltaMarker(i, j),
+				"X= %d\nC= %d\nD= %d%s", roundToInt(cell.deliveryAmount),
+				roundToInt(cell.cost), roundToInt(cell.delta),
+				t.minDeltaMarker(i, j),
 			)
 		}
 
