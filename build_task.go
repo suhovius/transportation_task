@@ -21,7 +21,8 @@ type tableCell struct {
 	deliveryAmount float64
 	delta          float64
 	isMinDelta     bool
-	sign           rune
+	sign           rune // + -
+	pathArrow      rune // ← ↑ → ↓
 }
 
 type cellIndexes struct {
