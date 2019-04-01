@@ -72,17 +72,18 @@ func main() {
 
 	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
 	task.northWestCorner()
+	task.Print()
 	fmt.Printf("\nDelivery Cost: %d", roundToInt(task.deliveryCost()))
 	printLine()
 
 	// ========= Amount distribution sum check =================================
-	fmt.Println("Amount distribution sum check")
+	fmt.Print("Amount distribution sum check. ")
 	err = task.amountDistributionCheck()
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Print("Valid: Sum matched")
+	fmt.Println("Sum matched")
 	printLine()
 
 	// ========= Degeneracy Check ==============================================
@@ -99,6 +100,7 @@ func main() {
 	fmt.Println("Potentials Calculation")
 	task.calculatePotentials()
 	task.Print()
+	printLine()
 
 	// ========= Optimal Solution Check ========================================
 	fmt.Println("Optimal Solution Check")
@@ -110,13 +112,21 @@ func main() {
 		fmt.Println("is not optimal")
 		i := task.minDeltaCell.i
 		j := task.minDeltaCell.j
-		fmt.Printf("Min Negative Delta Cell: D[%d][%d]= %d\n", i, j, roundToInt(task.tableCells[i][j].delta))
+		fmt.Printf(
+			"Min Negative Delta Cell: D[%d][%d]= %d\n", i, j,
+			roundToInt(task.tableCells[i][j].delta),
+		)
 	}
+	printLine()
+
+	// ========= Build Cycle ===================================================
+	fmt.Println("Build Cycle")
+	task.buildCycle()
 
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
 }
 
 func printLine() {
-	fmt.Print("\n\n=====================================================================================\n\n")
+	fmt.Print("\n=====================================================================================\n\n")
 }
