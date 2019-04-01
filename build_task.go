@@ -20,12 +20,14 @@ type tableCell struct {
 	cost           float64
 	deliveryAmount float64
 	delta          float64
+	isMinDelta     bool
 	sign           rune
 }
 
 type cellIndexes struct {
-	i int
-	j int
+	i     int
+	j     int
+	isSet bool
 }
 
 func buildTaskFromParams(params Params) Task {

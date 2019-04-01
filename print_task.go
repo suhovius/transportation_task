@@ -18,6 +18,18 @@ func fakeString(cell tableOuterCell) string {
 	return ""
 }
 
+func (t *Task) isMinDeltaCell(i, j int) bool {
+	return t.minDeltaCell.isSet &&
+		(t.minDeltaCell.i == i && t.minDeltaCell.j == j)
+}
+
+func (t *Task) minDeltaMarker(i, j int) string {
+	if t.isMinDeltaCell(i, j) {
+		return "\n(Min)"
+	}
+	return ""
+}
+
 // Print prints current task processing state in the form of ASCII table
 func (t *Task) Print() {
 	data := make([][]string, len(t.supplyList))
@@ -25,15 +37,24 @@ func (t *Task) Print() {
 	header := t.buildTableRow()
 	header[0] = "→ Supply →\n----------\n↓ Demand ↓"
 	for i, cell := range t.demandList {
-		header[i+1] = fmt.Sprintf("B[%d]= %f\nV[%d]= %f%s", i, cell.amount, i, cell.potential, fakeString(cell))
+		header[i+1] = fmt.Sprintf(
+			"B[%d]= %f\nV[%d]= %f%s", i, cell.amount,
+			i, cell.potential, fakeString(cell),
+		)
 	}
 
 	for i, cellsRow := range t.tableCells {
 		row := t.buildTableRow()
 		supplier := t.supplyList[i]
-		row[0] = fmt.Sprintf("A[%d]= %f\nU[%d]= %f%s", i, supplier.amount, i, supplier.potential, fakeString(supplier))
+		row[0] = fmt.Sprintf(
+			"A[%d]= %f\nU[%d]= %f%s", i, supplier.amount,
+			i, supplier.potential, fakeString(supplier),
+		)
 		for j, cell := range cellsRow {
-			row[j+1] = fmt.Sprintf("X= %f\nC= %f\nD= %f", cell.deliveryAmount, cell.cost, cell.delta)
+			row[j+1] = fmt.Sprintf(
+				"X= %f\nC= %f\nD= %f%s", cell.deliveryAmount, cell.cost,
+				cell.delta, t.minDeltaMarker(i, j),
+			)
 		}
 
 		data[i] = row
