@@ -40,6 +40,8 @@ func main() {
 	}
 	printLine()
 
+	// TODO: Refactor define serivce objects sturcts with methods for each step
+
 	// TODO: Move this code into separate service object or smth / that later will be used at server at main method
 	// ========= Parameters Validation =========================================
 	// TODO: Validate parameters cost table dimensions and supply demand list dimensions
@@ -120,11 +122,8 @@ func main() {
 			roundToInt(task.tableCells[i][j].delta),
 		)
 	}
-	printLine()
 
 	// ========= Build Circuit ===================================================
-	fmt.Println("Build Circuit")
-	// TODO: Refactor define serivce objects sturcts with methods for each step
 
 	var steps []AlgorithmStep
 	steps = append(
@@ -133,6 +132,8 @@ func main() {
 		&SupplyRedistributor{task: &task},
 	)
 	for _, step := range steps {
+		printLine()
+		fmt.Println(step.Description())
 		err = step.Perform()
 		if err != nil {
 			break

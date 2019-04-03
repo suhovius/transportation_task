@@ -10,6 +10,11 @@ type CircuitBuilder struct {
 	thetaVertexPtr *PathVertex
 }
 
+// Description returns step description info
+func (cb *CircuitBuilder) Description() string {
+	return "Finding the circuit path and minimal theta vertex"
+}
+
 func (cb *CircuitBuilder) lookForVertexWithMinDeliveryValue(pv *PathVertex) {
 	if cb.thetaVertexPtr != nil {
 		minAmount := cb.task.findCellByVertex(cb.thetaVertexPtr).deliveryAmount
