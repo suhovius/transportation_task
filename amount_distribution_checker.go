@@ -18,7 +18,7 @@ func (adc *AmountDistributionChecker) Description() string {
 
 // ResultMessage returns message about reults of step processing
 func (adc *AmountDistributionChecker) ResultMessage() string {
-	return "Success: Sums of delivery amounts by columns and rows match each other"
+	return "Success:\n - Sums of delivery amounts by columns and rows match each other"
 }
 
 // Perform implements supply amount redistribution step

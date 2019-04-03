@@ -14,7 +14,7 @@ func (pc *PotentialsCalculator) Description() string {
 
 // ResultMessage returns message about reults of step processing
 func (pc *PotentialsCalculator) ResultMessage() string {
-	return "Success: Potentials have been assigned to demand row and supply column"
+	return "Success:\n - Potentials have been assigned to demand row and supply column"
 }
 
 // Perform implements step processing

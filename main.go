@@ -116,20 +116,15 @@ func main() {
 	printLine()
 
 	// ========= Optimal Solution Check ========================================
-	fmt.Println("Optimal Solution Check")
-	isOptimal := task.optimalSolutionCheck()
-	task.Print()
-	if isOptimal {
-		fmt.Println("is optimal")
-	} else {
-		fmt.Println("is not optimal")
-		i := task.MinDeltaCell.i
-		j := task.MinDeltaCell.j
-		fmt.Printf(
-			"Min Negative Delta Cell: D[%d][%d]= %d\n", i, j,
-			roundToInt(task.tableCells[i][j].delta),
-		)
+	osc := &OptimalSolutionChecker{task: &task}
+	fmt.Println(osc.Description())
+	err = osc.Perform()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
 	}
+	task.Print()
+	fmt.Println(osc.ResultMessage())
 
 	// ========= Build Circuit ===================================================
 
