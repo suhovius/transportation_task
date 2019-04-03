@@ -135,7 +135,7 @@ func main() {
 	// for _, step := range steps {
 	//  Maybe we can add step.Init(task: &task) or smth to let it work properly
 	// or just provide task as the argument of the Perform method
-	// 	step.Perform()
+	// 	err := step.Perform() // needs error handling also
 	//  here also migth happen logging inside another service object wrapper
 	// }
 
@@ -145,7 +145,23 @@ func main() {
 	//     s = append(s, &MyStruct{})
 	// }
 
-	(&CircuitBuilder{task: &task}).Perform()
+	var steps []AlgorithmStep
+	steps = append(steps, &CircuitBuilder{task: &task})
+	for _, step := range steps {
+		err = step.Perform()
+		if err != nil {
+			break
+		}
+		task.Print()
+	}
+
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// (&CircuitBuilder{task: &task}).Perform()
+	// task.Print()
 	// taskPrinter{taskPtr: &task}.perform()
 
 	// TODO: Google Golang service objects!!!
@@ -159,7 +175,6 @@ func main() {
 	// Later each step could be started with step runner service object wrapper
 	// which might perform loging and alos might have config parameters regarding
 	// what should be printed, to the log, and some others
-	// var steps *[]AlgorithmStep = [CircuitBuilder, SupplyRdistributor]
 }
 
 func printLine() {

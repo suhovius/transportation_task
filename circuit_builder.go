@@ -10,15 +10,30 @@ type CircuitBuilder struct {
 }
 
 func (cb *CircuitBuilder) addPathVertexWith(i, j int) PathVertex {
-	vertex := PathVertex{
-		i: cb.task.MinDeltaCell.i, j: cb.task.MinDeltaCell.j,
-	}
+	vertex := PathVertex{i: i, j: j}
 	cb.path = append(cb.path, vertex)
 	return vertex
 }
 
-// Perform implements Circuit
+// Perform implements Circuit building for transportation task solving
 func (cb *CircuitBuilder) Perform() (err error) {
+	err = cb.findPath()
+	if err != nil {
+		return err
+	}
+	cb.markPathAtCells()
+	return
+}
+
+func (cb *CircuitBuilder) markPathAtCells() {
+	for _, vertex := range cb.path {
+		// TODO: Set arrows here by checking the prev and current index which is bigger
+		// this will let to define the direction
+		cb.task.tableCells[vertex.i][vertex.j].PathArrow = '*'
+	}
+}
+
+func (cb *CircuitBuilder) findPath() (err error) {
 	startVertex :=
 		cb.addPathVertexWith(cb.task.MinDeltaCell.i, cb.task.MinDeltaCell.j)
 	if !cb.searchHorizontally(startVertex) {

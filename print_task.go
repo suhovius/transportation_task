@@ -54,8 +54,9 @@ func (t *Task) Print() {
 		)
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf(
-				"X= %d\nC= %d\nD= %d%s", roundToInt(cell.deliveryAmount),
-				roundToInt(cell.cost), roundToInt(cell.delta),
+				"X= %d\nC= %d\nD= %d\n %s\n%s",
+				roundToInt(cell.deliveryAmount), roundToInt(cell.cost),
+				roundToInt(cell.delta), string(cell.PathArrow),
 				t.minDeltaMarker(i, j),
 			)
 		}
