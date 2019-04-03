@@ -11,8 +11,13 @@ type SupplyRedistributor struct {
 // Description returns step description info
 // TODO maybe this description should be moved to some different serivice object
 func (sr *SupplyRedistributor) Description() string {
+	return "Perform Supply Redistribution"
+}
+
+// ResultMessage returns message about reults of step processing
+func (sr *SupplyRedistributor) ResultMessage() string {
 	return fmt.Sprintf(
-		"Perform Supply Redistribution with theta[%d][%d] value and signs (+) (-)",
+		"Delivery amounts have been updated according to theta[%d][%d] value and signs (+) (-)",
 		sr.task.ThetaCell.i, sr.task.ThetaCell.j,
 	)
 }

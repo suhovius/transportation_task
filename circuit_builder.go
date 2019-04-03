@@ -15,6 +15,14 @@ func (cb *CircuitBuilder) Description() string {
 	return "Finding the circuit path and minimal theta vertex"
 }
 
+// ResultMessage returns message about reults of step processing
+func (cb *CircuitBuilder) ResultMessage() string {
+	return fmt.Sprintf(
+		"Success.\n - Path: %v\n - Theta cell is at [%d][%d]",
+		cb.task.Path, cb.task.ThetaCell.i, cb.task.ThetaCell.j,
+	)
+}
+
 func (cb *CircuitBuilder) lookForVertexWithMinDeliveryValue(pv *PathVertex) {
 	if cb.thetaVertexPtr != nil {
 		minAmount := cb.task.findCellByVertex(cb.thetaVertexPtr).deliveryAmount

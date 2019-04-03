@@ -8,4 +8,5 @@ type AlgorithmStep interface {
 	// like step printer. Each step should have it's own printer
 	Description() string
 	Perform() error
+	ResultMessage() string
 }

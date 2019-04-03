@@ -82,13 +82,14 @@ func main() {
 	printLine()
 
 	// ========= Amount distribution sum check =================================
-	fmt.Print("Amount distribution sum check. ")
-	err = task.amountDistributionCheck()
+	adc := &AmountDistributionChecker{task: &task}
+	fmt.Println(adc.Description())
+	err = adc.Perform()
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Println("Sum matched")
+	fmt.Println(adc.ResultMessage())
 	printLine()
 
 	// ========= Degeneracy Check ==============================================
@@ -138,15 +139,19 @@ func main() {
 		if err != nil {
 			break
 		}
-		// needs error handling also
 		// here also migth happen logging inside another service object wrapper
 		task.Print()
+		fmt.Println(step.ResultMessage())
 	}
 
 	if err != nil {
 		fmt.Println("Error:", err)
 		return
 	}
+
+	// TODO: Check Cycles Count limit or finding time like 1 minute for example
+
+	// TODO: Clear/Reset previous values from calculation
 
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
