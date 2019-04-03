@@ -122,16 +122,16 @@ func main() {
 	}
 	printLine()
 
-	// ========= Build Cycle ===================================================
-	fmt.Println("Build Cycle")
+	// ========= Build Circuit ===================================================
+	fmt.Println("Build Circuit")
 	// TODO: Refactor define serivce objects sturcts with methods for each step
-	// like this cycleBuilder{taskPtr: &task}.run()
+	// like this CircuitBuilder{taskPtr: &task}.run()
 	// TODO: Google Golang service objects!!!
 
 	// This is the idea of the processing conveyor!!!
 	// var steps []AlgorithmStep
 	// Needs to have task to be set there also
-	// steps = append(steps, &CycleBuilder{task: &task}, &SupplyRedistributor{task: &task}, &OtherStep{task: &task})
+	// steps = append(steps, &CircuitBuilder{task: &task}, &SupplyRedistributor{task: &task}, &OtherStep{task: &task})
 	// for _, step := range steps {
 	//  Maybe we can add step.Init(task: &task) or smth to let it work properly
 	// or just provide task as the argument of the Perform method
@@ -145,11 +145,11 @@ func main() {
 	//     s = append(s, &MyStruct{})
 	// }
 
-	(&CycleBuilder{task: &task}).Perform()
+	(&CircuitBuilder{task: &task}).Perform()
 	// taskPrinter{taskPtr: &task}.perform()
 
 	// TODO: Google Golang service objects!!!
-	// TODO: Maybe Goroutines can be used for Cycle Building
+	// TODO: Maybe Goroutines can be used for Circuit Building
 
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
@@ -159,7 +159,7 @@ func main() {
 	// Later each step could be started with step runner service object wrapper
 	// which might perform loging and alos might have config parameters regarding
 	// what should be printed, to the log, and some others
-	// var steps *[]AlgorithmStep = [CycleBuilder, SupplyRdistributor]
+	// var steps *[]AlgorithmStep = [CircuitBuilder, SupplyRdistributor]
 }
 
 func printLine() {
