@@ -34,7 +34,7 @@ func (t *Task) minDeltaMarker(i, j int) string {
 
 func formatSign(sign rune) string {
 	if sign > 0 {
-		return fmt.Sprintf("(%s)", string(sign))
+		return fmt.Sprintf("\n(%s)", string(sign))
 	}
 	return ""
 }
@@ -61,7 +61,7 @@ func (t *Task) Print() {
 		)
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf(
-				"X= %d\nC= %d\nD= %d\n %s\n%s",
+				"X= %d\nC= %d\nD= %d %s%s",
 				roundToInt(cell.deliveryAmount), roundToInt(cell.cost),
 				roundToInt(cell.delta), formatSign(cell.Sign),
 				t.minDeltaMarker(i, j),
