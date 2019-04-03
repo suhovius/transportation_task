@@ -53,7 +53,7 @@ func (cb *CircuitBuilder) addPathVertexWith(i, j int) PathVertex {
 	return vertex
 }
 
-// Perform implements Circuit building for transportation task solving
+// Perform implements step processing
 func (cb *CircuitBuilder) Perform() (err error) {
 	err = cb.findPath()
 	if err != nil {

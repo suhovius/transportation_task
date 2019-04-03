@@ -93,19 +93,26 @@ func main() {
 	printLine()
 
 	// ========= Degeneracy Check ==============================================
-	fmt.Print("Degeneracy Check:")
-	if task.isDegenerate() {
-		// TODO: Maybe return error here
-		fmt.Print(" is Degenerate!")
+	dc := &DegeneracyChecker{task: &task}
+	fmt.Println(dc.Description())
+	err = dc.Perform()
+	if err != nil {
+		fmt.Println("Error:", err)
 		return
 	}
-	fmt.Print(" is not Degenerate")
+	fmt.Println(dc.ResultMessage())
 	printLine()
 
 	// ========= Potentials Calculation ========================================
-	fmt.Println("Potentials Calculation")
-	task.calculatePotentials()
+	pc := &PotentialsCalculator{task: &task}
+	fmt.Println(pc.Description())
+	err = pc.Perform()
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 	task.Print()
+	fmt.Println(pc.ResultMessage())
 	printLine()
 
 	// ========= Optimal Solution Check ========================================

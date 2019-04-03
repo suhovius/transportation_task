@@ -22,7 +22,7 @@ func (sr *SupplyRedistributor) ResultMessage() string {
 	)
 }
 
-// Perform implements supply amount redistribution step
+// Perform implements step processing
 func (sr *SupplyRedistributor) Perform() (err error) {
 	thetaAmount := sr.task.findCellByVertex(&sr.task.ThetaCell).deliveryAmount
 	for i, vertex := range sr.task.Path {

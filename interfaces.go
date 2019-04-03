@@ -9,4 +9,5 @@ type AlgorithmStep interface {
 	Description() string
 	Perform() error
 	ResultMessage() string
+	// isFinal() bool // TODO: Add this method to check wheter algorithm should stop the processing loop
 }
