@@ -125,33 +125,20 @@ func main() {
 	// ========= Build Circuit ===================================================
 	fmt.Println("Build Circuit")
 	// TODO: Refactor define serivce objects sturcts with methods for each step
-	// like this CircuitBuilder{taskPtr: &task}.run()
-	// TODO: Google Golang service objects!!!
-
-	// This is the idea of the processing conveyor!!!
-	// var steps []AlgorithmStep
-	// Needs to have task to be set there also
-	// steps = append(steps, &CircuitBuilder{task: &task}, &SupplyRedistributor{task: &task}, &OtherStep{task: &task})
-	// for _, step := range steps {
-	//  Maybe we can add step.Init(task: &task) or smth to let it work properly
-	// or just provide task as the argument of the Perform method
-	// 	err := step.Perform() // needs error handling also
-	//  here also migth happen logging inside another service object wrapper
-	// }
-
-	// var s []*MyStruct
-
-	// for i := 0; i < b.N; i++ {
-	//     s = append(s, &MyStruct{})
-	// }
 
 	var steps []AlgorithmStep
-	steps = append(steps, &CircuitBuilder{task: &task})
+	steps = append(
+		steps,
+		&CircuitBuilder{task: &task},
+		&SupplyRedistributor{task: &task},
+	)
 	for _, step := range steps {
 		err = step.Perform()
 		if err != nil {
 			break
 		}
+		// needs error handling also
+		// here also migth happen logging inside another service object wrapper
 		task.Print()
 	}
 
@@ -160,18 +147,9 @@ func main() {
 		return
 	}
 
-	// (&CircuitBuilder{task: &task}).Perform()
-	// task.Print()
-	// taskPrinter{taskPtr: &task}.perform()
-
-	// TODO: Google Golang service objects!!!
-	// TODO: Maybe Goroutines can be used for Circuit Building
-
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
 
-	// Each step should be implement interface with method Run() or Perform()
-	// and might return error
 	// Later each step could be started with step runner service object wrapper
 	// which might perform loging and alos might have config parameters regarding
 	// what should be printed, to the log, and some others

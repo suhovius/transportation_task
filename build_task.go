@@ -63,3 +63,7 @@ func buildTaskFromParams(params Params) Task {
 
 	return task
 }
+
+func (task *Task) findCellByVertex(pv *PathVertex) *tableCell {
+	return &task.tableCells[pv.i][pv.j]
+}

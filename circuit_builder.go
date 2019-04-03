@@ -10,14 +10,10 @@ type CircuitBuilder struct {
 	thetaVertexPtr *PathVertex
 }
 
-func (cb *CircuitBuilder) findCellByVertex(pv *PathVertex) tableCell {
-	return cb.task.tableCells[pv.i][pv.j]
-}
-
 func (cb *CircuitBuilder) lookForVertexWithMinDeliveryValue(pv *PathVertex) {
 	if cb.thetaVertexPtr != nil {
-		minAmount := cb.findCellByVertex(cb.thetaVertexPtr).deliveryAmount
-		newMinAmount := cb.findCellByVertex(pv).deliveryAmount
+		minAmount := cb.task.findCellByVertex(cb.thetaVertexPtr).deliveryAmount
+		newMinAmount := cb.task.findCellByVertex(pv).deliveryAmount
 		if minAmount > newMinAmount {
 			// Smaller value have been found
 			cb.thetaVertexPtr = pv
@@ -37,6 +33,7 @@ func (cb *CircuitBuilder) addPathVertexWith(i, j int) PathVertex {
 		sign = '+'
 	} else {
 		sign = '-'
+		// find negative signed (-) cell with minimal delivery amount
 		cb.lookForVertexWithMinDeliveryValue(&vertex)
 	}
 	cb.task.tableCells[vertex.i][vertex.j].Sign = sign
