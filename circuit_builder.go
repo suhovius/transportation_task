@@ -47,18 +47,46 @@ func (cb *CircuitBuilder) Perform() (err error) {
 	return
 }
 
-func (cb *CircuitBuilder) searchHorizontally(pv PathVertex) (isFound bool) {
-	for j, row := range cb.task.tableCells[pv.i] {
-		isNotCurrentCell := j != pv.j
-		isBasicCell := row.deliveryAmount > 0 // non zero delivery
+func isNotCurrentCell(i1, i2 int) bool {
+	return i1 != i2
+}
 
-		if isNotCurrentCell && isBasicCell {
-			// is start vertex, then path is completed
+// use pointer just to avoid copy of the whole tableCell structure
+func isBasicCell(cell *tableCell) bool {
+	// non zero delivery
+	return cell.deliveryAmount > 0
+}
+
+func (cb *CircuitBuilder) searchHorizontally(pv PathVertex) (isFound bool) {
+	for j := 0; j < len(cb.task.demandList); j++ {
+		cellPtr := &cb.task.tableCells[pv.i][j]
+
+		if isNotCurrentCell(j, pv.j) && isBasicCell(cellPtr) {
+			// if we can connect with start vertex, then path is completed
 			if j == cb.path[0].j {
 				cb.addPathVertexWith(pv.i, j)
-				isFound = true // Circuit completed
+				return true // Circuit completed
+			}
+
+			if cb.searchVertically(PathVertex{i: pv.i, j: j}) {
+				cb.addPathVertexWith(pv.i, j)
+				return true // Circuit completed
 			}
 		}
 	}
-	return
+	return // false
+}
+
+func (cb *CircuitBuilder) searchVertically(pv PathVertex) (isFound bool) {
+	for i := 0; i < len(cb.task.supplyList); i++ {
+		cellPtr := &cb.task.tableCells[i][pv.j]
+
+		if isNotCurrentCell(i, pv.i) && isBasicCell(cellPtr) {
+			if cb.searchHorizontally(PathVertex{i: i, j: pv.j}) {
+				cb.addPathVertexWith(i, pv.j)
+				return true
+			}
+		}
+	}
+	return // false
 }
