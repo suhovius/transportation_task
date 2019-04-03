@@ -8,6 +8,7 @@ type Task struct {
 	demandList   []tableOuterCell
 	tableCells   [][]tableCell
 	MinDeltaCell cellIndexes
+	ThetaCell    PathVertex
 	Path         []PathVertex
 }
 

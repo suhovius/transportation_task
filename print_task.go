@@ -27,7 +27,14 @@ func (t *Task) isMinDeltaCell(i, j int) bool {
 
 func (t *Task) minDeltaMarker(i, j int) string {
 	if t.isMinDeltaCell(i, j) {
-		return "\n(Min)"
+		return "\nmin Δ"
+	}
+	return ""
+}
+
+func thetaMarker(t *Task, i, j int) string {
+	if t.ThetaCell.i == i && t.ThetaCell.j == j {
+		return "\nmin θ"
 	}
 	return ""
 }
@@ -61,10 +68,10 @@ func (t *Task) Print() {
 		)
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf(
-				"X= %d\nC= %d\nD= %d %s%s",
+				"X= %d\nC= %d\nD= %d %s%s%s",
 				roundToInt(cell.deliveryAmount), roundToInt(cell.cost),
 				roundToInt(cell.delta), formatSign(cell.Sign),
-				t.minDeltaMarker(i, j),
+				t.minDeltaMarker(i, j), thetaMarker(t, i, j),
 			)
 		}
 
