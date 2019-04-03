@@ -12,7 +12,14 @@ type CircuitBuilder struct {
 func (cb *CircuitBuilder) addPathVertexWith(i, j int) PathVertex {
 	vertex := PathVertex{i: i, j: j}
 	cb.path = append(cb.path, vertex)
-	cb.task.tableCells[vertex.i][vertex.j].PathArrow = '*' // TODO: This might be boolean
+	var sign rune
+
+	if len(cb.path)%2 != 0 {
+		sign = '+'
+	} else {
+		sign = '-'
+	}
+	cb.task.tableCells[vertex.i][vertex.j].Sign = sign
 	return vertex
 }
 
@@ -22,31 +29,8 @@ func (cb *CircuitBuilder) Perform() (err error) {
 	if err != nil {
 		return err
 	}
-	// cb.markPathAtCells()
 	return
 }
-
-// func (cb *CircuitBuilder) markPathAtCells() {
-// 	var arrow rune
-// 	for _, vertex := range cb.path {
-// 		arrow = '*'
-// 		// TODO: Set arrows here by checking the prev and current index which is bigger
-// 		// this will let to define the direction
-// 		// if i == 0 {
-// 		// 	arrow = '*'
-// 		// } else {
-// 		// 	if i < len(cb.path) - 1 {
-// 		// 		// horizontal line
-// 		// 		if cp.path.i == cp.path[i+1].i {
-
-// 		// 		}
-// 		// 		arrow = '←' // ← ↑ → ↓
-// 		// 	}
-
-// 		// }
-// 		cb.task.tableCells[vertex.i][vertex.j].PathArrow = arrow
-// 	}
-// }
 
 func (cb *CircuitBuilder) findPath() (err error) {
 	startVertex :=

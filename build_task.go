@@ -24,7 +24,7 @@ type tableCell struct {
 	delta          float64
 	isMinDelta     bool
 	Sign           rune // + -
-	PathArrow      rune // ← ↑ → ↓
+	// PathArrow      rune // ← ↑ → ↓ // TODO: Remove this field maybe
 }
 
 type cellIndexes struct {
