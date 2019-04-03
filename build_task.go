@@ -1,12 +1,14 @@
 package main
 
 // Task contains transportation task parameters and results
+// TODO These fields should be Capitalized since they should be able to be
+// converted to JSON so they should be public
 type Task struct {
-	supplyList                  []tableOuterCell
-	demandList                  []tableOuterCell
-	tableCells                  [][]tableCell
-	minNegativeDeltaCellPointer *tableCell
-	minDeltaCell                cellIndexes
+	supplyList   []tableOuterCell
+	demandList   []tableOuterCell
+	tableCells   [][]tableCell
+	MinDeltaCell cellIndexes
+	Path         []PathVertex
 }
 
 type tableOuterCell struct {
@@ -29,6 +31,11 @@ type cellIndexes struct {
 	i     int
 	j     int
 	isSet bool
+}
+
+// PathVertex contains i, j indexes of the cycle path
+type PathVertex struct {
+	i, j int
 }
 
 func buildTaskFromParams(params Params) Task {

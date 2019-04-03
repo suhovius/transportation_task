@@ -113,8 +113,8 @@ func main() {
 		fmt.Println("is optimal")
 	} else {
 		fmt.Println("is not optimal")
-		i := task.minDeltaCell.i
-		j := task.minDeltaCell.j
+		i := task.MinDeltaCell.i
+		j := task.MinDeltaCell.j
 		fmt.Printf(
 			"Min Negative Delta Cell: D[%d][%d]= %d\n", i, j,
 			roundToInt(task.tableCells[i][j].delta),
@@ -124,10 +124,42 @@ func main() {
 
 	// ========= Build Cycle ===================================================
 	fmt.Println("Build Cycle")
-	task.buildCycle()
+	// TODO: Refactor define serivce objects sturcts with methods for each step
+	// like this cycleBuilder{taskPtr: &task}.run()
+	// TODO: Google Golang service objects!!!
+
+	// This is the idea of the processing conveyor!!!
+	// var steps []AlgorithmStep
+	// Needs to have task to be set there also
+	// steps = append(steps, &CycleBuilder{task: &task}, &SupplyRedistributor{task: &task}, &OtherStep{task: &task})
+	// for _, step := range steps {
+	//  Maybe we can add step.Init(task: &task) or smth to let it work properly
+	// or just provide task as the argument of the Perform method
+	// 	step.Perform()
+	//  here also migth happen logging inside another service object wrapper
+	// }
+
+	// var s []*MyStruct
+
+	// for i := 0; i < b.N; i++ {
+	//     s = append(s, &MyStruct{})
+	// }
+
+	(&CycleBuilder{task: &task}).Perform()
+	// taskPrinter{taskPtr: &task}.perform()
+
+	// TODO: Google Golang service objects!!!
+	// TODO: Maybe Goroutines can be used for Cycle Building
 
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
+
+	// Each step should be implement interface with method Run() or Perform()
+	// and might return error
+	// Later each step could be started with step runner service object wrapper
+	// which might perform loging and alos might have config parameters regarding
+	// what should be printed, to the log, and some others
+	// var steps *[]AlgorithmStep = [CycleBuilder, SupplyRdistributor]
 }
 
 func printLine() {

@@ -11,7 +11,7 @@ func (t *Task) calculateGrades() (hasNegativeValues bool) {
 				if (*cP).delta < 0 {
 					hasNegativeValues = true
 					if (*cP).delta < minDelta {
-						t.minDeltaCell = cellIndexes{i: i, j: j, isSet: true}
+						t.MinDeltaCell = cellIndexes{i: i, j: j, isSet: true}
 					}
 				}
 			}

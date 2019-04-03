@@ -7,6 +7,8 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
+// refactor it to taskPrinter{taskPtr: &task}.perform()
+
 func (t *Task) buildTableRow() []string {
 	return make([]string, len(t.demandList)+1)
 }
@@ -19,8 +21,8 @@ func fakeString(cell tableOuterCell) string {
 }
 
 func (t *Task) isMinDeltaCell(i, j int) bool {
-	return t.minDeltaCell.isSet &&
-		(t.minDeltaCell.i == i && t.minDeltaCell.j == j)
+	return t.MinDeltaCell.isSet &&
+		(t.MinDeltaCell.i == i && t.MinDeltaCell.j == j)
 }
 
 func (t *Task) minDeltaMarker(i, j int) string {
