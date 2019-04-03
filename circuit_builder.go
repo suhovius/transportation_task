@@ -26,10 +26,24 @@ func (cb *CircuitBuilder) Perform() (err error) {
 }
 
 func (cb *CircuitBuilder) markPathAtCells() {
+	var arrow rune
 	for _, vertex := range cb.path {
+		arrow = '*'
 		// TODO: Set arrows here by checking the prev and current index which is bigger
 		// this will let to define the direction
-		cb.task.tableCells[vertex.i][vertex.j].PathArrow = '*'
+		// if i == 0 {
+		// 	arrow = '*'
+		// } else {
+		// 	if i < len(cb.path) - 1 {
+		// 		// horizontal line
+		// 		if cp.path.i == cp.path[i+1].i {
+
+		// 		}
+		// 		arrow = '←' // ← ↑ → ↓
+		// 	}
+
+		// }
+		cb.task.tableCells[vertex.i][vertex.j].PathArrow = arrow
 	}
 }
 
