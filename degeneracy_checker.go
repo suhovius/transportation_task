@@ -16,6 +16,7 @@ func (dc *DegeneracyChecker) Description() string {
 
 // ResultMessage returns message about reults of step processing
 func (dc *DegeneracyChecker) ResultMessage() string {
+	// TODO: Remove Success:\n - It should be at different place at all steps. Not here
 	return "Success:\n - Solution is not Degenerate"
 }
 

@@ -79,58 +79,16 @@ func main() {
 	task.northWestCorner()
 	task.Print()
 	fmt.Printf("\nDelivery Cost: %d", roundToInt(task.deliveryCost()))
-	printLine()
 
-	// ========= Amount distribution sum check =================================
-	adc := &AmountDistributionChecker{task: &task}
-	fmt.Println(adc.Description())
-	err = adc.Perform()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	fmt.Println(adc.ResultMessage())
-	printLine()
-
-	// ========= Degeneracy Check ==============================================
-	dc := &DegeneracyChecker{task: &task}
-	fmt.Println(dc.Description())
-	err = dc.Perform()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	fmt.Println(dc.ResultMessage())
-	printLine()
-
-	// ========= Potentials Calculation ========================================
-	pc := &PotentialsCalculator{task: &task}
-	fmt.Println(pc.Description())
-	err = pc.Perform()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	task.Print()
-	fmt.Println(pc.ResultMessage())
-	printLine()
-
-	// ========= Optimal Solution Check ========================================
-	osc := &OptimalSolutionChecker{task: &task}
-	fmt.Println(osc.Description())
-	err = osc.Perform()
-	if err != nil {
-		fmt.Println("Error:", err)
-		return
-	}
-	task.Print()
-	fmt.Println(osc.ResultMessage())
-
-	// ========= Build Circuit ===================================================
+	// ========= Iterative Loop ================================================
 
 	var steps []AlgorithmStep
 	steps = append(
 		steps,
+		&AmountDistributionChecker{task: &task},
+		&DegeneracyChecker{task: &task},
+		&PotentialsCalculator{task: &task},
+		&OptimalSolutionChecker{task: &task},
 		&CircuitBuilder{task: &task},
 		&SupplyRedistributor{task: &task},
 	)
