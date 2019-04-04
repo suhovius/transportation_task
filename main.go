@@ -59,7 +59,7 @@ func main() {
 		initialSteps,
 		&Balancer{task: &task},
 		&DegeneracyPreventer{task: &task},
-		&NorthWestCornerBasePlanner{task: &task},
+		&NorthWestCornerSolutionFinder{task: &task},
 	)
 
 	initialPerformer := StepsSequencePerformer{task: &task, steps: &initialSteps}

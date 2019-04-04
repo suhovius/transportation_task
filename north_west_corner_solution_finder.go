@@ -1,24 +1,24 @@
 package main
 
-// NorthWestCornerBasePlanner is a struct that implements AlgorithmStep interface
-type NorthWestCornerBasePlanner struct {
+// NorthWestCornerSolutionFinder is a struct that implements AlgorithmStep interface
+type NorthWestCornerSolutionFinder struct {
 	AlgorithmStep
 	task *Task
 }
 
 // Description returns step description info
-func (nwcbp *NorthWestCornerBasePlanner) Description() string {
+func (nwcsf *NorthWestCornerSolutionFinder) Description() string {
 	return "Calculate initial base plan with 'North West Corner' method"
 }
 
 // ResultMessage returns message about reults of step processing
-func (nwcbp *NorthWestCornerBasePlanner) ResultMessage() string {
+func (nwcsf *NorthWestCornerSolutionFinder) ResultMessage() string {
 	return "Done 'North West Corner' base plan calculation"
 }
 
 // Perform implements step processing
-func (nwcbp *NorthWestCornerBasePlanner) Perform() (err error) {
-	task := nwcbp.task
+func (nwcsf *NorthWestCornerSolutionFinder) Perform() (err error) {
+	task := nwcsf.task
 	u := 0 // supplier index
 	v := 0 // demand index
 	// already supllied sums
