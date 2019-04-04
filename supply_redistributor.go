@@ -17,7 +17,7 @@ func (sr *SupplyRedistributor) Description() string {
 // ResultMessage returns message about reults of step processing
 func (sr *SupplyRedistributor) ResultMessage() string {
 	return fmt.Sprintf(
-		"Success:\n - Delivery amounts have been updated according to theta[%d][%d] value and signs (+) (-)",
+		"Delivery amounts have been updated according to theta[%d][%d] value and signs (+) (-)",
 		sr.task.ThetaCell.i, sr.task.ThetaCell.j,
 	)
 }

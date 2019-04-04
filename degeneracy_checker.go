@@ -17,13 +17,13 @@ func (dc *DegeneracyChecker) Description() string {
 // ResultMessage returns message about reults of step processing
 func (dc *DegeneracyChecker) ResultMessage() string {
 	// TODO: Remove Success:\n - It should be at different place at all steps. Not here
-	return "Success:\n - Solution is not Degenerate"
+	return "Solution is not Degenerate"
 }
 
 // Perform implements step processing
 func (dc *DegeneracyChecker) Perform() (err error) {
 	if dc.isDegenerate() {
-		return errors.New("Failure:\n - Degenerate Solution")
+		return errors.New("Degenerate Solution")
 	}
 	return
 }

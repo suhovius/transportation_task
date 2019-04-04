@@ -5,8 +5,7 @@ import "fmt"
 // OptimalSolutionChecker is a struct that implements AlgorithmStep interface
 type OptimalSolutionChecker struct {
 	AlgorithmStep
-	task      *Task
-	isOptimal bool
+	task *Task
 }
 
 // Description returns step description info
@@ -18,13 +17,13 @@ func (osc *OptimalSolutionChecker) Description() string {
 // ResultMessage returns message about reults of step processing
 func (osc *OptimalSolutionChecker) ResultMessage() string {
 	var message string
-	if osc.isOptimal {
-		message = "Success: Solution is optimal.\nProccesing is Completed"
+	if osc.task.IsOptimalSolution {
+		message = "Solution is optimal. Proccesing is Completed"
 	} else {
 		i := osc.task.MinDeltaCell.i
 		j := osc.task.MinDeltaCell.j
 		message = fmt.Sprintf(
-			"Not Optimal:\n - Min Negative Delta Cell: D[%d][%d]= %d\n",
+			"Not Optimal Solution. Min Negative Delta Cell: D[%d][%d]= %d\n",
 			i, j, roundToInt(osc.task.tableCells[i][j].delta),
 		)
 	}
@@ -33,7 +32,7 @@ func (osc *OptimalSolutionChecker) ResultMessage() string {
 
 // Perform implements step processing
 func (osc *OptimalSolutionChecker) Perform() (err error) {
-	osc.isOptimal = osc.verifyOptimality()
+	osc.task.IsOptimalSolution = osc.verifyOptimality()
 
 	return
 }

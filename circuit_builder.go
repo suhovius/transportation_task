@@ -18,7 +18,7 @@ func (cb *CircuitBuilder) Description() string {
 // ResultMessage returns message about reults of step processing
 func (cb *CircuitBuilder) ResultMessage() string {
 	return fmt.Sprintf(
-		"Success:\n - Path: %v\n - Theta cell is at [%d][%d]",
+		"Path: %v. Theta cell is at [%d][%d]",
 		cb.task.Path, cb.task.ThetaCell.i, cb.task.ThetaCell.j,
 	)
 }

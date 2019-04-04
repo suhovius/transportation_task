@@ -33,6 +33,7 @@ func (t *Task) minDeltaMarker(i, j int) string {
 }
 
 func thetaMarker(t *Task, i, j int) string {
+	// TODO: Fix zero value. Maybe Use cellIndexes type here
 	if t.ThetaCell.i == i && t.ThetaCell.j == j {
 		return "\nmin θ"
 	}

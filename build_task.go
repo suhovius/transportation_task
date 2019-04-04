@@ -4,28 +4,28 @@ package main
 // TODO These fields should be Capitalized since they should be able to be
 // converted to JSON so they should be public
 type Task struct {
-	supplyList   []tableOuterCell
-	demandList   []tableOuterCell
-	tableCells   [][]tableCell
-	MinDeltaCell cellIndexes
-	ThetaCell    PathVertex
-	Path         []PathVertex
+	supplyList        []tableOuterCell // These should be capitalized for JSON
+	demandList        []tableOuterCell // These should be capitalized for JSON
+	tableCells        [][]tableCell    // These should be capitalized for JSON
+	MinDeltaCell      cellIndexes
+	ThetaCell         PathVertex // Maybe Use cellIndexes type here
+	Path              []PathVertex
+	IsOptimalSolution bool
 }
 
 type tableOuterCell struct {
-	amount         float64
-	potential      float64
+	amount         float64 // These should be capitalized for JSON
+	potential      float64 // These should be capitalized for JSON
 	isPotentialSet bool
-	isFake         bool
+	isFake         bool // These should be capitalized for JSON
 }
 
 type tableCell struct {
-	cost           float64
-	deliveryAmount float64
-	delta          float64
+	cost           float64 // These should be capitalized for JSON
+	deliveryAmount float64 // These should be capitalized for JSON
+	delta          float64 // These should be capitalized for JSON
 	isMinDelta     bool
-	Sign           rune // + -
-	// PathArrow      rune // ← ↑ → ↓ // TODO: Remove this field maybe
+	Sign           rune // + - // These should be capitalized for JSON
 }
 
 type cellIndexes struct {

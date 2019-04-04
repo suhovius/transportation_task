@@ -83,6 +83,7 @@ func main() {
 	// ========= Iterative Loop ================================================
 
 	var steps []AlgorithmStep
+	// use make with capacity for this steps array
 	steps = append(
 		steps,
 		&AmountDistributionChecker{task: &task},
@@ -102,6 +103,9 @@ func main() {
 		// here also migth happen logging inside another service object wrapper
 		task.Print()
 		fmt.Println(step.ResultMessage())
+		if task.IsOptimalSolution {
+			break
+		}
 	}
 
 	if err != nil {
