@@ -58,23 +58,13 @@ func main() {
 	initialSteps = append(
 		initialSteps,
 		&Balancer{task: &task},
+		&DegeneracyPreventer{task: &task},
+		&NorthWestCornerBasePlanner{task: &task},
 	)
 
 	initialPerformer := StepsSequencePerformer{task: &task, steps: &initialSteps}
 	err = initialPerformer.Run()
 
-	// ========= Degeneracy Prevention =========================================
-	fmt.Println("Degeneracy Prevention: Add small amount to prevent degeneracy")
-	task.preventDegeneracy()
-	// TODO: Make Print configurable with ability to print (or Print and PrintAccurate)
-	// read float values in the table to show these small disturbances
-	// that were added at this step
-	task.Print()
-	printLine()
-
-	fmt.Println("Base Plan: Calculated with 'North West Corner' method")
-	task.northWestCorner()
-	task.Print()
 	fmt.Printf("\nDelivery Cost: %d", roundToInt(task.deliveryCost()))
 
 	// ========= Iterative Loop ================================================
@@ -109,10 +99,10 @@ func main() {
 	// https://yourbasic.org/golang/round-float-to-int/
 
 	// Later each step could be started with step runner service object wrapper
-	// which might perform loging and alos might have config parameters regarding
+	// which might perform loging and also might have config parameters regarding
 	// what should be printed, to the log, and some others
 }
 
 func printLine() {
-	fmt.Print("\n=====================================================================================\n\n")
+	fmt.Print("\n=========================================================\n\n")
 }
