@@ -53,18 +53,15 @@ func main() {
 	task.Print()
 	printLine()
 
-	// ========= Perform Balancing =============================================
-	kind := task.performBalancing()
-	switch kind {
-	case "nothing":
-		fmt.Println("Balancing: Task is already balanced. Skip balancing")
-	case "fake_demand":
-		fmt.Println("Balancing: Add fake demand")
-	case "fake_supply":
-		fmt.Println("Balancing: Add fake supply")
-	}
-	task.Print()
-	printLine()
+	// ========= Initial Loop ==================================================
+	var initialSteps []AlgorithmStep
+	initialSteps = append(
+		initialSteps,
+		&Balancer{task: &task},
+	)
+
+	initialPerformer := StepsSequencePerformer{task: &task, steps: &initialSteps}
+	err = initialPerformer.Run()
 
 	// ========= Degeneracy Prevention =========================================
 	fmt.Println("Degeneracy Prevention: Add small amount to prevent degeneracy")
@@ -82,10 +79,9 @@ func main() {
 
 	// ========= Iterative Loop ================================================
 
-	var steps []AlgorithmStep
-	// use make with capacity for this steps array
-	steps = append(
-		steps,
+	var iterativeSteps []AlgorithmStep
+	iterativeSteps = append(
+		iterativeSteps,
 		&AmountDistributionChecker{task: &task},
 		&DegeneracyChecker{task: &task},
 		&PotentialsCalculator{task: &task},
@@ -93,20 +89,12 @@ func main() {
 		&CircuitBuilder{task: &task},
 		&SupplyRedistributor{task: &task},
 	)
-	for _, step := range steps {
-		printLine()
-		fmt.Println(step.Description())
-		err = step.Perform()
-		if err != nil {
-			break
-		}
-		// here also migth happen logging inside another service object wrapper
-		task.Print()
-		fmt.Println(step.ResultMessage())
-		if task.IsOptimalSolution {
-			break
-		}
+
+	iterativePerformer := StepsSequencePerformer{
+		task: &task, steps: &iterativeSteps,
 	}
+
+	err = iterativePerformer.Run()
 
 	if err != nil {
 		fmt.Println("Error:", err)

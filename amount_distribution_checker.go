@@ -11,7 +11,6 @@ type AmountDistributionChecker struct {
 }
 
 // Description returns step description info
-// TODO maybe this description should be moved to some different serivice object
 func (adc *AmountDistributionChecker) Description() string {
 	return "Perform amount distribution check"
 }

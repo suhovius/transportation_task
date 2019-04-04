@@ -9,7 +9,6 @@ type DegeneracyChecker struct {
 }
 
 // Description returns step description info
-// TODO maybe this description should be moved to some different serivice object
 func (dc *DegeneracyChecker) Description() string {
 	return "Perform Degeneracy Check"
 }

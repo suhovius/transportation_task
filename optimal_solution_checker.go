@@ -9,7 +9,6 @@ type OptimalSolutionChecker struct {
 }
 
 // Description returns step description info
-// TODO maybe this description should be moved to some different serivice object
 func (osc *OptimalSolutionChecker) Description() string {
 	return "Perform Optimal Solution Check"
 }

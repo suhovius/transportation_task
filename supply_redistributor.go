@@ -9,7 +9,6 @@ type SupplyRedistributor struct {
 }
 
 // Description returns step description info
-// TODO maybe this description should be moved to some different serivice object
 func (sr *SupplyRedistributor) Description() string {
 	return "Perform Supply Redistribution"
 }
