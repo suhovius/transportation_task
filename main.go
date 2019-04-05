@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
 // TODO: Remove this when frontend web server will be created
@@ -52,7 +53,12 @@ func main() {
 	task.Print()
 
 	// ========= Find the solution =============================================
-	(&TaskSolver{task: &task}).Peform()
+	// TODO: secondsLimit might be configurable from the API
+	err = (&TaskSolver{task: &task, secondsLimit: 10 * time.Minute}).Peform()
+	if err != nil {
+		fmt.Println("Task Solver:", err)
+		return
+	}
 	// TODO: Round numners in api response generation and return int values there
 	// https://yourbasic.org/golang/round-float-to-int/
 }

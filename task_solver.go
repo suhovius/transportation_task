@@ -1,14 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 // TaskSolver provides transport task solution finding algorithm logic
 type TaskSolver struct {
-	task *Task
+	task         *Task
+	secondsLimit time.Duration
+	startTime    time.Time
+	elapsedTime  time.Duration
 }
 
 // Peform finds transport task solution
 func (ts *TaskSolver) Peform() (err error) {
+	ts.startTime = time.Now()
+
 	fmt.Printf("\n=== Initial Preparations =================================\n")
 	err = ts.createInitialSequence().Run()
 
@@ -20,7 +28,14 @@ func (ts *TaskSolver) Peform() (err error) {
 
 	for i := 1; !ts.task.IsOptimalSolution; i++ {
 		fmt.Printf("\n=== Potentials Method. Iteration #%d ==============\n", i)
+		err = ts.checkTimeLimit()
+
+		if err != nil {
+			break
+		}
+
 		err = ts.createIterativeSequence().Run()
+
 		if err != nil {
 			break
 		}
@@ -31,6 +46,8 @@ func (ts *TaskSolver) Peform() (err error) {
 	}
 
 	ts.printSolutionPrice()
+
+	fmt.Printf("Caclulation took %s\n", ts.elapsedTime)
 
 	return
 }
@@ -68,7 +85,16 @@ func (ts *TaskSolver) printSolutionPrice() {
 	)
 }
 
+func (ts *TaskSolver) checkTimeLimit() (err error) {
+	ts.elapsedTime = time.Since(ts.startTime)
+	if ts.elapsedTime > ts.secondsLimit {
+		err = fmt.Errorf(
+			"Calculation took %s and exceded allowed limit of %s",
+			ts.elapsedTime, ts.secondsLimit,
+		)
+	}
+	return
+}
+
 // Add some kind of printer object or output stream to send all the print
 // requests and to be able to change where they are sent to
-
-// TODO: Check Cycles Count limit or finding time like 1 minute for example
