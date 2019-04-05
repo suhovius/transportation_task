@@ -17,6 +17,7 @@ func init() {
 	log.SetOutput(os.Stdout)
 }
 
+// TODO: Refactor handlers into separate files
 func main() {
 	var (
 		addr = flag.String("addr", ":8080", "address of the http server")
@@ -69,18 +70,19 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		var params TaskParams
 
 		if err = json.NewDecoder(r.Body).Decode(&params); err != nil {
-			logger.Fatalf("JSON Decoder: %s", err)
-			w.WriteHeader(http.StatusBadRequest)
+			message := fmt.Sprintf("JSON Decoder: %s", err)
+			http.Error(w, APIErrorMessage(logger, message), http.StatusBadRequest)
 			return
 		}
 
 		jsonBlob, err := json.Marshal(params)
 		if err != nil {
-			logger.Fatalf("Marshal error: %s", err)
+			message := fmt.Sprintf("Marshal error: %s", err)
+			http.Error(w, APIErrorMessage(logger, message), http.StatusInternalServerError)
 			return
 		}
 
-		logger.Info(fmt.Sprintf("Received parameters: %s", string(jsonBlob)))
+		logger.Infof("Received parameters: %s", string(jsonBlob))
 
 		// ========= Parameters Validation =====================================
 		// TODO: Validate parameters cost table dimensions and supply demand list dimensions
@@ -97,18 +99,18 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// ========= Find the solution =========================================
 		logger.Info(fmt.Sprintf("Process Task UUID: %s", task.UUID))
 		// TODO: secondsLimit might be configurable from the API
-		err = (&TaskSolver{task: &task, secondsLimit: 10 * time.Minute}).Peform()
+		err = (&TaskSolver{task: &task, secondsLimit: 1 * time.Minute}).Peform()
 		if err != nil {
 			message := fmt.Sprintf("Task Solver: %v", err)
-			logger.Fatal(message)
-			http.Error(w, message, http.StatusInternalServerError)
+			http.Error(w, APIErrorMessage(logger, message), http.StatusInternalServerError)
+			return
 		}
 
 		taskJSON, err := json.Marshal(task)
 		if err != nil {
 			message := fmt.Sprintf("Response Rendering: %v", err)
-			logger.Fatal(message)
-			http.Error(w, message, http.StatusInternalServerError)
+			http.Error(w, APIErrorMessage(logger, message), http.StatusInternalServerError)
+			return
 		}
 
 		w.Write(taskJSON)
@@ -117,16 +119,18 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	} else {
 		message := "Invalid request method"
 		logger.Warn(message)
-		errorJson := APIErrorMessage(logger, message)
-		http.Error(w, errorJson, http.StatusMethodNotAllowed)
+		http.Error(w, APIErrorMessage(logger, message), http.StatusMethodNotAllowed)
+		return
 	}
 }
 
 // APIErrorMessage creates ErrorData struct
 func APIErrorMessage(logger *log.Entry, message string) string {
+	logger.Warn(message)
+
 	jsonBlob, err := json.Marshal(ErrorData{Message: message})
 	if err != nil {
-		logger.Warn("Marshal error: %s", err)
+		logger.Warnf("Marshal error: %s", err)
 	}
 	return string(jsonBlob)
 }

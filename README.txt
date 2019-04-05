@@ -669,3 +669,18 @@ Perform Optimal Solution Check
 Solution is optimal. Proccesing is Completed
 Delivery Cost: 220
 Caclulation took 25.864631ms
+
+Error logging example:
+
+WARN[0011] Invalid request method                        ip="127.0.0.1:63113" method=GET url=/api/tasks/
+
+Error response example:
+
+* upload completely sent off: 101 out of 101 bytes
+< HTTP/1.1 500 Internal Server Error
+< Content-Type: text/plain; charset=utf-8
+< X-Content-Type-Options: nosniff
+< Date: Fri, 05 Apr 2019 04:58:58 GMT
+< Content-Length: 96
+<
+{"error_message":"Task Solver: Calculation took 23.451804ms and exceded allowed limit of 10ms"}
