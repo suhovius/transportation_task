@@ -39,31 +39,14 @@ type PathVertex struct {
 	i, j int
 }
 
-func buildTaskFromParams(params TaskParams) Task {
-	var task Task
-
-	task.supplyList = make([]tableOuterCell, len(params.SupplyList))
-	for i, val := range params.SupplyList {
-		task.supplyList[i] = tableOuterCell{amount: float64(val)}
-	}
-
-	task.demandList = make([]tableOuterCell, len(params.DemandList))
-	for i, val := range params.DemandList {
-		task.demandList[i] = tableOuterCell{amount: float64(val)}
-	}
-
-	task.tableCells = make([][]tableCell, len(params.SupplyList))
-	for i, row := range params.CostTable {
-		// assign table row
-		task.tableCells[i] = make([]tableCell, len(row))
-		for j, cost := range row {
-			task.tableCells[i][j] = tableCell{cost: float64(cost)}
-		}
-	}
-
-	return task
+func (t *Task) findCellByVertex(pv *PathVertex) *tableCell {
+	return &t.tableCells[pv.i][pv.j]
 }
 
-func (task *Task) findCellByVertex(pv *PathVertex) *tableCell {
-	return &task.tableCells[pv.i][pv.j]
+func (t *Task) eachCell(cellProcessor func(i, j int)) {
+	for i, row := range t.tableCells {
+		for j := range row {
+			cellProcessor(i, j)
+		}
+	}
 }

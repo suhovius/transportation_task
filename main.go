@@ -46,7 +46,8 @@ func main() {
 	// TODO: Validate parameters. At least one supply and at least one demand
 
 	// ========= Create Task Struct ============================================
-	task := buildTaskFromParams(params)
+
+	task := (&TaskCreator{params: &params}).Perform()
 	fmt.Println("Initial State")
 	task.Print()
 	printLine()
