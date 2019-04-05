@@ -27,7 +27,7 @@ func (b *Balancer) ResultMessage() (message string) {
 
 // Perform implements step processing
 func (b *Balancer) Perform() (err error) {
-	supplySumDiff := b.listAmountSum(b.task.supplyList) - b.listAmountSum(b.task.demandList)
+	supplySumDiff := b.listAmountSum(b.task.SupplyList) - b.listAmountSum(b.task.DemandList)
 	switch {
 	case supplySumDiff == 0:
 		b.kind = "nothing"
@@ -43,32 +43,32 @@ func (b *Balancer) Perform() (err error) {
 	return
 }
 
-func (b *Balancer) listAmountSum(list []tableOuterCell) float64 {
+func (b *Balancer) listAmountSum(list []TableOuterCell) float64 {
 	var sum float64
 	for _, cell := range list {
-		sum += cell.amount
+		sum += cell.Amount
 	}
 	return sum
 }
 
 func (b *Balancer) addFakeDemand(supplyExcess float64) {
 	// add fake demand value
-	b.task.demandList = append(
-		b.task.demandList, tableOuterCell{amount: supplyExcess, isFake: true},
+	b.task.DemandList = append(
+		b.task.DemandList, TableOuterCell{Amount: supplyExcess, IsFake: true},
 	)
-	for i := range b.task.supplyList {
+	for i := range b.task.SupplyList {
 		// set zero delivery cost for this fake demand
-		b.task.tableCells[i] = append(b.task.tableCells[i], tableCell{cost: 0})
+		b.task.TableCells[i] = append(b.task.TableCells[i], TableCell{Cost: 0})
 	}
 }
 
 func (b *Balancer) addFakeSupply(supplyDeficiency float64) {
 	// Add Fake Supplier
-	b.task.supplyList = append(
-		b.task.supplyList, tableOuterCell{amount: supplyDeficiency, isFake: true},
+	b.task.SupplyList = append(
+		b.task.SupplyList, TableOuterCell{Amount: supplyDeficiency, IsFake: true},
 	)
 	// Add row with zero price
-	b.task.tableCells = append(
-		b.task.tableCells, make([]tableCell, len(b.task.demandList)),
+	b.task.TableCells = append(
+		b.task.TableCells, make([]TableCell, len(b.task.DemandList)),
 	)
 }

@@ -30,7 +30,7 @@ func (dc *DegeneracyChecker) basicCellsCount() int {
 	cellsCount := 0
 
 	dc.task.eachCell(func(i, j int) {
-		if dc.task.tableCells[i][j].deliveryAmount > 0 {
+		if dc.task.TableCells[i][j].DeliveryAmount > 0 {
 			cellsCount++
 		}
 	})
@@ -38,7 +38,7 @@ func (dc *DegeneracyChecker) basicCellsCount() int {
 }
 
 func (dc *DegeneracyChecker) basicCellsLimit() int {
-	return len(dc.task.supplyList) + len(dc.task.demandList) - 1
+	return len(dc.task.SupplyList) + len(dc.task.DemandList) - 1
 }
 
 func (dc *DegeneracyChecker) isDegenerate() bool {

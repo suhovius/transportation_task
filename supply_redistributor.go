@@ -17,21 +17,21 @@ func (sr *SupplyRedistributor) Description() string {
 func (sr *SupplyRedistributor) ResultMessage() string {
 	return fmt.Sprintf(
 		"Delivery amounts have been updated according to theta[%d][%d] value and signs (+) (-)",
-		sr.task.ThetaCell.i, sr.task.ThetaCell.j,
+		sr.task.thetaCell.i, sr.task.thetaCell.j,
 	)
 }
 
 // Perform implements step processing
 func (sr *SupplyRedistributor) Perform() (err error) {
-	thetaAmount := sr.task.findCellByVertex(&sr.task.ThetaCell).deliveryAmount
-	for i, vertex := range sr.task.Path {
+	thetaAmount := sr.task.findCellByVertex(&sr.task.thetaCell).DeliveryAmount
+	for i, vertex := range sr.task.path {
 		cell := sr.task.findCellByVertex(&vertex)
 		if i%2 == 0 {
 			// even index has sign (+)
-			cell.deliveryAmount += thetaAmount
+			cell.DeliveryAmount += thetaAmount
 		} else {
 			// odd index has minus sign (-)
-			cell.deliveryAmount -= thetaAmount
+			cell.DeliveryAmount -= thetaAmount
 		}
 	}
 	if err != nil {

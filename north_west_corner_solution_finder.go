@@ -22,21 +22,21 @@ func (nwcsf *NorthWestCornerSolutionFinder) Perform() (err error) {
 	u := 0 // supplier index
 	v := 0 // demand index
 	// already supllied sums
-	aS := make([]float64, len(task.demandList))
-	aD := make([]float64, len(task.supplyList))
+	aS := make([]float64, len(task.DemandList))
+	aD := make([]float64, len(task.SupplyList))
 
-	for u < len(task.supplyList) && v < len(task.demandList) {
-		if task.demandList[v].amount-aS[v] < task.supplyList[u].amount-aD[u] {
+	for u < len(task.SupplyList) && v < len(task.DemandList) {
+		if task.DemandList[v].Amount-aS[v] < task.SupplyList[u].Amount-aD[u] {
 			// work with current row
-			x := task.demandList[v].amount - aS[v]
-			task.tableCells[u][v].deliveryAmount = x
+			x := task.DemandList[v].Amount - aS[v]
+			task.TableCells[u][v].DeliveryAmount = x
 			aS[v] += x
 			aD[u] += x
 			v++
 		} else {
 			// go to the next row
-			x := task.supplyList[u].amount - aD[u]
-			task.tableCells[u][v].deliveryAmount = x
+			x := task.SupplyList[u].Amount - aD[u]
+			task.TableCells[u][v].DeliveryAmount = x
 			aS[v] += x
 			aD[u] += x
 			u++

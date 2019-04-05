@@ -56,17 +56,17 @@ func (adc *AmountDistributionChecker) sumMatchCheck(
 
 func (adc *AmountDistributionChecker) amountDistributionCheckFor(
 	entityName string,
-	finder func(i, j int) tableCell,
-	listsPair func() (r, c *[]tableOuterCell),
+	finder func(i, j int) TableCell,
+	listsPair func() (r, c *[]TableOuterCell),
 ) (err error) {
 	rowsList, colsList := listsPair()
 	for i, outerCell := range *rowsList {
 		var actualSum float64
 		for j := range *colsList {
-			actualSum += finder(i, j).deliveryAmount
+			actualSum += finder(i, j).DeliveryAmount
 		}
 
-		err = adc.sumMatchCheck(entityName, i, actualSum, outerCell.amount)
+		err = adc.sumMatchCheck(entityName, i, actualSum, outerCell.Amount)
 		if err != nil {
 			return err
 		}
@@ -74,20 +74,20 @@ func (adc *AmountDistributionChecker) amountDistributionCheckFor(
 	return
 }
 
-func (adc *AmountDistributionChecker) rowCellFinder(i, j int) tableCell {
-	return adc.task.tableCells[i][j]
+func (adc *AmountDistributionChecker) rowCellFinder(i, j int) TableCell {
+	return adc.task.TableCells[i][j]
 }
 
-func (adc *AmountDistributionChecker) rowListsPair() (rowsList, colsList *[]tableOuterCell) {
-	return &adc.task.supplyList, &adc.task.demandList
+func (adc *AmountDistributionChecker) rowListsPair() (rowsList, colsList *[]TableOuterCell) {
+	return &adc.task.SupplyList, &adc.task.DemandList
 }
 
-func (adc *AmountDistributionChecker) colCellFinder(i, j int) tableCell {
+func (adc *AmountDistributionChecker) colCellFinder(i, j int) TableCell {
 	// reverse indexes here
-	return adc.task.tableCells[j][i]
+	return adc.task.TableCells[j][i]
 }
 
-func (adc *AmountDistributionChecker) colListsPair() (rowsList, colsList *[]tableOuterCell) {
+func (adc *AmountDistributionChecker) colListsPair() (rowsList, colsList *[]TableOuterCell) {
 	// reverse lists here
-	return &adc.task.demandList, &adc.task.supplyList
+	return &adc.task.DemandList, &adc.task.SupplyList
 }

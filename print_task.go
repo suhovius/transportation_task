@@ -7,26 +7,26 @@ import (
 	"github.com/olekukonko/tablewriter"
 )
 
-// refactor it to taskPrinter{taskPtr: &task}.perform()
+// TODO: Refactor it to TaskPrinter{task: &task}.Perform()
 
 func (t *Task) buildTableRow() []string {
-	return make([]string, len(t.demandList)+1)
+	return make([]string, len(t.DemandList)+1)
 }
 
-func fakeString(cell tableOuterCell) string {
-	if cell.isFake {
+func fakeString(cell TableOuterCell) string {
+	if cell.IsFake {
 		return "\n(Fake)"
 	}
 	return ""
 }
 
-func (t *Task) isMinDeltaCell(i, j int) bool {
-	return t.MinDeltaCell.isSet &&
-		(t.MinDeltaCell.i == i && t.MinDeltaCell.j == j)
+func (t *Task) isminDeltaCell(i, j int) bool {
+	return t.minDeltaCell.isSet &&
+		(t.minDeltaCell.i == i && t.minDeltaCell.j == j)
 }
 
-func (t *Task) minDeltaMarker(i, j int) string {
-	if t.isMinDeltaCell(i, j) {
+func (t *Task) mindeltaMarker(i, j int) string {
+	if t.isminDeltaCell(i, j) {
 		return "\nmin Δ"
 	}
 	return ""
@@ -34,7 +34,7 @@ func (t *Task) minDeltaMarker(i, j int) string {
 
 func thetaMarker(t *Task, i, j int) string {
 	// TODO: Fix zero value. Maybe Use cellIndexes type here
-	if t.ThetaCell.i == i && t.ThetaCell.j == j {
+	if t.thetaCell.i == i && t.thetaCell.j == j {
 		return "\nmin θ"
 	}
 	return ""
@@ -49,32 +49,32 @@ func formatSign(sign rune) string {
 
 // Print prints current task processing state in the form of ASCII table
 func (t *Task) Print() {
-	data := make([][]string, len(t.supplyList))
+	data := make([][]string, len(t.SupplyList))
 
 	header := t.buildTableRow()
 	header[0] = "→ Demand →\n----------\n↓ Supply ↓"
-	for i, cell := range t.demandList {
+	for i, cell := range t.DemandList {
 		header[i+1] = fmt.Sprintf(
-			"B[%d]=%d\nV[%d]=%d%s", i, roundToInt(cell.amount),
-			i, roundToInt(cell.potential), fakeString(cell),
+			"B[%d]=%d\nV[%d]=%d%s", i, roundToInt(cell.Amount),
+			i, roundToInt(cell.Potential), fakeString(cell),
 		)
 	}
 
-	for i, cellsRow := range t.tableCells {
+	for i, cellsRow := range t.TableCells {
 		row := t.buildTableRow()
-		supplier := t.supplyList[i]
+		supplier := t.SupplyList[i]
 		row[0] = fmt.Sprintf(
-			"A[%d]=%d\nU[%d]=%d%s", i, roundToInt(supplier.amount),
-			i, roundToInt(supplier.potential), fakeString(supplier),
+			"A[%d]=%d\nU[%d]=%d%s", i, roundToInt(supplier.Amount),
+			i, roundToInt(supplier.Potential), fakeString(supplier),
 		)
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf(
 				"X=%d\n%s%s%s\n--------\nC=%d\nD=%d",
-				roundToInt(cell.deliveryAmount),
-				formatSign(cell.Sign),
-				t.minDeltaMarker(i, j),
+				roundToInt(cell.DeliveryAmount),
+				formatSign(cell.sign),
+				t.mindeltaMarker(i, j),
 				thetaMarker(t, i, j),
-				roundToInt(cell.cost),
+				roundToInt(cell.Cost),
 				roundToInt(cell.delta),
 			)
 		}

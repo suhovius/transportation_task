@@ -13,7 +13,7 @@ func (ii *IterationInitializer) Description() string {
 
 // ResultMessage returns message about reults of step processing
 func (ii *IterationInitializer) ResultMessage() string {
-	return "Reset potentials, grades."
+	return "Reset potentials, grades and circuit data"
 }
 
 // Perform cleans prevous changes at task's inner state
@@ -27,33 +27,33 @@ func (ii *IterationInitializer) Perform() (err error) {
 
 func (ii *IterationInitializer) resetPotentials() {
 	// reset demand potentials
-	for i := range ii.task.demandList {
-		ii.task.demandList[i].potential = 0
-		ii.task.demandList[i].isPotentialSet = false
+	for i := range ii.task.DemandList {
+		ii.task.DemandList[i].Potential = 0
+		ii.task.DemandList[i].isPotentialSet = false
 	}
 
 	// reset supply potentials
-	for i := range ii.task.supplyList {
-		ii.task.supplyList[i].potential = 0
-		ii.task.supplyList[i].isPotentialSet = false
+	for i := range ii.task.SupplyList {
+		ii.task.SupplyList[i].Potential = 0
+		ii.task.SupplyList[i].isPotentialSet = false
 	}
 }
 
 func (ii *IterationInitializer) resetGrades() {
-	ii.task.MinDeltaCell = cellIndexes{}
+	ii.task.minDeltaCell = cellIndexes{}
 	ii.task.eachCell(
 		func(i, j int) {
-			ii.task.tableCells[i][j].delta = 0
+			ii.task.TableCells[i][j].delta = 0
 		},
 	)
 }
 
 func (ii *IterationInitializer) resetCircuit() {
-	ii.task.ThetaCell = PathVertex{}
+	ii.task.thetaCell = PathVertex{}
 
-	for _, vertex := range ii.task.Path {
-		ii.task.tableCells[vertex.i][vertex.j].Sign = 0
+	for _, vertex := range ii.task.path {
+		ii.task.TableCells[vertex.i][vertex.j].sign = 0
 	}
 
-	ii.task.Path = []PathVertex{}
+	ii.task.path = []PathVertex{}
 }

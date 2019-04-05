@@ -12,22 +12,22 @@ type TaskCreator struct {
 // Perform creates task from params *TaskParams struct
 func (tc *TaskCreator) Perform() (task Task) {
 	task.UUID = uuid.New()
-	task.supplyList = make([]tableOuterCell, len(tc.params.SupplyList))
+	task.SupplyList = make([]TableOuterCell, len(tc.params.SupplyList))
 	for i, val := range tc.params.SupplyList {
-		task.supplyList[i] = tableOuterCell{amount: float64(val)}
+		task.SupplyList[i] = TableOuterCell{Amount: float64(val)}
 	}
 
-	task.demandList = make([]tableOuterCell, len(tc.params.DemandList))
+	task.DemandList = make([]TableOuterCell, len(tc.params.DemandList))
 	for i, val := range tc.params.DemandList {
-		task.demandList[i] = tableOuterCell{amount: float64(val)}
+		task.DemandList[i] = TableOuterCell{Amount: float64(val)}
 	}
 
-	task.tableCells = make([][]tableCell, len(tc.params.SupplyList))
+	task.TableCells = make([][]TableCell, len(tc.params.SupplyList))
 	for i, row := range tc.params.CostTable {
 		// assign table row
-		task.tableCells[i] = make([]tableCell, len(row))
+		task.TableCells[i] = make([]TableCell, len(row))
 		for j, cost := range row {
-			task.tableCells[i][j] = tableCell{cost: float64(cost)}
+			task.TableCells[i][j] = TableCell{Cost: float64(cost)}
 		}
 	}
 

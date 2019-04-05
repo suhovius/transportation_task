@@ -8,8 +8,9 @@ type DeliveryCostCalculator struct {
 // Peform calculates task delivery cost
 func (dcc *DeliveryCostCalculator) Peform() (cost float64) {
 	dcc.task.eachCell(func(i, j int) {
-		cell := dcc.task.tableCells[i][j]
-		cost += cell.cost * cell.deliveryAmount
+		cell := dcc.task.TableCells[i][j]
+		cost += cell.Cost * cell.DeliveryAmount
 	})
+	dcc.task.TotalDeliveryCost = cost
 	return cost
 }

@@ -18,19 +18,19 @@ func (pc *PotentialsCalculator) ResultMessage() string {
 
 // Perform implements step processing
 func (pc *PotentialsCalculator) Perform() (err error) {
-	// Info potentials are nullified at IterationInitializer step
-	// first potential is zero. U0= 0
+	// Info Potentials are nullified at IterationInitializer step
+	// first Potential is zero. U0= 0
 	t := pc.task
-	t.supplyList[0].isPotentialSet = true
+	t.SupplyList[0].isPotentialSet = true
 	t.eachCell(
 		func(i, j int) {
-			cell := t.tableCells[i][j]
-			if cell.deliveryAmount > 0 {
+			cell := t.TableCells[i][j]
+			if cell.DeliveryAmount > 0 {
 				switch {
-				case t.supplyList[i].isPotentialSet:
-					pc.setPotential(&t.demandList, &t.supplyList, i, j, cell.cost)
-				case t.demandList[j].isPotentialSet:
-					pc.setPotential(&t.supplyList, &t.demandList, j, i, cell.cost)
+				case t.SupplyList[i].isPotentialSet:
+					pc.setPotential(&t.DemandList, &t.SupplyList, i, j, cell.Cost)
+				case t.DemandList[j].isPotentialSet:
+					pc.setPotential(&t.SupplyList, &t.DemandList, j, i, cell.Cost)
 				}
 			}
 		},
@@ -40,8 +40,8 @@ func (pc *PotentialsCalculator) Perform() (err error) {
 }
 
 func (pc *PotentialsCalculator) setPotential(
-	targetList, sourceList *[]tableOuterCell, i, j int, cellCost float64,
+	targetList, sourceList *[]TableOuterCell, i, j int, cellCost float64,
 ) {
-	(*targetList)[j].potential = cellCost - (*sourceList)[i].potential
+	(*targetList)[j].Potential = cellCost - (*sourceList)[i].Potential
 	(*targetList)[j].isPotentialSet = true
 }

@@ -9,28 +9,30 @@ import (
 // converted to JSON so they should be public
 type Task struct {
 	UUID              uuid.UUID
-	supplyList        []tableOuterCell // These should be capitalized for JSON
-	demandList        []tableOuterCell // These should be capitalized for JSON
-	tableCells        [][]tableCell    // These should be capitalized for JSON
-	MinDeltaCell      cellIndexes
-	ThetaCell         PathVertex // Maybe Use cellIndexes type here
-	Path              []PathVertex
-	IsOptimalSolution bool
+	SupplyList        []TableOuterCell `json:"supply_list"`
+	DemandList        []TableOuterCell `json:"demand_list"`
+	TableCells        [][]TableCell    `json:"table_cells"`
+	minDeltaCell      cellIndexes
+	thetaCell         PathVertex // TODO: Use cellIndexes later for this field
+	path              []PathVertex
+	IsOptimalSolution bool    `json:"is_optimal_solution"`
+	TotalDeliveryCost float64 `json:"total_delivery_cost"`
 }
 
-type tableOuterCell struct {
-	amount         float64 // These should be capitalized for JSON
-	potential      float64 // These should be capitalized for JSON
+// TableOuterCell defines table header and first column info
+type TableOuterCell struct {
+	Amount         float64 `json:"amount"`
+	Potential      float64 `json:"potential"`
 	isPotentialSet bool
-	isFake         bool // These should be capitalized for JSON
+	IsFake         bool `json:"is_fake"`
 }
 
-type tableCell struct {
-	cost           float64 // These should be capitalized for JSON
-	deliveryAmount float64 // These should be capitalized for JSON
+// TableCell defines table cell info
+type TableCell struct {
+	Cost           float64 `json:"cost"`
+	DeliveryAmount float64 `json:"delivery_amount"`
 	delta          float64 // These should be capitalized for JSON
-	isMinDelta     bool
-	Sign           rune // + - // These should be capitalized for JSON
+	sign           rune    // + - // These should be capitalized for JSON
 }
 
 type cellIndexes struct {
@@ -44,12 +46,12 @@ type PathVertex struct {
 	i, j int
 }
 
-func (t *Task) findCellByVertex(pv *PathVertex) *tableCell {
-	return &t.tableCells[pv.i][pv.j]
+func (t *Task) findCellByVertex(pv *PathVertex) *TableCell {
+	return &t.TableCells[pv.i][pv.j]
 }
 
 func (t *Task) eachCell(cellProcessor func(i, j int)) {
-	for i, row := range t.tableCells {
+	for i, row := range t.TableCells {
 		for j := range row {
 			cellProcessor(i, j)
 		}

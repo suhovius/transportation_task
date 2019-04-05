@@ -19,14 +19,14 @@ func (cb *CircuitBuilder) Description() string {
 func (cb *CircuitBuilder) ResultMessage() string {
 	return fmt.Sprintf(
 		"Path: %v. Theta cell is at [%d][%d]",
-		cb.task.Path, cb.task.ThetaCell.i, cb.task.ThetaCell.j,
+		cb.task.path, cb.task.thetaCell.i, cb.task.thetaCell.j,
 	)
 }
 
 func (cb *CircuitBuilder) lookForVertexWithMinDeliveryValue(pv *PathVertex) {
 	if cb.thetaVertexPtr != nil {
-		minAmount := cb.task.findCellByVertex(cb.thetaVertexPtr).deliveryAmount
-		newMinAmount := cb.task.findCellByVertex(pv).deliveryAmount
+		minAmount := cb.task.findCellByVertex(cb.thetaVertexPtr).DeliveryAmount
+		newMinAmount := cb.task.findCellByVertex(pv).DeliveryAmount
 		if minAmount > newMinAmount {
 			// Smaller value have been found
 			cb.thetaVertexPtr = pv
@@ -46,10 +46,10 @@ func (cb *CircuitBuilder) addPathVertexWith(i, j int) PathVertex {
 		sign = '+'
 	} else {
 		sign = '-'
-		// find negative signed (-) cell with minimal delivery amount
+		// find negative signed (-) cell with minimal delivery Amount
 		cb.lookForVertexWithMinDeliveryValue(&vertex)
 	}
-	cb.task.tableCells[vertex.i][vertex.j].Sign = sign
+	cb.task.TableCells[vertex.i][vertex.j].sign = sign
 	return vertex
 }
 
@@ -64,7 +64,7 @@ func (cb *CircuitBuilder) Perform() (err error) {
 
 func (cb *CircuitBuilder) findPath() (err error) {
 	startVertex :=
-		cb.addPathVertexWith(cb.task.MinDeltaCell.i, cb.task.MinDeltaCell.j)
+		cb.addPathVertexWith(cb.task.minDeltaCell.i, cb.task.minDeltaCell.j)
 	if !cb.searchHorizontally(startVertex) {
 		// path has not been found
 		return fmt.Errorf(
@@ -73,12 +73,12 @@ func (cb *CircuitBuilder) findPath() (err error) {
 		)
 	}
 	// path has been found
-	cb.task.Path = cb.path
+	cb.task.path = cb.path
 	if cb.thetaVertexPtr != nil {
-		cb.task.ThetaCell = *cb.thetaVertexPtr
+		cb.task.thetaCell = *cb.thetaVertexPtr
 	} else {
 		return fmt.Errorf(
-			"Can't find path Theta cell for path %v", cb.task.Path,
+			"Can't find path Theta cell for path %v", cb.task.path,
 		)
 	}
 
@@ -89,15 +89,15 @@ func isNotCurrentCell(i1, i2 int) bool {
 	return i1 != i2
 }
 
-// use pointer just to avoid copy of the whole tableCell structure
-func isBasicCell(cell *tableCell) bool {
+// use pointer just to avoid copy of the whole TableCell structure
+func isBasicCell(cell *TableCell) bool {
 	// non zero delivery
-	return cell.deliveryAmount > 0
+	return cell.DeliveryAmount > 0
 }
 
 func (cb *CircuitBuilder) searchHorizontally(pv PathVertex) (isFound bool) {
-	for j := 0; j < len(cb.task.demandList); j++ {
-		cellPtr := &cb.task.tableCells[pv.i][j]
+	for j := 0; j < len(cb.task.DemandList); j++ {
+		cellPtr := &cb.task.TableCells[pv.i][j]
 
 		if isNotCurrentCell(j, pv.j) && isBasicCell(cellPtr) {
 			// if we can connect with start vertex, then path is completed
@@ -116,8 +116,8 @@ func (cb *CircuitBuilder) searchHorizontally(pv PathVertex) (isFound bool) {
 }
 
 func (cb *CircuitBuilder) searchVertically(pv PathVertex) (isFound bool) {
-	for i := 0; i < len(cb.task.supplyList); i++ {
-		cellPtr := &cb.task.tableCells[i][pv.j]
+	for i := 0; i < len(cb.task.SupplyList); i++ {
+		cellPtr := &cb.task.TableCells[i][pv.j]
 
 		if isNotCurrentCell(i, pv.i) && isBasicCell(cellPtr) {
 			if cb.searchHorizontally(PathVertex{i: i, j: pv.j}) {

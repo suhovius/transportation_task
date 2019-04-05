@@ -19,11 +19,11 @@ func (osc *OptimalSolutionChecker) ResultMessage() string {
 	if osc.task.IsOptimalSolution {
 		message = "Solution is optimal. Proccesing is Completed"
 	} else {
-		i := osc.task.MinDeltaCell.i
-		j := osc.task.MinDeltaCell.j
+		i := osc.task.minDeltaCell.i
+		j := osc.task.minDeltaCell.j
 		message = fmt.Sprintf(
 			"Not Optimal Solution. Min Negative Delta Cell: D[%d][%d]= %d\n",
-			i, j, roundToInt(osc.task.tableCells[i][j].delta),
+			i, j, roundToInt(osc.task.TableCells[i][j].delta),
 		)
 	}
 	return message
@@ -41,14 +41,14 @@ func (osc *OptimalSolutionChecker) calculateGrades() (hasNegativeValues bool) {
 	t := osc.task
 	t.eachCell(
 		func(i, j int) {
-			cP := &t.tableCells[i][j]
-			if (*cP).deliveryAmount == 0 {
+			cP := &t.TableCells[i][j]
+			if (*cP).DeliveryAmount == 0 {
 				(*cP).delta =
-					(*cP).cost - t.supplyList[i].potential - t.demandList[j].potential
+					(*cP).Cost - t.SupplyList[i].Potential - t.DemandList[j].Potential
 				if (*cP).delta < 0 {
 					hasNegativeValues = true
 					if (*cP).delta < minDelta {
-						t.MinDeltaCell = cellIndexes{i: i, j: j, isSet: true}
+						t.minDeltaCell = cellIndexes{i: i, j: j, isSet: true}
 					}
 				}
 			}
