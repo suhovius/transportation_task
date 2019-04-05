@@ -32,10 +32,12 @@ func main() {
 	jsonBlob := testJSONData()
 	fmt.Println("Received JSON:")
 	fmt.Println(string(jsonBlob))
-	params, err := ParseParams(jsonBlob)
+
+	params := TaskParams{}
+	err := json.Unmarshal(jsonBlob, &params)
 
 	if err != nil {
-		fmt.Println("ParseParams error:", err)
+		fmt.Println("Parse request params error:", err)
 		return
 	}
 

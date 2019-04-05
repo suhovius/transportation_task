@@ -41,6 +41,7 @@ func (ts *TaskSolver) defineIterativeLoop() *StepsSequencePerformer {
 	var iterativeSteps []AlgorithmStep
 	iterativeSteps = append(
 		iterativeSteps,
+		&IterationInitializer{task: ts.task},
 		&AmountDistributionChecker{task: ts.task},
 		&DegeneracyChecker{task: ts.task},
 		&PotentialsCalculator{task: ts.task},

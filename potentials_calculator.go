@@ -18,7 +18,7 @@ func (pc *PotentialsCalculator) ResultMessage() string {
 
 // Perform implements step processing
 func (pc *PotentialsCalculator) Perform() (err error) {
-	// TODO nullify previously set potentials from previous step
+	// Info potentials are nullified at IterationInitializer step
 	// first potential is zero. U0= 0
 	t := pc.task
 	t.supplyList[0].isPotentialSet = true
