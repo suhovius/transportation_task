@@ -9,7 +9,8 @@ type TaskSolver struct {
 
 // Peform finds transport task solution
 func (ts *TaskSolver) Peform() (err error) {
-	err = ts.defineInitialLoop().Run()
+	fmt.Printf("\n=== Initial Preparations =================================\n")
+	err = ts.createInitialSequence().Run()
 
 	if err != nil {
 		return
@@ -17,16 +18,24 @@ func (ts *TaskSolver) Peform() (err error) {
 
 	ts.printSolutionPrice()
 
-	err = ts.defineIterativeLoop().Run()
+	for i := 1; !ts.task.IsOptimalSolution; i++ {
+		fmt.Printf("\n=== Potentials Method. Iteration #%d ==============\n", i)
+		err = ts.createIterativeSequence().Run()
+		if err != nil {
+			break
+		}
+	}
 
 	if err != nil {
 		return
 	}
 
+	ts.printSolutionPrice()
+
 	return
 }
 
-func (ts *TaskSolver) defineInitialLoop() *StepsSequencePerformer {
+func (ts *TaskSolver) createInitialSequence() *StepsSequencePerformer {
 	var initialSteps []AlgorithmStep
 	initialSteps = append(
 		initialSteps,
@@ -37,7 +46,7 @@ func (ts *TaskSolver) defineInitialLoop() *StepsSequencePerformer {
 	return &StepsSequencePerformer{task: ts.task, steps: &initialSteps}
 }
 
-func (ts *TaskSolver) defineIterativeLoop() *StepsSequencePerformer {
+func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
 	var iterativeSteps []AlgorithmStep
 	iterativeSteps = append(
 		iterativeSteps,
@@ -59,8 +68,7 @@ func (ts *TaskSolver) printSolutionPrice() {
 	)
 }
 
+// Add some kind of printer object or output stream to send all the print
+// requests and to be able to change where they are sent to
+
 // TODO: Check Cycles Count limit or finding time like 1 minute for example
-
-// TODO: Clear/Reset previous values from calculation
-
-// Later each step could be started with step runner service object wrapper

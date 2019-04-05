@@ -1,5 +1,9 @@
 package main
 
+import (
+	"github.com/google/uuid"
+)
+
 // TaskCreator provides logic for task creation
 type TaskCreator struct {
 	params *TaskParams
@@ -7,6 +11,7 @@ type TaskCreator struct {
 
 // Perform creates task from params *TaskParams struct
 func (tc *TaskCreator) Perform() (task Task) {
+	task.UUID = uuid.New()
 	task.supplyList = make([]tableOuterCell, len(tc.params.SupplyList))
 	for i, val := range tc.params.SupplyList {
 		task.supplyList[i] = tableOuterCell{amount: float64(val)}

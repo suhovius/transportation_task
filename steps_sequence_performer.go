@@ -12,8 +12,8 @@ type StepsSequencePerformer struct {
 // Run starts all the AlgorithmStep handlers
 // TODO: Refactor printing add logging at some separate object
 func (ssp *StepsSequencePerformer) Run() (err error) {
-	for _, step := range *ssp.steps {
-		printLine()
+	for i, step := range *ssp.steps {
+		fmt.Printf("\n=== Step #%d ====================================\n", i+1)
 		fmt.Println(step.Description())
 		err = step.Perform()
 		if err != nil {
@@ -27,8 +27,4 @@ func (ssp *StepsSequencePerformer) Run() (err error) {
 		}
 	}
 	return
-}
-
-func (ssp *StepsSequencePerformer) printLine() {
-	fmt.Print("\n=========================================================\n\n")
 }

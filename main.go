@@ -48,9 +48,8 @@ func main() {
 	// ========= Create Task Struct ============================================
 
 	task := (&TaskCreator{params: &params}).Perform()
-	fmt.Println("Initial State")
+	fmt.Printf("\nCreated Task UUID: %s\n", task.UUID)
 	task.Print()
-	printLine()
 
 	// ========= Find the solution =============================================
 	(&TaskSolver{task: &task}).Peform()
