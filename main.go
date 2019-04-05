@@ -73,7 +73,14 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
-		logger.Info(fmt.Sprintf("Received parameters: %v", r.Body))
+
+		jsonBlob, err := json.Marshal(params)
+		if err != nil {
+			logger.Fatalf("Marshal error: %s", err)
+			return
+		}
+
+		logger.Info(fmt.Sprintf("Received parameters: %s", string(jsonBlob)))
 
 		// ========= Parameters Validation =====================================
 		// TODO: Validate parameters cost table dimensions and supply demand list dimensions
@@ -87,6 +94,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		task.Print()
 
 		// ========= Find the solution =========================================
+		logger.Info(fmt.Sprintf("Process Task UUID: %s", task.UUID))
 		// TODO: secondsLimit might be configurable from the API
 		err = (&TaskSolver{task: &task, secondsLimit: 10 * time.Minute}).Peform()
 		if err != nil {
