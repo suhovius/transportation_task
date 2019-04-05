@@ -1,6 +1,6 @@
 Here is request example:
 
-curl -v -X POST -H 'Content-Type:application/json' -X POST -d '{"supply_list":[30,40,1520],"demand_list":[20,30,30,10],"cost_table":[[2,3,2,4],[3,2,5,1],[4,3,2,6]]}' "http://localhost:8080/api/tasks/"
+curl -v -X POST -H 'Content-Type:application/json' -d '{"supply_list":[30,40,1520],"demand_list":[20,30,30,10],"cost_table":[[2,3,2,4],[3,2,5,1],[4,3,2,6]]}' "http://localhost:8080/api/tasks/"
 Note: Unnecessary use of -X or --request, POST is already inferred.
 *   Trying 127.0.0.1...
 * TCP_NODELAY set
