@@ -2,67 +2,108 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
+	"net/http"
+	"os"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 )
 
-// TODO: Remove this when frontend web server will be created
-// that will handle these requests with such parameters
-func testJSONData() []byte {
-	inputTest := TaskParams{
-		SupplyList: []int{30, 40, 20},
-		DemandList: []int{20, 30, 30, 10},
-		CostTable: [][]int{
-			{2, 3, 2, 4},
-			{3, 2, 5, 1},
-			{4, 3, 2, 6},
-		},
-	}
+const (
+	apiPathPrefix = "api"
+)
 
-	jsonBlob, err := json.Marshal(inputTest)
-	if err != nil {
-		fmt.Println("Marshal error:", err)
-	}
-	return jsonBlob
+func init() {
+	// Output to stdout instead of the default stderr
+	// Can be any io.Writer, see below for File example
+	log.SetOutput(os.Stdout)
 }
 
 func main() {
-	// ========= Parse Input JSON ==============================================
-	// TODO: Parse json from server request parameters
-	printLine()
-	jsonBlob := testJSONData()
-	fmt.Println("Received JSON:")
-	fmt.Println(string(jsonBlob))
+	var (
+		addr = flag.String("addr", ":8080", "address of the http server")
+	)
 
-	params := TaskParams{}
-	err := json.Unmarshal(jsonBlob, &params)
-
-	if err != nil {
-		fmt.Println("Parse request params error:", err)
-		return
+	s := NewServer(*addr)
+	if err := s.ListenAndServe(); err != nil {
+		log.Fatalf("start server: %v", err)
 	}
-
-	// ========= Parameters Validation =========================================
-	// TODO: Validate parameters cost table dimensions and supply demand list dimensions
-	// TODO: Validate parameters. At least one supply and at least one demand
-
-	// ========= Create Task Struct ============================================
-
-	task := (&TaskCreator{params: &params}).Perform()
-	fmt.Printf("\nCreated Task UUID: %s\n", task.UUID)
-	task.Print()
-
-	// ========= Find the solution =============================================
-	// TODO: secondsLimit might be configurable from the API
-	err = (&TaskSolver{task: &task, secondsLimit: 10 * time.Minute}).Peform()
-	if err != nil {
-		fmt.Println("Task Solver:", err)
-		return
-	}
-	// TODO: Round numners in api response generation and return int values there
-	// https://yourbasic.org/golang/round-float-to-int/
 }
 
-func printLine() {
-	fmt.Print("\n=========================================================\n\n")
+// NewServer prepares http server.
+func NewServer(addr string) *http.Server {
+	mux := http.NewServeMux()
+	h := TaskSolvingHandler{}
+
+	mux.Handle(apiPathPrefix+"/tasks", &h)
+
+	s := http.Server{
+		Addr:    addr,
+		Handler: mux,
+	}
+
+	return &s
+}
+
+// TaskSolvingHandler for task solving requests
+type TaskSolvingHandler struct{}
+
+// RequestLogger creates request logger
+func RequestLogger(request *http.Request) *log.Entry {
+	logger := log.WithFields(
+		log.Fields{
+			"method": request.Method, "url": request.URL, "ip": request.RemoteAddr,
+		},
+	)
+	return logger
+}
+
+// ServerHTTP implements http.Handler.
+func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	logger := RequestLogger(r)
+
+	if r.Method == "POST" {
+		var err error
+		var params TaskParams
+
+		if err = json.NewDecoder(r.Body).Decode(&params); err != nil {
+			logger.Fatalf("JSON Decoder: %s", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+		logger.Info(fmt.Sprintf("Received parameters: %v", r.Body))
+
+		// ========= Parameters Validation =====================================
+		// TODO: Validate parameters cost table dimensions and supply demand list dimensions
+		// TODO: Validate parameters. At least one supply and at least one demand
+
+		// ========= Create Task Struct ========================================
+
+		task := (&TaskCreator{params: &params}).Perform()
+		logger.Info(fmt.Sprintf("Created Task UUID: %s", task.UUID))
+		// TODO: Refactor task printer into service object
+		task.Print()
+
+		// ========= Find the solution =========================================
+		// TODO: secondsLimit might be configurable from the API
+		err = (&TaskSolver{task: &task, secondsLimit: 10 * time.Minute}).Peform()
+		if err != nil {
+			message := fmt.Sprintf("Task Solver: %v", err)
+			logger.Fatal(message)
+			http.Error(w, message, http.StatusInternalServerError)
+
+			return
+		}
+		// TODO: Round numners in api response generation and return int values there
+		// https://yourbasic.org/golang/round-float-to-int/
+	} else {
+		message := "Invalid request method"
+		logger.Fatal(message)
+		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	return
 }
