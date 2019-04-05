@@ -11,10 +11,6 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-const (
-	apiPathPrefix = "api"
-)
-
 func init() {
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
@@ -27,9 +23,11 @@ func main() {
 	)
 
 	s := NewServer(*addr)
+	log.Infof("Starting server at port %s", *addr)
 	if err := s.ListenAndServe(); err != nil {
 		log.Fatalf("start server: %v", err)
 	}
+
 }
 
 // NewServer prepares http server.
@@ -37,7 +35,7 @@ func NewServer(addr string) *http.Server {
 	mux := http.NewServeMux()
 	h := TaskSolvingHandler{}
 
-	mux.Handle(apiPathPrefix+"/tasks", &h)
+	mux.Handle("/api/tasks/", &h)
 
 	s := http.Server{
 		Addr:    addr,
@@ -112,5 +110,4 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		logger.Fatal(message)
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
-
 }
