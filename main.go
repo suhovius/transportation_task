@@ -47,9 +47,6 @@ func NewServer(addr string) *http.Server {
 	return &s
 }
 
-// TaskSolvingHandler for task solving requests
-type TaskSolvingHandler struct{}
-
 // RequestLogger creates request logger
 func RequestLogger(request *http.Request) *log.Entry {
 	logger := log.WithFields(
@@ -60,8 +57,13 @@ func RequestLogger(request *http.Request) *log.Entry {
 	return logger
 }
 
+// TaskSolvingHandler for task solving requests
+type TaskSolvingHandler struct{}
+
 // ServerHTTP implements http.Handler.
 func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
 	logger := RequestLogger(r)
 
 	if r.Method == "POST" {
@@ -93,9 +95,16 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			message := fmt.Sprintf("Task Solver: %v", err)
 			logger.Fatal(message)
 			http.Error(w, message, http.StatusInternalServerError)
-
-			return
 		}
+
+		taskJSON, err := json.Marshal(task)
+		if err != nil {
+			message := fmt.Sprintf("Response Rendering: %v", err)
+			logger.Fatal(message)
+			http.Error(w, message, http.StatusInternalServerError)
+		}
+
+		w.Write(taskJSON)
 		// TODO: Round numners in api response generation and return int values there
 		// https://yourbasic.org/golang/round-float-to-int/
 	} else {
@@ -104,6 +113,4 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
 	}
 
-	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	return
 }
