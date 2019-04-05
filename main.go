@@ -116,7 +116,17 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// https://yourbasic.org/golang/round-float-to-int/
 	} else {
 		message := "Invalid request method"
-		logger.Fatal(message)
-		http.Error(w, "Invalid request method", http.StatusMethodNotAllowed)
+		logger.Warn(message)
+		errorJson := APIErrorMessage(logger, message)
+		http.Error(w, errorJson, http.StatusMethodNotAllowed)
 	}
+}
+
+// APIErrorMessage creates ErrorData struct
+func APIErrorMessage(logger *log.Entry, message string) string {
+	jsonBlob, err := json.Marshal(ErrorData{Message: message})
+	if err != nil {
+		logger.Warn("Marshal error: %s", err)
+	}
+	return string(jsonBlob)
 }
