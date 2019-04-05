@@ -4,15 +4,15 @@ import (
 	"encoding/json"
 )
 
-// Params is a structure that contains API request parameters
-type Params struct {
+// TaskParams is a structure that contains API request parameters
+type TaskParams struct {
 	SupplyList []int   `json:"supply_list"`
 	DemandList []int   `json:"demand_list"`
 	CostTable  [][]int `json:"cost_table"`
 }
 
-// ParseParams parses json and returns Params struct
-func ParseParams(jsonBlob []byte) (parsedParams Params, err error) {
+// ParseParams parses json and returns TaskParams struct
+func ParseParams(jsonBlob []byte) (parsedParams TaskParams, err error) {
 	err = json.Unmarshal(jsonBlob, &parsedParams)
 	return
 }

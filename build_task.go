@@ -39,7 +39,7 @@ type PathVertex struct {
 	i, j int
 }
 
-func buildTaskFromParams(params Params) Task {
+func buildTaskFromParams(params TaskParams) Task {
 	var task Task
 
 	task.supplyList = make([]tableOuterCell, len(params.SupplyList))
