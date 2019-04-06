@@ -63,12 +63,16 @@ type TaskSolvingHandler struct{}
 func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 
+	// needs recover from panic to prevent server process exit
+
 	logger := RequestLogger(r)
 
 	if r.Method == "POST" {
 		var err error
 		var params TaskParams
 
+		// we can create global decoder that can decode to any structure
+		// probably need to check this
 		if err = json.NewDecoder(r.Body).Decode(&params); err != nil {
 			message := fmt.Sprintf("JSON Decoder: %s", err)
 			http.Error(w, APIErrorMessage(logger, message), http.StatusBadRequest)

@@ -26,6 +26,10 @@ func (ts *TaskSolver) Peform() (err error) {
 
 	ts.printSolutionPrice()
 
+	// This part can also be splitted into separate method or struct. Will see later
+	// with wrapper that prints solution price or this might be a config of
+	// TaskPrinter service object
+
 	for i := 1; !ts.task.IsOptimalSolution; i++ {
 		fmt.Printf("\n=== Potentials Method. Iteration #%d ==============\n", i)
 		err = ts.checkTimeLimit()
@@ -45,6 +49,10 @@ func (ts *TaskSolver) Peform() (err error) {
 		return
 	}
 
+	// here we can add step that rounds delivery prices to int values
+	// or maybe that will require additional struct with int values for the
+	// response. Maybe json modificator at stuct has option to format response somehow. Will see
+
 	ts.printSolutionPrice()
 
 	fmt.Printf("Caclulation took %s\n", ts.elapsedTime)
@@ -52,21 +60,20 @@ func (ts *TaskSolver) Peform() (err error) {
 	return
 }
 
+func (ts *TaskSolver) newSequencePerformer(steps ...AlgorithmStep) *StepsSequencePerformer {
+	return &StepsSequencePerformer{task: ts.task, steps: &steps}
+}
+
 func (ts *TaskSolver) createInitialSequence() *StepsSequencePerformer {
-	var initialSteps []AlgorithmStep
-	initialSteps = append(
-		initialSteps,
+	return ts.newSequencePerformer(
 		&Balancer{task: ts.task},
 		&DegeneracyPreventer{task: ts.task},
 		&NorthWestCornerSolutionFinder{task: ts.task},
 	)
-	return &StepsSequencePerformer{task: ts.task, steps: &initialSteps}
 }
 
 func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
-	var iterativeSteps []AlgorithmStep
-	iterativeSteps = append(
-		iterativeSteps,
+	return ts.newSequencePerformer(
 		&IterationInitializer{task: ts.task},
 		&AmountDistributionChecker{task: ts.task},
 		&DegeneracyChecker{task: ts.task},
@@ -75,8 +82,6 @@ func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
 		&CircuitBuilder{task: ts.task},
 		&SupplyRedistributor{task: ts.task},
 	)
-
-	return &StepsSequencePerformer{task: ts.task, steps: &iterativeSteps}
 }
 
 func (ts *TaskSolver) printSolutionPrice() {

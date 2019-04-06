@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+
+	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
 // AmountDistributionChecker is a struct that implements AlgorithmStep interface
@@ -48,7 +50,7 @@ func (adc *AmountDistributionChecker) buildError(
 func (adc *AmountDistributionChecker) sumMatchCheck(
 	entityName string, index int, actualSum, expectedSum float64,
 ) (err error) {
-	if !floatEquals(actualSum, expectedSum) {
+	if !mathext.FloatEquals(actualSum, expectedSum) {
 		err = adc.buildError(entityName, index, actualSum, expectedSum)
 	}
 	return
