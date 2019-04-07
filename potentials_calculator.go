@@ -1,10 +1,13 @@
 package main
 
-import "bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+import (
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
+)
 
 // PotentialsCalculator is a struct that implements AlgorithmStep interface
 type PotentialsCalculator struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task *taskmodel.Task
 }
 

@@ -4,12 +4,13 @@ import (
 	"fmt"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
 // OptimalSolutionChecker is a struct that implements AlgorithmStep interface
 type OptimalSolutionChecker struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task *taskmodel.Task
 }
 

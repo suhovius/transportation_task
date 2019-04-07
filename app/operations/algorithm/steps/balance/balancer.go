@@ -1,12 +1,20 @@
-package main
+package balance
 
-import "bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+import (
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
+)
 
 // Balancer is a struct that implements AlgorithmStep interface
 type Balancer struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task *taskmodel.Task
 	kind string
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *Balancer {
+	return &Balancer{task: task}
 }
 
 // Description returns step description info

@@ -5,6 +5,14 @@ import (
 	"time"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/amountdistribcheck"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/balance"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/circuitbuild"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/degeneracycheck"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/degeneracyprev"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/iterationinit"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/northwestcrnr"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
@@ -65,26 +73,26 @@ func (ts *TaskSolver) Peform() (err error) {
 	return
 }
 
-func (ts *TaskSolver) newSequencePerformer(steps ...AlgorithmStep) *StepsSequencePerformer {
+func (ts *TaskSolver) newSequencePerformer(steps ...step.AlgorithmStep) *StepsSequencePerformer {
 	return &StepsSequencePerformer{task: ts.task, steps: &steps}
 }
 
 func (ts *TaskSolver) createInitialSequence() *StepsSequencePerformer {
 	return ts.newSequencePerformer(
-		&Balancer{task: ts.task},
-		&DegeneracyPreventer{task: ts.task},
-		&NorthWestCornerSolutionFinder{task: ts.task},
+		balance.New(ts.task),
+		degeneracyprev.New(ts.task),
+		northwestcrnr.New(ts.task),
 	)
 }
 
 func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
 	return ts.newSequencePerformer(
-		&IterationInitializer{task: ts.task},
-		&AmountDistributionChecker{task: ts.task},
-		&DegeneracyChecker{task: ts.task},
+		iterationinit.New(ts.task),
+		amountdistribcheck.New(ts.task),
+		degeneracycheck.New(ts.task),
 		&PotentialsCalculator{task: ts.task},
 		&OptimalSolutionChecker{task: ts.task},
-		&CircuitBuilder{task: ts.task},
+		circuitbuild.New(ts.task),
 		&SupplyRedistributor{task: ts.task},
 	)
 }

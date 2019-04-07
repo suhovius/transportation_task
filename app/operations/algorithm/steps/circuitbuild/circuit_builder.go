@@ -1,17 +1,23 @@
-package main
+package circuitbuild
 
 import (
 	"fmt"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 )
 
 // CircuitBuilder is a struct that implements AlgorithmStep interface
 type CircuitBuilder struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task           *taskmodel.Task
 	path           []taskmodel.PathVertex
 	thetaVertexPtr *taskmodel.PathVertex
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *CircuitBuilder {
+	return &CircuitBuilder{task: task}
 }
 
 // Description returns step description info

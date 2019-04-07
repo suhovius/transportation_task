@@ -4,11 +4,12 @@ import (
 	"fmt"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 )
 
 // SupplyRedistributor is a struct that implements AlgorithmStep interface
 type SupplyRedistributor struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task *taskmodel.Task
 }
 

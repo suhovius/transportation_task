@@ -4,13 +4,14 @@ import (
 	"fmt"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 )
 
 // StepsSequencePerformer contains array of AlgorithmStep handlers
 // in the order of their start
 type StepsSequencePerformer struct {
-	steps *[]AlgorithmStep
+	steps *[]step.AlgorithmStep
 	task  *taskmodel.Task
 }
 

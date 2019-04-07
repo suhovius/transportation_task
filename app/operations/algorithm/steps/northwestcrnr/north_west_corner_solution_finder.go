@@ -1,11 +1,19 @@
-package main
+package northwestcrnr
 
-import "bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+import (
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
+)
 
 // NorthWestCornerSolutionFinder is a struct that implements AlgorithmStep interface
 type NorthWestCornerSolutionFinder struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task *taskmodel.Task
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *NorthWestCornerSolutionFinder {
+	return &NorthWestCornerSolutionFinder{task: task}
 }
 
 // Description returns step description info

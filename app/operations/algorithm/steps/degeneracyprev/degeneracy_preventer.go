@@ -1,18 +1,24 @@
-package main
+package degeneracyprev
 
 import (
 	"fmt"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 )
 
 const distVal = 0.001 // disturbance value
 
 // DegeneracyPreventer is a struct that implements AlgorithmStep interface
 type DegeneracyPreventer struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task              *taskmodel.Task
 	demandAmountsList []float64
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *DegeneracyPreventer {
+	return &DegeneracyPreventer{task: task}
 }
 
 // Description returns step description info

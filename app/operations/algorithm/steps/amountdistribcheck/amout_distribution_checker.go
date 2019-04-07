@@ -1,16 +1,22 @@
-package main
+package amountdistribcheck
 
 import (
 	"fmt"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
 // AmountDistributionChecker is a struct that implements AlgorithmStep interface
 type AmountDistributionChecker struct {
-	AlgorithmStep
+	step.AlgorithmStep
 	task *taskmodel.Task
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *AmountDistributionChecker {
+	return &AmountDistributionChecker{task: task}
 }
 
 // Description returns step description info
