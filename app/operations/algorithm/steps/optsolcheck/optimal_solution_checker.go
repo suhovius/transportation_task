@@ -1,4 +1,4 @@
-package main
+package optsolcheck
 
 import (
 	"fmt"
@@ -12,6 +12,11 @@ import (
 type OptimalSolutionChecker struct {
 	step.AlgorithmStep
 	task *taskmodel.Task
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *OptimalSolutionChecker {
+	return &OptimalSolutionChecker{task: task}
 }
 
 // Description returns step description info

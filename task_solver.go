@@ -13,6 +13,9 @@ import (
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/degeneracyprev"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/iterationinit"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/northwestcrnr"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/optsolcheck"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/potentialcalc"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/supplyredistrib"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
@@ -90,10 +93,10 @@ func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
 		iterationinit.New(ts.task),
 		amountdistribcheck.New(ts.task),
 		degeneracycheck.New(ts.task),
-		&PotentialsCalculator{task: ts.task},
-		&OptimalSolutionChecker{task: ts.task},
+		potentialcalc.New(ts.task),
+		optsolcheck.New(ts.task),
 		circuitbuild.New(ts.task),
-		&SupplyRedistributor{task: ts.task},
+		supplyredistrib.New(ts.task),
 	)
 }
 

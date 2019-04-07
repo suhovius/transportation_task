@@ -1,4 +1,4 @@
-package main
+package supplyredistrib
 
 import (
 	"fmt"
@@ -11,6 +11,11 @@ import (
 type SupplyRedistributor struct {
 	step.AlgorithmStep
 	task *taskmodel.Task
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *SupplyRedistributor {
+	return &SupplyRedistributor{task: task}
 }
 
 // Description returns step description info

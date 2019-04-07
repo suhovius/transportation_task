@@ -1,4 +1,4 @@
-package main
+package potentialcalc
 
 import (
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
@@ -9,6 +9,11 @@ import (
 type PotentialsCalculator struct {
 	step.AlgorithmStep
 	task *taskmodel.Task
+}
+
+// New returns new step instance
+func New(task *taskmodel.Task) *PotentialsCalculator {
+	return &PotentialsCalculator{task: task}
 }
 
 // Description returns step description info
