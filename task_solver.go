@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"time"
+
+	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
 // TaskSolver provides transport task solution finding algorithm logic
@@ -85,7 +87,7 @@ func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
 }
 
 func (ts *TaskSolver) printSolutionPrice() {
-	fmt.Printf("Delivery Cost: %d\n", roundToInt(
+	fmt.Printf("Delivery Cost: %d\n", mathext.RoundToInt(
 		(&DeliveryCostCalculator{task: ts.task}).Peform()),
 	)
 }

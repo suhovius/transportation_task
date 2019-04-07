@@ -118,8 +118,6 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		w.Write(taskJSON)
-		// TODO: Round numners in api response generation and return int values there
-		// https://yourbasic.org/golang/round-float-to-int/
 	} else {
 		message := "Invalid request method"
 		logger.Warn(message)

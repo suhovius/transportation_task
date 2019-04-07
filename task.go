@@ -16,21 +16,21 @@ type Task struct {
 	thetaCell         PathVertex // TODO: Use cellIndexes later for this field
 	path              []PathVertex
 	IsOptimalSolution bool    `json:"is_optimal_solution"`
-	TotalDeliveryCost float64 `json:"total_delivery_cost"`
+	TotalDeliveryCost float64 `json:"-"`
 }
 
 // TableOuterCell defines table header and first column info
 type TableOuterCell struct {
-	Amount         float64 `json:"amount"`
-	Potential      float64 `json:"potential"`
+	Amount         float64 `json:"-"`
+	Potential      float64 `json:"-"`
 	isPotentialSet bool
 	IsFake         bool `json:"is_fake"`
 }
 
 // TableCell defines table cell info
 type TableCell struct {
-	Cost           float64 `json:"cost"`
-	DeliveryAmount float64 `json:"delivery_amount"`
+	Cost           float64 `json:"-"`
+	DeliveryAmount float64 `json:"-"`
 	delta          float64 // These should be capitalized for JSON
 	sign           rune    // + - // These should be capitalized for JSON
 }

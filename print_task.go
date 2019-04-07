@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 	"github.com/olekukonko/tablewriter"
 )
 
@@ -55,8 +56,8 @@ func (t *Task) Print() {
 	header[0] = "→ Demand →\n----------\n↓ Supply ↓"
 	for i, cell := range t.DemandList {
 		header[i+1] = fmt.Sprintf(
-			"B[%d]=%d\nV[%d]=%d%s", i, roundToInt(cell.Amount),
-			i, roundToInt(cell.Potential), fakeString(cell),
+			"B[%d]=%d\nV[%d]=%d%s", i, mathext.RoundToInt(cell.Amount),
+			i, mathext.RoundToInt(cell.Potential), fakeString(cell),
 		)
 	}
 
@@ -64,18 +65,18 @@ func (t *Task) Print() {
 		row := t.buildTableRow()
 		supplier := t.SupplyList[i]
 		row[0] = fmt.Sprintf(
-			"A[%d]=%d\nU[%d]=%d%s", i, roundToInt(supplier.Amount),
-			i, roundToInt(supplier.Potential), fakeString(supplier),
+			"A[%d]=%d\nU[%d]=%d%s", i, mathext.RoundToInt(supplier.Amount),
+			i, mathext.RoundToInt(supplier.Potential), fakeString(supplier),
 		)
 		for j, cell := range cellsRow {
 			row[j+1] = fmt.Sprintf(
 				"X=%d\n%s%s%s\n--------\nC=%d\nD=%d",
-				roundToInt(cell.DeliveryAmount),
+				mathext.RoundToInt(cell.DeliveryAmount),
 				formatSign(cell.sign),
 				t.mindeltaMarker(i, j),
 				thetaMarker(t, i, j),
-				roundToInt(cell.Cost),
-				roundToInt(cell.delta),
+				mathext.RoundToInt(cell.Cost),
+				mathext.RoundToInt(cell.delta),
 			)
 		}
 

@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"bitbucket.org/suhovius/transportation_task/utils/mathext"
+)
 
 // OptimalSolutionChecker is a struct that implements AlgorithmStep interface
 type OptimalSolutionChecker struct {
@@ -23,7 +27,7 @@ func (osc *OptimalSolutionChecker) ResultMessage() string {
 		j := osc.task.minDeltaCell.j
 		message = fmt.Sprintf(
 			"Not Optimal Solution. Min Negative Delta Cell: D[%d][%d]= %d\n",
-			i, j, roundToInt(osc.task.TableCells[i][j].delta),
+			i, j, mathext.RoundToInt(osc.task.TableCells[i][j].delta),
 		)
 	}
 	return message
