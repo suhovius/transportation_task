@@ -15,20 +15,20 @@ import (
 func assertJSONMatrixIntValues(t *testing.T, expectedMatrix [][]int64, jsonStr, path string) {
 	for i, row := range gjson.Get(jsonStr, path).Array() {
 		for j, cellVal := range row.Array() {
-			assert.Equal(t, cellVal.Int(), expectedMatrix[i][j])
+			assert.Equal(t, expectedMatrix[i][j], cellVal.Int())
 		}
 	}
 }
 
 func assertJSONArrayIntValues(t *testing.T, expectedArray []int64, jsonStr, path string) {
 	for i, itemVal := range gjson.Get(jsonStr, path).Array() {
-		assert.Equal(t, itemVal.Int(), expectedArray[i])
+		assert.Equal(t, expectedArray[i], itemVal.Int())
 	}
 }
 
 func assertJSONArrayBoolValues(t *testing.T, expectedArray []bool, jsonStr, path string) {
 	for i, itemVal := range gjson.Get(jsonStr, path).Array() {
-		assert.Equal(t, itemVal.Bool(), expectedArray[i])
+		assert.Equal(t, expectedArray[i], itemVal.Bool())
 	}
 }
 
@@ -97,7 +97,7 @@ func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *Task
 	require.Nil(t, err)
 
 	// Assert
-	assert.Equal(t, resp.StatusCode(), http.StatusOK)
+	assert.Equal(t, http.StatusOK, resp.StatusCode())
 	result = string(resp.Body())
 	fmt.Printf("%v\n", result)
 
@@ -110,6 +110,50 @@ func TestCreateTask(t *testing.T) {
 		ts := httptest.NewServer(&TaskSolvingHandler{})
 
 		defer ts.Close()
+
+		t.Log("\ttest:0\tcreates and processes task with valid params when there is more data in the input")
+		{
+			// Arrange
+			validParams := TaskParams{
+				SupplyList: []int{30, 50, 75, 20},
+				DemandList: []int{20, 40, 30, 10, 50, 25},
+				CostTable: [][]int{
+					{1, 2, 1, 4, 5, 2},
+					{3, 3, 2, 1, 4, 3},
+					{4, 2, 5, 9, 6, 2},
+					{3, 1, 7, 3, 4, 6},
+				},
+			}
+
+			// Act
+			result := assertTaskCreateSuccess(t, ts, &validParams)
+
+			// Assert
+			exp := &TaskResponseExpectation{
+				TotalDeliveryCost: 470,
+				IsOptimalSolution: true,
+				CostMatrix: [][]int64{
+					{1, 2, 1, 4, 5, 2},
+					{3, 3, 2, 1, 4, 3},
+					{4, 2, 5, 9, 6, 2},
+					{3, 1, 7, 3, 4, 6},
+				},
+				DeliveryAmountMatrix: [][]int64{
+					{20, 0, 0, 0, 10, 0},
+					{0, 0, 30, 0, 20, 0},
+					{0, 40, 0, 0, 10, 25},
+					{0, 0, 0, 10, 10, 0},
+				},
+				DemandAmounts:      []int64{20, 40, 30, 10, 50, 25},
+				SupplyAmounts:      []int64{30, 50, 75, 20},
+				SupplyIsFakeValues: []bool{false, false, false, false},
+				DemandIsFakeValues: []bool{false, false, false, false, false, false},
+				DemandPotentials:   []int64{1, 0, 0, 0, 5, 1},
+				SupplyPotentials:   []int64{0, -1, 1, -1},
+			}
+
+			assertTaskCreateResponseBody(t, result, exp)
+		}
 
 		t.Log("\ttest:1\tcreates and processes task with valid params.")
 		{
@@ -247,12 +291,12 @@ func TestCreateTask(t *testing.T) {
 			require.Nil(t, err)
 
 			// Assert
-			assert.Equal(t, resp.StatusCode(), http.StatusMethodNotAllowed)
+			assert.Equal(t, http.StatusMethodNotAllowed, resp.StatusCode())
 			result := string(resp.Body())
 			fmt.Printf("%v\n", result)
 
 			receivedErrorMessage := gjson.Get(result, "error_message").String()
-			assert.Equal(t, receivedErrorMessage, "Invalid request method")
+			assert.Equal(t, "Invalid request method", receivedErrorMessage)
 		}
 
 		t.Log("\ttest:5\treturns bad request error when broken json has been sent")
@@ -273,7 +317,7 @@ func TestCreateTask(t *testing.T) {
 			receivedErrorMessage := gjson.Get(result, "error_message").String()
 			expectedMessage :=
 				"JSON Decoder: invalid character 'h' in literal true (expecting 'r')"
-			assert.Equal(t, receivedErrorMessage, expectedMessage)
+			assert.Equal(t, expectedMessage, receivedErrorMessage)
 		}
 
 	}
