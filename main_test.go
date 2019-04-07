@@ -32,6 +32,61 @@ func assertJSONArrayBoolValues(t *testing.T, expectedArray []bool, jsonStr, path
 	}
 }
 
+type TaskResponseExpectation struct {
+	TotalDeliveryCost    int64
+	IsOptimalSolution    bool
+	CostMatrix           [][]int64
+	DeliveryAmountMatrix [][]int64
+	DemandAmounts        []int64
+	SupplyAmounts        []int64
+	SupplyIsFakeValues   []bool
+	DemandIsFakeValues   []bool
+	DemandPotentials     []int64
+	SupplyPotentials     []int64
+}
+
+func assertTaskCreateResponseBody(t *testing.T, result string, exp *TaskResponseExpectation) {
+	assert.Equal(
+		t, gjson.Get(result, "total_delivery_cost").Int(), exp.TotalDeliveryCost,
+	)
+
+	assert.Equal(
+		t, gjson.Get(result, "is_optimal_solution").Bool(), exp.IsOptimalSolution,
+	)
+
+	assertJSONMatrixIntValues(
+		t, exp.CostMatrix, result, "table_cells.#.#.cost",
+	)
+
+	assertJSONMatrixIntValues(
+		t, exp.DeliveryAmountMatrix, result, "table_cells.#.#.delivery_amount",
+	)
+
+	assertJSONArrayIntValues(
+		t, exp.SupplyAmounts, result, "supply_list.#.amount",
+	)
+
+	assertJSONArrayIntValues(
+		t, exp.SupplyPotentials, result, "supply_list.#.potential",
+	)
+
+	assertJSONArrayIntValues(
+		t, exp.DemandAmounts, result, "demand_list.#.amount",
+	)
+
+	assertJSONArrayIntValues(
+		t, exp.DemandPotentials, result, "demand_list.#.potential",
+	)
+
+	assertJSONArrayBoolValues(
+		t, exp.SupplyIsFakeValues, result, "supply_list.#.is_fake",
+	)
+
+	assertJSONArrayBoolValues(
+		t, exp.DemandIsFakeValues, result, "demand_list.#.is_fake",
+	)
+}
+
 func TestCreateTask(t *testing.T) {
 	t.Log("with initialized server.")
 	{
@@ -65,51 +120,28 @@ func TestCreateTask(t *testing.T) {
 			result := string(resp.Body())
 			fmt.Printf("%v\n", result)
 
-			assert.Equal(
-				t, gjson.Get(result, "total_delivery_cost").Int(), int64(170),
-			)
-
-			assert.Equal(
-				t, gjson.Get(result, "is_optimal_solution").Bool(), true,
-			)
-
-			expectedCellCosts := [][]int64{
-				{2, 3, 2, 4},
-				{3, 2, 5, 1},
-				{4, 3, 2, 6},
+			exp := &TaskResponseExpectation{
+				TotalDeliveryCost: 170,
+				IsOptimalSolution: true,
+				CostMatrix: [][]int64{
+					{2, 3, 2, 4},
+					{3, 2, 5, 1},
+					{4, 3, 2, 6},
+				},
+				DeliveryAmountMatrix: [][]int64{
+					{20, 0, 10, 0},
+					{0, 30, 0, 10},
+					{0, 0, 20, 0},
+				},
+				DemandAmounts:      []int64{20, 30, 30, 10},
+				SupplyAmounts:      []int64{30, 40, 20},
+				SupplyIsFakeValues: []bool{false, false, false},
+				DemandIsFakeValues: []bool{false, false, false, false},
+				DemandPotentials:   []int64{2, 3, 2, 2},
+				SupplyPotentials:   []int64{0, -1, 0},
 			}
-			assertJSONMatrixIntValues(
-				t, expectedCellCosts, result, "table_cells.#.#.cost",
-			)
 
-			expectedCellAmount := [][]int64{
-				{20, 0, 10, 0},
-				{0, 30, 0, 10},
-				{0, 0, 20, 0},
-			}
-			assertJSONMatrixIntValues(
-				t, expectedCellAmount, result, "table_cells.#.#.delivery_amount",
-			)
-
-			expectedSupplyAmount := []int64{30, 40, 20}
-			assertJSONArrayIntValues(
-				t, expectedSupplyAmount, result, "supply_list.#.amount",
-			)
-
-			expectedDemandAmount := []int64{20, 30, 30, 10}
-			assertJSONArrayIntValues(
-				t, expectedDemandAmount, result, "demand_list.#.amount",
-			)
-
-			expectedSupplyIsFake := []bool{false, false, false}
-			assertJSONArrayBoolValues(
-				t, expectedSupplyIsFake, result, "supplu_list.#.is_fake",
-			)
-
-			expectedDemandIsFake := []bool{false, false, false, false}
-			assertJSONArrayBoolValues(
-				t, expectedDemandIsFake, result, "demand_list.#.is_fake",
-			)
+			assertTaskCreateResponseBody(t, result, exp)
 		}
 	}
 }
