@@ -235,5 +235,46 @@ func TestCreateTask(t *testing.T) {
 
 			assertTaskCreateResponseBody(t, result, exp)
 		}
+
+		t.Log("\ttest:4\treturns error when wrong request method have been used")
+		{
+
+			resp, err := resty.R().
+				SetHeader("Content-Type", "application/json").
+				SetBody(&TaskParams{}).
+				Get(ts.URL)
+
+			require.Nil(t, err)
+
+			// Assert
+			assert.Equal(t, resp.StatusCode(), http.StatusMethodNotAllowed)
+			result := string(resp.Body())
+			fmt.Printf("%v\n", result)
+
+			receivedErrorMessage := gjson.Get(result, "error_message").String()
+			assert.Equal(t, receivedErrorMessage, "Invalid request method")
+		}
+
+		t.Log("\ttest:5\treturns bad request error when broken json has been sent")
+		{
+
+			resp, err := resty.R().
+				SetBody(`this is not json`).
+				SetHeader("Content-Type", "application/json").
+				Post(ts.URL)
+
+			require.Nil(t, err)
+
+			// Assert
+			assert.Equal(t, resp.StatusCode(), http.StatusBadRequest)
+			result := string(resp.Body())
+			fmt.Printf("%v\n", result)
+
+			receivedErrorMessage := gjson.Get(result, "error_message").String()
+			expectedMessage :=
+				"JSON Decoder: invalid character 'h' in literal true (expecting 'r')"
+			assert.Equal(t, receivedErrorMessage, expectedMessage)
+		}
+
 	}
 }
