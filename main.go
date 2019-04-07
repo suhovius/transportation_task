@@ -110,7 +110,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		taskJSON, err := json.Marshal(task)
+		taskJSON, err := task.MarshalJSON()
 		if err != nil {
 			message := fmt.Sprintf("Response Rendering: %v", err)
 			http.Error(w, APIErrorMessage(logger, message), http.StatusInternalServerError)
