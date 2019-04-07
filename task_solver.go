@@ -16,6 +16,7 @@ import (
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/optsolcheck"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/potentialcalc"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/supplyredistrib"
+	"bitbucket.org/suhovius/transportation_task/app/operations/deliverycost"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
@@ -101,8 +102,11 @@ func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
 }
 
 func (ts *TaskSolver) printSolutionPrice() {
-	fmt.Printf("Delivery Cost: %d\n", mathext.RoundToInt(
-		(&DeliveryCostCalculator{task: ts.task}).Peform()),
+	fmt.Printf(
+		"Delivery Cost: %d\n",
+		mathext.RoundToInt(
+			deliverycost.New(ts.task).Perform(),
+		),
 	)
 }
 

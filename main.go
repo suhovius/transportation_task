@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
+	"bitbucket.org/suhovius/transportation_task/app/views/errdataview"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -137,7 +138,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func APIErrorMessage(logger *log.Entry, message string) string {
 	logger.Warn(message)
 
-	jsonBlob, err := json.Marshal(ErrorData{Message: message})
+	jsonBlob, err := json.Marshal(errdataview.New(message))
 	if err != nil {
 		logger.Warnf("Marshal error: %s", err)
 	}
