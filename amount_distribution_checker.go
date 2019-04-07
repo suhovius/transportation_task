@@ -3,13 +3,14 @@ package main
 import (
 	"fmt"
 
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
 // AmountDistributionChecker is a struct that implements AlgorithmStep interface
 type AmountDistributionChecker struct {
 	AlgorithmStep
-	task *Task
+	task *taskmodel.Task
 }
 
 // Description returns step description info
@@ -58,8 +59,8 @@ func (adc *AmountDistributionChecker) sumMatchCheck(
 
 func (adc *AmountDistributionChecker) amountDistributionCheckFor(
 	entityName string,
-	finder func(i, j int) TableCell,
-	listsPair func() (r, c *[]TableOuterCell),
+	finder func(i, j int) taskmodel.TableCell,
+	listsPair func() (r, c *[]taskmodel.TableOuterCell),
 ) (err error) {
 	rowsList, colsList := listsPair()
 	for i, outerCell := range *rowsList {
@@ -76,20 +77,20 @@ func (adc *AmountDistributionChecker) amountDistributionCheckFor(
 	return
 }
 
-func (adc *AmountDistributionChecker) rowCellFinder(i, j int) TableCell {
+func (adc *AmountDistributionChecker) rowCellFinder(i, j int) taskmodel.TableCell {
 	return adc.task.TableCells[i][j]
 }
 
-func (adc *AmountDistributionChecker) rowListsPair() (rowsList, colsList *[]TableOuterCell) {
+func (adc *AmountDistributionChecker) rowListsPair() (rowsList, colsList *[]taskmodel.TableOuterCell) {
 	return &adc.task.SupplyList, &adc.task.DemandList
 }
 
-func (adc *AmountDistributionChecker) colCellFinder(i, j int) TableCell {
+func (adc *AmountDistributionChecker) colCellFinder(i, j int) taskmodel.TableCell {
 	// reverse indexes here
 	return adc.task.TableCells[j][i]
 }
 
-func (adc *AmountDistributionChecker) colListsPair() (rowsList, colsList *[]TableOuterCell) {
+func (adc *AmountDistributionChecker) colListsPair() (rowsList, colsList *[]taskmodel.TableOuterCell) {
 	// reverse lists here
 	return &adc.task.DemandList, &adc.task.SupplyList
 }

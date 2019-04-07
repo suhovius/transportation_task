@@ -1,4 +1,4 @@
-package main
+package taskmodel
 
 import (
 	"encoding/json"

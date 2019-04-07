@@ -2,9 +2,9 @@ Here is request example:
 
 curl -v -X POST -H 'Content-Type:application/json' -d '{"supply_list":[30,40,1520],"demand_list":[20,30,30,10],"cost_table":[[2,3,2,4],[3,2,5,1],[4,3,2,6]]}' "http://localhost:8080/api/tasks/"
 Note: Unnecessary use of -X or --request, POST is already inferred.
-*   Trying 127.0.0.1...
+*   Trying ::1...
 * TCP_NODELAY set
-* Connected to localhost (127.0.0.1) port 8080 (#0)
+* Connected to localhost (::1) port 8080 (#0)
 > POST /api/tasks/ HTTP/1.1
 > Host: localhost:8080
 > User-Agent: curl/7.54.0
@@ -15,15 +15,16 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
 * upload completely sent off: 101 out of 101 bytes
 < HTTP/1.1 200 OK
 < Content-Type: application/json; charset=utf-8
-< Date: Fri, 05 Apr 2019 04:25:43 GMT
-< Content-Length: 1081
+< Date: Sun, 07 Apr 2019 21:39:45 GMT
+< Content-Length: 983
 <
 * Connection #0 to host localhost left intact
 {
-  "UUID": "f837ce28-0446-4803-98aa-2d5abad382bc",
+  "total_delivery_cost": 220,
+  "UUID": "004af910-93a6-4746-9046-9d331da70800",
   "supply_list": [
     {
-      "amount": 30.001,
+      "amount": 30,
       "potential": 0,
       "is_fake": false
     },
@@ -40,27 +41,27 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
   ],
   "demand_list": [
     {
-      "amount": 20.0002,
+      "amount": 20,
       "potential": 2,
       "is_fake": false
     },
     {
-      "amount": 30.0002,
+      "amount": 30,
       "potential": 0,
       "is_fake": false
     },
     {
-      "amount": 30.0002,
+      "amount": 30,
       "potential": 0,
       "is_fake": false
     },
     {
-      "amount": 10.0002,
+      "amount": 10,
       "potential": 0,
       "is_fake": false
     },
     {
-      "amount": 1500.0002,
+      "amount": 1500,
       "potential": 0,
       "is_fake": true
     }
@@ -69,7 +70,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
     [
       {
         "cost": 2,
-        "delivery_amount": 20.0002
+        "delivery_amount": 20
       },
       {
         "cost": 3,
@@ -85,7 +86,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
       },
       {
         "cost": 0,
-        "delivery_amount": 10.000800000000002
+        "delivery_amount": 10
       }
     ],
     [
@@ -95,7 +96,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
       },
       {
         "cost": 2,
-        "delivery_amount": 30.0002
+        "delivery_amount": 30
       },
       {
         "cost": 5,
@@ -107,7 +108,7 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
       },
       {
         "cost": 0,
-        "delivery_amount": 9.9998
+        "delivery_amount": 10
       }
     ],
     [
@@ -121,29 +122,27 @@ Note: Unnecessary use of -X or --request, POST is already inferred.
       },
       {
         "cost": 2,
-        "delivery_amount": 30.0002
+        "delivery_amount": 30
       },
       {
         "cost": 6,
-        "delivery_amount": 10.0002
+        "delivery_amount": 10
       },
       {
         "cost": 0,
-        "delivery_amount": 1479.9995999999999
+        "delivery_amount": 1480
       }
     ]
   ],
-  "is_optimal_solution": true,
-  "total_delivery_cost": 220.00239999999997
+  "is_optimal_solution": true
 }
-
 
 
 Here is logging example:
 
-INFO[0000] Starting server at port :8080
-INFO[0002] Received parameters: {"supply_list":[30,40,1520],"demand_list":[20,30,30,10],"cost_table":[[2,3,2,4],[3,2,5,1],[4,3,2,6]]}  ip="127.0.0.1:62633" method=POST url=/api/tasks/
-INFO[0002] Created Task UUID: f837ce28-0446-4803-98aa-2d5abad382bc  ip="127.0.0.1:62633" method=POST url=/api/tasks/
+time="2019-04-08T00:39:39+03:00" level=info msg="Starting server at port :8080"
+time="2019-04-08T00:39:45+03:00" level=info msg="Received parameters: {\"supply_list\":[30,40,1520],\"demand_list\":[20,30,30,10],\"cost_table\":[[2,3,2,4],[3,2,5,1],[4,3,2,6]]}" ip="[::1]:57578" method=POST url=/api/tasks/
+time="2019-04-08T00:39:45+03:00" level=info msg="Created Task UUID: 004af910-93a6-4746-9046-9d331da70800" ip="[::1]:57578" method=POST url=/api/tasks/
 +------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
@@ -162,7 +161,7 @@ INFO[0002] Created Task UUID: f837ce28-0446-4803-98aa-2d5abad382bc  ip="127.0.0.
 | U[2]=0     | -------- | -------- | -------- | -------- |
 |            | C=4 D=0  | C=3 D=0  | C=2 D=0  | C=6 D=0  |
 +------------+----------+----------+----------+----------+
-INFO[0002] Process Task UUID: f837ce28-0446-4803-98aa-2d5abad382bc  ip="127.0.0.1:62633" method=POST url=/api/tasks/
+time="2019-04-08T00:39:45+03:00" level=info msg="Process Task UUID: 004af910-93a6-4746-9046-9d331da70800" ip="[::1]:57578" method=POST url=/api/tasks/
 
 === Initial Preparations =================================
 
@@ -668,7 +667,8 @@ Perform Optimal Solution Check
 +------------+----------+----------+----------+----------+-----------+
 Solution is optimal. Proccesing is Completed
 Delivery Cost: 220
-Caclulation took 25.864631ms
+Caclulation took 38.248665ms
+
 
 Error logging example:
 

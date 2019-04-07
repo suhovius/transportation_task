@@ -1,12 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
+)
 
 // StepsSequencePerformer contains array of AlgorithmStep handlers
 // in the order of their start
 type StepsSequencePerformer struct {
 	steps *[]AlgorithmStep
-	task  *Task
+	task  *taskmodel.Task
 }
 
 // Run starts all the AlgorithmStep handlers
@@ -19,8 +24,7 @@ func (ssp *StepsSequencePerformer) Run() (err error) {
 		if err != nil {
 			break
 		}
-		// here also migth happen logging inside another service object wrapper
-		ssp.task.Print()
+		taskprinter.New(ssp.task, logFile).Perform()
 		fmt.Println(step.ResultMessage())
 		if ssp.task.IsOptimalSolution {
 			break

@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"time"
 
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 )
 
 // TaskSolver provides transport task solution finding algorithm logic
 type TaskSolver struct {
-	task         *Task
+	task         *taskmodel.Task
 	secondsLimit time.Duration
 	startTime    time.Time
 	elapsedTime  time.Duration
@@ -32,6 +33,7 @@ func (ts *TaskSolver) Peform() (err error) {
 	// with wrapper that prints solution price or this might be a config of
 	// TaskPrinter service object
 
+	// TODO: Return iterations number in the log
 	for i := 1; !ts.task.IsOptimalSolution; i++ {
 		fmt.Printf("\n=== Potentials Method. Iteration #%d ==============\n", i)
 		err = ts.checkTimeLimit()
@@ -57,6 +59,7 @@ func (ts *TaskSolver) Peform() (err error) {
 
 	ts.printSolutionPrice()
 
+	// TODO: Print this to logger
 	fmt.Printf("Caclulation took %s\n", ts.elapsedTime)
 
 	return

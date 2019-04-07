@@ -1,11 +1,15 @@
 package main
 
-import "errors"
+import (
+	"errors"
+
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+)
 
 // DegeneracyChecker is a struct that implements AlgorithmStep interface
 type DegeneracyChecker struct {
 	AlgorithmStep
-	task *Task
+	task *taskmodel.Task
 }
 
 // Description returns step description info
@@ -29,7 +33,7 @@ func (dc *DegeneracyChecker) Perform() (err error) {
 func (dc *DegeneracyChecker) basicCellsCount() int {
 	cellsCount := 0
 
-	dc.task.eachCell(func(i, j int) {
+	dc.task.EachCell(func(i, j int) {
 		if dc.task.TableCells[i][j].DeliveryAmount > 0 {
 			cellsCount++
 		}

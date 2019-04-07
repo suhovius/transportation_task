@@ -8,13 +8,16 @@ import (
 	"os"
 	"time"
 
+	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 	log "github.com/sirupsen/logrus"
 )
+
+var logFile = os.Stdout
 
 func init() {
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
-	log.SetOutput(os.Stdout)
+	log.SetOutput(logFile)
 }
 
 // TODO: Refactor handlers into separate files
@@ -97,8 +100,12 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		task := (&TaskCreator{params: &params}).Perform()
 		logger.Info(fmt.Sprintf("Created Task UUID: %s", task.UUID))
-		// TODO: Refactor task printer into service object
-		task.Print()
+
+		// TODO: Use logger interface or just our logger at taskprinter
+		// instead of direct printing to output file
+		// or print these table details into separate file named by task uuid
+		// or smth like this
+		taskprinter.New(&task, logFile).Perform()
 
 		// ========= Find the solution =========================================
 		logger.Info(fmt.Sprintf("Process Task UUID: %s", task.UUID))

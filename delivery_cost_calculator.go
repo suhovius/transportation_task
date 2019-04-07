@@ -1,13 +1,15 @@
 package main
 
+import "bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+
 // DeliveryCostCalculator provides task delivery cost calculation logic
 type DeliveryCostCalculator struct {
-	task *Task
+	task *taskmodel.Task
 }
 
 // Peform calculates task delivery cost
 func (dcc *DeliveryCostCalculator) Peform() (cost float64) {
-	dcc.task.eachCell(func(i, j int) {
+	dcc.task.EachCell(func(i, j int) {
 		cell := dcc.task.TableCells[i][j]
 		cost += cell.Cost * cell.DeliveryAmount
 	})

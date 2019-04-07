@@ -1,9 +1,11 @@
 package main
 
+import "bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+
 // NorthWestCornerSolutionFinder is a struct that implements AlgorithmStep interface
 type NorthWestCornerSolutionFinder struct {
 	AlgorithmStep
-	task *Task
+	task *taskmodel.Task
 }
 
 // Description returns step description info

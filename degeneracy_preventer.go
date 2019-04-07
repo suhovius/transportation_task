@@ -1,13 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+)
 
 const distVal = 0.001 // disturbance value
 
 // DegeneracyPreventer is a struct that implements AlgorithmStep interface
 type DegeneracyPreventer struct {
 	AlgorithmStep
-	task              *Task
+	task              *taskmodel.Task
 	demandAmountsList []float64
 }
 

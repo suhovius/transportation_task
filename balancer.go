@@ -1,9 +1,11 @@
 package main
 
+import "bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
+
 // Balancer is a struct that implements AlgorithmStep interface
 type Balancer struct {
 	AlgorithmStep
-	task *Task
+	task *taskmodel.Task
 	kind string
 }
 
@@ -43,7 +45,7 @@ func (b *Balancer) Perform() (err error) {
 	return
 }
 
-func (b *Balancer) listAmountSum(list []TableOuterCell) float64 {
+func (b *Balancer) listAmountSum(list []taskmodel.TableOuterCell) float64 {
 	var sum float64
 	for _, cell := range list {
 		sum += cell.Amount
@@ -54,21 +56,21 @@ func (b *Balancer) listAmountSum(list []TableOuterCell) float64 {
 func (b *Balancer) addFakeDemand(supplyExcess float64) {
 	// add fake demand value
 	b.task.DemandList = append(
-		b.task.DemandList, TableOuterCell{Amount: supplyExcess, IsFake: true},
+		b.task.DemandList, taskmodel.TableOuterCell{Amount: supplyExcess, IsFake: true},
 	)
 	for i := range b.task.SupplyList {
 		// set zero delivery cost for this fake demand
-		b.task.TableCells[i] = append(b.task.TableCells[i], TableCell{Cost: 0})
+		b.task.TableCells[i] = append(b.task.TableCells[i], taskmodel.TableCell{Cost: 0})
 	}
 }
 
 func (b *Balancer) addFakeSupply(supplyDeficiency float64) {
 	// Add Fake Supplier
 	b.task.SupplyList = append(
-		b.task.SupplyList, TableOuterCell{Amount: supplyDeficiency, IsFake: true},
+		b.task.SupplyList, taskmodel.TableOuterCell{Amount: supplyDeficiency, IsFake: true},
 	)
 	// Add row with zero price
 	b.task.TableCells = append(
-		b.task.TableCells, make([]TableCell, len(b.task.DemandList)),
+		b.task.TableCells, make([]taskmodel.TableCell, len(b.task.DemandList)),
 	)
 }

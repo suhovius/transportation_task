@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
 	"github.com/google/uuid"
 )
 
@@ -10,24 +11,24 @@ type TaskCreator struct {
 }
 
 // Perform creates task from params *TaskParams struct
-func (tc *TaskCreator) Perform() (task Task) {
+func (tc *TaskCreator) Perform() (task taskmodel.Task) {
 	task.UUID = uuid.New()
-	task.SupplyList = make([]TableOuterCell, len(tc.params.SupplyList))
+	task.SupplyList = make([]taskmodel.TableOuterCell, len(tc.params.SupplyList))
 	for i, val := range tc.params.SupplyList {
-		task.SupplyList[i] = TableOuterCell{Amount: float64(val)}
+		task.SupplyList[i] = taskmodel.TableOuterCell{Amount: float64(val)}
 	}
 
-	task.DemandList = make([]TableOuterCell, len(tc.params.DemandList))
+	task.DemandList = make([]taskmodel.TableOuterCell, len(tc.params.DemandList))
 	for i, val := range tc.params.DemandList {
-		task.DemandList[i] = TableOuterCell{Amount: float64(val)}
+		task.DemandList[i] = taskmodel.TableOuterCell{Amount: float64(val)}
 	}
 
-	task.TableCells = make([][]TableCell, len(tc.params.SupplyList))
+	task.TableCells = make([][]taskmodel.TableCell, len(tc.params.SupplyList))
 	for i, row := range tc.params.CostTable {
 		// assign table row
-		task.TableCells[i] = make([]TableCell, len(row))
+		task.TableCells[i] = make([]taskmodel.TableCell, len(row))
 		for j, cost := range row {
-			task.TableCells[i][j] = TableCell{Cost: float64(cost)}
+			task.TableCells[i][j] = taskmodel.TableCell{Cost: float64(cost)}
 		}
 	}
 
