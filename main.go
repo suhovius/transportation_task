@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/solver"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 	"bitbucket.org/suhovius/transportation_task/app/views/errdataview"
 	log "github.com/sirupsen/logrus"
@@ -111,7 +112,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// ========= Find the solution =========================================
 		logger.Info(fmt.Sprintf("Process Task UUID: %s", task.UUID))
 		// TODO: secondsLimit might be configurable from the API
-		err = (&TaskSolver{task: &task, secondsLimit: 1 * time.Minute}).Peform()
+		err = solver.New(&task, 1*time.Minute).Perform()
 		if err != nil {
 			message := fmt.Sprintf("Task Solver: %v", err)
 			http.Error(w, APIErrorMessage(logger, message), http.StatusInternalServerError)

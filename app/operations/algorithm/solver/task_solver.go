@@ -1,4 +1,4 @@
-package main
+package solver
 
 import (
 	"fmt"
@@ -28,8 +28,13 @@ type TaskSolver struct {
 	elapsedTime  time.Duration
 }
 
-// Peform finds transport task solution
-func (ts *TaskSolver) Peform() (err error) {
+// New returns new TaskSolver instance
+func New(task *taskmodel.Task, secondsLimit time.Duration) *TaskSolver {
+	return &TaskSolver{task: task, secondsLimit: secondsLimit}
+}
+
+// Perform finds transport task solution
+func (ts *TaskSolver) Perform() (err error) {
 	ts.startTime = time.Now()
 
 	fmt.Printf("\n=== Initial Preparations =================================\n")
@@ -76,10 +81,6 @@ func (ts *TaskSolver) Peform() (err error) {
 	if err != nil {
 		return
 	}
-
-	// here we can add step that rounds delivery prices to int values
-	// or maybe that will require additional struct with int values for the
-	// response. Maybe json modificator at stuct has option to format response somehow. Will see
 
 	ts.printSolutionPrice()
 
