@@ -16,6 +16,11 @@ func New(task *taskmodel.Task) *IterationInitializer {
 	return &IterationInitializer{task: task}
 }
 
+// Task returns task pointer
+func (ii *IterationInitializer) Task() *taskmodel.Task {
+	return ii.task
+}
+
 // Description returns step description info
 func (ii *IterationInitializer) Description() string {
 	return "Initialize task inner state before current iteration start"

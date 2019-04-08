@@ -21,6 +21,11 @@ func (pc *PotentialsCalculator) Description() string {
 	return "Calculate Potentials"
 }
 
+// Task returns task pointer
+func (pc *PotentialsCalculator) Task() *taskmodel.Task {
+	return pc.task
+}
+
 // ResultMessage returns message about reults of step processing
 func (pc *PotentialsCalculator) ResultMessage() string {
 	return "Potentials have been assigned to demand row and supply column"

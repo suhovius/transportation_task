@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
-	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
+	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/sequence"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/amountdistribcheck"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/balance"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/circuitbuild"
@@ -33,7 +33,11 @@ func (ts *TaskSolver) Peform() (err error) {
 	ts.startTime = time.Now()
 
 	fmt.Printf("\n=== Initial Preparations =================================\n")
-	err = ts.createInitialSequence().Run()
+	err = sequence.New(
+		balance.New(ts.task),
+		degeneracyprev.New(ts.task),
+		northwestcrnr.New(ts.task),
+	).Run()
 
 	if err != nil {
 		return
@@ -54,7 +58,15 @@ func (ts *TaskSolver) Peform() (err error) {
 			break
 		}
 
-		err = ts.createIterativeSequence().Run()
+		err = sequence.New(
+			iterationinit.New(ts.task),
+			amountdistribcheck.New(ts.task),
+			degeneracycheck.New(ts.task),
+			potentialcalc.New(ts.task),
+			optsolcheck.New(ts.task),
+			circuitbuild.New(ts.task),
+			supplyredistrib.New(ts.task),
+		).Run()
 
 		if err != nil {
 			break
@@ -75,30 +87,6 @@ func (ts *TaskSolver) Peform() (err error) {
 	fmt.Printf("Caclulation took %s\n", ts.elapsedTime)
 
 	return
-}
-
-func (ts *TaskSolver) newSequencePerformer(steps ...step.AlgorithmStep) *StepsSequencePerformer {
-	return &StepsSequencePerformer{task: ts.task, steps: &steps}
-}
-
-func (ts *TaskSolver) createInitialSequence() *StepsSequencePerformer {
-	return ts.newSequencePerformer(
-		balance.New(ts.task),
-		degeneracyprev.New(ts.task),
-		northwestcrnr.New(ts.task),
-	)
-}
-
-func (ts *TaskSolver) createIterativeSequence() *StepsSequencePerformer {
-	return ts.newSequencePerformer(
-		iterationinit.New(ts.task),
-		amountdistribcheck.New(ts.task),
-		degeneracycheck.New(ts.task),
-		potentialcalc.New(ts.task),
-		optsolcheck.New(ts.task),
-		circuitbuild.New(ts.task),
-		supplyredistrib.New(ts.task),
-	)
 }
 
 func (ts *TaskSolver) printSolutionPrice() {

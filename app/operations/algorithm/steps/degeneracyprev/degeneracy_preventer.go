@@ -21,6 +21,11 @@ func New(task *taskmodel.Task) *DegeneracyPreventer {
 	return &DegeneracyPreventer{task: task}
 }
 
+// Task returns task pointer
+func (dp *DegeneracyPreventer) Task() *taskmodel.Task {
+	return dp.task
+}
+
 // Description returns step description info
 func (dp *DegeneracyPreventer) Description() string {
 	return "Apply Degeneracy Prevention"

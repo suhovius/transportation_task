@@ -17,6 +17,11 @@ func New(task *taskmodel.Task) *Balancer {
 	return &Balancer{task: task}
 }
 
+// Task returns task pointer
+func (b *Balancer) Task() *taskmodel.Task {
+	return b.task
+}
+
 // Description returns step description info
 func (b *Balancer) Description() string {
 	return "Perform Balancing"

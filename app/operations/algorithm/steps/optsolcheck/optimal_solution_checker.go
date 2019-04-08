@@ -19,6 +19,11 @@ func New(task *taskmodel.Task) *OptimalSolutionChecker {
 	return &OptimalSolutionChecker{task: task}
 }
 
+// Task returns task pointer
+func (osc *OptimalSolutionChecker) Task() *taskmodel.Task {
+	return osc.task
+}
+
 // Description returns step description info
 func (osc *OptimalSolutionChecker) Description() string {
 	return "Perform Optimal Solution Check"

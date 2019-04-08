@@ -19,6 +19,11 @@ func New(task *taskmodel.Task) *AmountDistributionChecker {
 	return &AmountDistributionChecker{task: task}
 }
 
+// Task returns task pointer
+func (adc *AmountDistributionChecker) Task() *taskmodel.Task {
+	return adc.task
+}
+
 // Description returns step description info
 func (adc *AmountDistributionChecker) Description() string {
 	return "Perform amount distribution check"

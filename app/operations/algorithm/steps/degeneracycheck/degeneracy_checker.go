@@ -18,6 +18,11 @@ func New(task *taskmodel.Task) *DegeneracyChecker {
 	return &DegeneracyChecker{task: task}
 }
 
+// Task returns task pointer
+func (dc *DegeneracyChecker) Task() *taskmodel.Task {
+	return dc.task
+}
+
 // Description returns step description info
 func (dc *DegeneracyChecker) Description() string {
 	return "Perform Degeneracy Check"

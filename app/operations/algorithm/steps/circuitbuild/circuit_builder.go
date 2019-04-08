@@ -20,6 +20,11 @@ func New(task *taskmodel.Task) *CircuitBuilder {
 	return &CircuitBuilder{task: task}
 }
 
+// Task returns task pointer
+func (cb *CircuitBuilder) Task() *taskmodel.Task {
+	return cb.task
+}
+
 // Description returns step description info
 func (cb *CircuitBuilder) Description() string {
 	return "Finding the circuit path and minimal theta vertex"

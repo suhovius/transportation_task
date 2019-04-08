@@ -16,6 +16,11 @@ func New(task *taskmodel.Task) *NorthWestCornerSolutionFinder {
 	return &NorthWestCornerSolutionFinder{task: task}
 }
 
+// Task returns task pointer
+func (nwcsf *NorthWestCornerSolutionFinder) Task() *taskmodel.Task {
+	return nwcsf.task
+}
+
 // Description returns step description info
 func (nwcsf *NorthWestCornerSolutionFinder) Description() string {
 	return "Calculate initial base plan with 'North West Corner' method"

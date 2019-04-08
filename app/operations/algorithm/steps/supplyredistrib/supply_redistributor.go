@@ -18,6 +18,11 @@ func New(task *taskmodel.Task) *SupplyRedistributor {
 	return &SupplyRedistributor{task: task}
 }
 
+// Task returns task pointer
+func (sr *SupplyRedistributor) Task() *taskmodel.Task {
+	return sr.task
+}
+
 // Description returns step description info
 func (sr *SupplyRedistributor) Description() string {
 	return "Perform Supply Redistribution"
