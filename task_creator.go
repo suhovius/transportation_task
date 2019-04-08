@@ -1,13 +1,14 @@
 package main
 
 import (
+	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
 	"github.com/google/uuid"
 )
 
 // TaskCreator provides logic for task creation
 type TaskCreator struct {
-	params *TaskParams
+	params *taskform.Params
 }
 
 // Perform creates task from params *TaskParams struct

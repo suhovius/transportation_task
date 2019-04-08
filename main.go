@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/solver"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 	"bitbucket.org/suhovius/transportation_task/app/views/errdataview"
@@ -74,7 +75,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == "POST" {
 		var err error
-		var params TaskParams
+		var params taskform.Params
 
 		// we can create global decoder that can decode to any structure
 		// probably need to check this

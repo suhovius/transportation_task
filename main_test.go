@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
 	"github.com/go-resty/resty"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
@@ -87,7 +88,7 @@ func assertTaskCreateResponseBody(t *testing.T, result string, exp *TaskResponse
 	)
 }
 
-func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *TaskParams) (result string) {
+func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *taskform.Params) (result string) {
 	// Act
 	resp, err := resty.R().
 		SetHeader("Content-Type", "application/json").
@@ -114,7 +115,7 @@ func TestCreateTask(t *testing.T) {
 		t.Log("\ttest:0\tcreates and processes task with valid params when there is more data in the input")
 		{
 			// Arrange
-			validParams := TaskParams{
+			validParams := taskform.Params{
 				SupplyList: []int{30, 50, 75, 20},
 				DemandList: []int{20, 40, 30, 10, 50, 25},
 				CostTable: [][]int{
@@ -158,7 +159,7 @@ func TestCreateTask(t *testing.T) {
 		t.Log("\ttest:1\tcreates and processes task with valid params.")
 		{
 			// Arrange
-			validParams := TaskParams{
+			validParams := taskform.Params{
 				SupplyList: []int{30, 40, 20},
 				DemandList: []int{20, 30, 30, 10},
 				CostTable: [][]int{
@@ -199,7 +200,7 @@ func TestCreateTask(t *testing.T) {
 		t.Log("\ttest:2\tcreates and processes task with valid params when demand list is unbalanced")
 		{
 			// Arrange
-			validParams := TaskParams{
+			validParams := taskform.Params{
 				SupplyList: []int{30, 40, 20},
 				DemandList: []int{20, 130, 30, 10},
 				CostTable: [][]int{
@@ -242,7 +243,7 @@ func TestCreateTask(t *testing.T) {
 		t.Log("\ttest:3\tcreates and processes task with valid params when supply list is unbalanced")
 		{
 			// Arrange
-			validParams := TaskParams{
+			validParams := taskform.Params{
 				SupplyList: []int{30, 40, 520},
 				DemandList: []int{20, 30, 30, 10},
 				CostTable: [][]int{
@@ -285,7 +286,7 @@ func TestCreateTask(t *testing.T) {
 
 			resp, err := resty.R().
 				SetHeader("Content-Type", "application/json").
-				SetBody(&TaskParams{}).
+				SetBody(&taskform.Params{}).
 				Get(ts.URL)
 
 			require.Nil(t, err)
