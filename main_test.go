@@ -6,8 +6,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"bitbucket.org/suhovius/transportation_task/app/actions/solvetaskhandler"
 	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
 	"github.com/go-resty/resty"
+	log "github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"github.com/tidwall/gjson"
@@ -108,7 +110,7 @@ func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *task
 func TestCreateTask(t *testing.T) {
 	t.Log("with initialized server.")
 	{
-		ts := httptest.NewServer(&TaskSolvingHandler{})
+		ts := httptest.NewServer(solvetaskhandler.New(log.New()))
 
 		defer ts.Close()
 
