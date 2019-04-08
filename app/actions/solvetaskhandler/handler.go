@@ -12,6 +12,7 @@ import (
 	"bitbucket.org/suhovius/transportation_task/app/operations/creators/taskcreator"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 	"bitbucket.org/suhovius/transportation_task/app/views/errdataview"
+	"bitbucket.org/suhovius/transportation_task/utils/requestid"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -26,11 +27,11 @@ func New(logger *log.Logger) *TaskSolvingHandler {
 }
 
 func (h *TaskSolvingHandler) logEntryBy(request *http.Request) *log.Entry {
-	return h.logger.WithFields(
-		log.Fields{
-			"method": request.Method, "url": request.URL, "ip": request.RemoteAddr,
-		},
-	)
+	requestID, ok := request.Context().Value(requestid.RequestIDKey).(string)
+	if !ok {
+		requestID = "unknown"
+	}
+	return h.logger.WithFields(log.Fields{"request_id": requestID})
 }
 
 // ServerHTTP implements http.Handler.
@@ -79,7 +80,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// ========= Find the solution =========================================
 		le.Info(fmt.Sprintf("Process Task UUID: %s", task.UUID))
 		// TODO: secondsLimit might be configurable from the API
-		err = solver.New(&task, 1*time.Minute).Perform()
+		err = solver.New(&task, 1*time.Minute, le).Perform()
 		if err != nil {
 			message := fmt.Sprintf("Task Solver: %v", err)
 			http.Error(w, APIErrorMessage(le, message), http.StatusInternalServerError)

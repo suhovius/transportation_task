@@ -3,34 +3,24 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
 	"net/http"
 	"os"
-	"time"
 
 	"bitbucket.org/suhovius/transportation_task/app/actions/solvetaskhandler"
+	"bitbucket.org/suhovius/transportation_task/utils/requestid"
 	log "github.com/sirupsen/logrus"
-)
-
-var logFile = os.Stdout
-
-type key int
-
-const (
-	requestIDKey key = 0
 )
 
 func init() {
 	// Output to stdout instead of the default stderr
 	// Can be any io.Writer, see below for File example
-	log.SetOutput(logFile)
+	log.SetOutput(os.Stdout)
 }
 
 // TODO needs recover from panic to prevent server process exit
 
 // Add middlewares for tracing, logging and recovery
 
-// TODO: Refactor handlers into separate files
 func main() {
 	var (
 		addr = flag.String("addr", ":8080", "address of the http server")
@@ -52,9 +42,7 @@ func NewServer(addr string) *http.Server {
 
 	router.Handle("/api/tasks/", solvetaskhandler.New(logger))
 
-	nextRequestID := func() string {
-		return fmt.Sprintf("%d", time.Now().UnixNano())
-	}
+	nextRequestID := requestid.Next
 
 	s := http.Server{
 		Addr:    addr,
@@ -65,7 +53,7 @@ func NewServer(addr string) *http.Server {
 }
 
 func logLine(logger *log.Logger, word string, r *http.Request) {
-	requestID, ok := r.Context().Value(requestIDKey).(string)
+	requestID, ok := r.Context().Value(requestid.RequestIDKey).(string)
 	if !ok {
 		requestID = "unknown"
 	}
@@ -91,7 +79,7 @@ func tracing(nextRequestID func() string) func(http.Handler) http.Handler {
 			if requestID == "" {
 				requestID = nextRequestID()
 			}
-			ctx := context.WithValue(r.Context(), requestIDKey, requestID)
+			ctx := context.WithValue(r.Context(), requestid.RequestIDKey, requestID)
 			w.Header().Set("X-Request-Id", requestID)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})

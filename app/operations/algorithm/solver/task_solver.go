@@ -18,6 +18,7 @@ import (
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/steps/supplyredistrib"
 	"bitbucket.org/suhovius/transportation_task/app/operations/deliverycost"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
+	log "github.com/sirupsen/logrus"
 )
 
 // TaskSolver provides transport task solution finding algorithm logic
@@ -26,23 +27,26 @@ type TaskSolver struct {
 	secondsLimit time.Duration
 	startTime    time.Time
 	elapsedTime  time.Duration
+	logEntry     *log.Entry
 }
 
 // New returns new TaskSolver instance
-func New(task *taskmodel.Task, secondsLimit time.Duration) *TaskSolver {
-	return &TaskSolver{task: task, secondsLimit: secondsLimit}
+func New(
+	task *taskmodel.Task, secondsLimit time.Duration, logEntry *log.Entry,
+) *TaskSolver {
+	return &TaskSolver{task: task, secondsLimit: secondsLimit, logEntry: logEntry}
 }
 
 // Perform finds transport task solution
 func (ts *TaskSolver) Perform() (err error) {
 	ts.startTime = time.Now()
 
-	fmt.Printf("\n=== Initial Preparations =================================\n")
+	ts.logEntry.Info("=== Initial Preparations ===")
 	err = sequence.New(
 		balance.New(ts.task),
 		degeneracyprev.New(ts.task),
 		northwestcrnr.New(ts.task),
-	).Run()
+	).RunWithLog(ts.logEntry)
 
 	if err != nil {
 		return
@@ -54,9 +58,10 @@ func (ts *TaskSolver) Perform() (err error) {
 	// with wrapper that prints solution price or this might be a config of
 	// TaskPrinter service object
 
-	// TODO: Return iterations number in the log
+	iterationNum := 0
 	for i := 1; !ts.task.IsOptimalSolution; i++ {
-		fmt.Printf("\n=== Potentials Method. Iteration #%d ==============\n", i)
+		iterationNum = i
+		ts.logEntry.Infof("=== Potentials Method. Iteration #%d ===", i)
 		err = ts.checkTimeLimit()
 
 		if err != nil {
@@ -71,7 +76,7 @@ func (ts *TaskSolver) Perform() (err error) {
 			optsolcheck.New(ts.task),
 			circuitbuild.New(ts.task),
 			supplyredistrib.New(ts.task),
-		).Run()
+		).RunWithLog(ts.logEntry)
 
 		if err != nil {
 			break
@@ -85,13 +90,13 @@ func (ts *TaskSolver) Perform() (err error) {
 	ts.printSolutionPrice()
 
 	// TODO: Print this to logger
-	fmt.Printf("Caclulation took %s\n", ts.elapsedTime)
+	ts.logEntry.Infof("=== Caclulation took %s and %d iterations ===", ts.elapsedTime, iterationNum)
 
 	return
 }
 
 func (ts *TaskSolver) printSolutionPrice() {
-	fmt.Printf(
+	ts.logEntry.Infof(
 		"Delivery Cost: %d\n",
 		mathext.RoundToInt(
 			deliverycost.New(ts.task).Perform(),

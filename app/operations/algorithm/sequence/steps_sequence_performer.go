@@ -1,11 +1,11 @@
 package sequence
 
 import (
-	"fmt"
 	"os"
 
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
+	log "github.com/sirupsen/logrus"
 )
 
 // StepsSequencePerformer contains array of AlgorithmStep handlers
@@ -19,19 +19,20 @@ func New(steps ...step.AlgorithmStep) *StepsSequencePerformer {
 	return &StepsSequencePerformer{steps: &steps}
 }
 
-// Run starts all the AlgorithmStep handlers
+// RunWithLog starts all the AlgorithmStep handlers with logging of their results
 // TODO: Refactor printing add logging at some separate object
-func (ssp *StepsSequencePerformer) Run() (err error) {
-	var logFile = os.Stdout // TODO: Use normal logger here or smth
+func (ssp *StepsSequencePerformer) RunWithLog(le *log.Entry) (err error) {
 	for i, step := range *ssp.steps {
-		fmt.Printf("\n=== Step #%d ====================================\n", i+1)
-		fmt.Println(step.Description())
+		le.Infof("=== Step #%d ===", i+1)
+		le.Info(step.Description())
 		err = step.Perform()
 		if err != nil {
 			break
 		}
-		taskprinter.New(step.Task(), logFile).Perform()
-		fmt.Println(step.ResultMessage())
+		// TODO: taskprinter should print into separate file.
+		// Not into the os.Stdout. Might require some configuration for this
+		taskprinter.New(step.Task(), os.Stdout).Perform()
+		le.Info(step.ResultMessage())
 		if step.Task().IsOptimalSolution {
 			break
 		}
