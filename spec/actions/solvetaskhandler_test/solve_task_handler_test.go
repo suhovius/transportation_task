@@ -1,4 +1,4 @@
-package main
+package solvetaskhandler_test
 
 import (
 	"fmt"
