@@ -54,9 +54,7 @@ func (ts *TaskSolver) Perform() (err error) {
 
 	ts.printSolutionPrice()
 
-	// This part can also be splitted into separate method or struct. Will see later
-	// with wrapper that prints solution price or this might be a config of
-	// TaskPrinter service object
+	// TODO: This part can also be extracted into separate method or package.
 
 	iterationNum := 0
 	for i := 1; !ts.task.IsOptimalSolution; i++ {
@@ -89,7 +87,6 @@ func (ts *TaskSolver) Perform() (err error) {
 
 	ts.printSolutionPrice()
 
-	// TODO: Print this to logger
 	ts.logEntry.Infof("=== Caclulation took %s and %d iterations ===", ts.elapsedTime, iterationNum)
 
 	return
@@ -97,7 +94,7 @@ func (ts *TaskSolver) Perform() (err error) {
 
 func (ts *TaskSolver) printSolutionPrice() {
 	ts.logEntry.Infof(
-		"Delivery Cost: %d\n",
+		"Delivery Cost: %d",
 		mathext.RoundToInt(
 			deliverycost.New(ts.task).Perform(),
 		),
@@ -114,6 +111,3 @@ func (ts *TaskSolver) checkTimeLimit() (err error) {
 	}
 	return
 }
-
-// Add some kind of printer object or output stream to send all the print
-// requests and to be able to change where they are sent to

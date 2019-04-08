@@ -17,10 +17,6 @@ func init() {
 	log.SetOutput(os.Stdout)
 }
 
-// TODO needs recover from panic to prevent server process exit
-
-// Add middlewares for tracing, logging and recovery
-
 func main() {
 	var (
 		addr = flag.String("addr", ":8080", "address of the http server")
@@ -33,6 +29,9 @@ func main() {
 	}
 
 }
+
+// TODO needs recover from panic to prevent server process exit
+// TODO All this server setup should be placed into separate module
 
 // NewServer prepares http server.
 func NewServer(addr string) *http.Server {

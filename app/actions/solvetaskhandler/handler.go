@@ -70,11 +70,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		task := taskcreator.New(&params).Perform()
 		le.Info(fmt.Sprintf("Created Task UUID: %s", task.UUID))
 
-		// TODO: Use logger interface or just our logger at taskprinter
-		// instead of direct printing to output file
-		// or print these table details into separate file named by task uuid
-		// or smth like this
-		// TODO: Set logger here as parameter for output, etc
+		// TODO: Print detailed log (with ASCII tables) into separate file
 		taskprinter.New(&task, os.Stdout).Perform()
 
 		// ========= Find the solution =========================================

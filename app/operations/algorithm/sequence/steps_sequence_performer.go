@@ -20,7 +20,6 @@ func New(steps ...step.AlgorithmStep) *StepsSequencePerformer {
 }
 
 // RunWithLog starts all the AlgorithmStep handlers with logging of their results
-// TODO: Refactor printing add logging at some separate object
 func (ssp *StepsSequencePerformer) RunWithLog(le *log.Entry) (err error) {
 	for i, step := range *ssp.steps {
 		le.Infof("=== Step #%d ===", i+1)
@@ -30,7 +29,7 @@ func (ssp *StepsSequencePerformer) RunWithLog(le *log.Entry) (err error) {
 			break
 		}
 		// TODO: taskprinter should print into separate file.
-		// Not into the os.Stdout. Might require some configuration for this
+		// Not into the os.Stdout.
 		taskprinter.New(step.Task(), os.Stdout).Perform()
 		le.Info(step.ResultMessage())
 		if step.Task().IsOptimalSolution {

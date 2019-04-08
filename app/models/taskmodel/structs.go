@@ -5,8 +5,6 @@ import (
 )
 
 // Task contains transportation task parameters and results
-// TODO These fields should be Capitalized since they should be able to be
-// converted to JSON so they should be public
 type Task struct {
 	UUID              uuid.UUID
 	SupplyList        []TableOuterCell `json:"supply_list"`
