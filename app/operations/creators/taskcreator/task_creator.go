@@ -1,4 +1,4 @@
-package main
+package taskcreator
 
 import (
 	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
@@ -9,6 +9,11 @@ import (
 // TaskCreator provides logic for task creation
 type TaskCreator struct {
 	params *taskform.Params
+}
+
+// New returns new TaskCreator instance
+func New(params *taskform.Params) *TaskCreator {
+	return &TaskCreator{params: params}
 }
 
 // Perform creates task from params *TaskParams struct

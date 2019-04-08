@@ -10,6 +10,7 @@ import (
 
 	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/solver"
+	"bitbucket.org/suhovius/transportation_task/app/operations/creators/taskcreator"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 	"bitbucket.org/suhovius/transportation_task/app/views/errdataview"
 	log "github.com/sirupsen/logrus"
@@ -100,8 +101,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// respond with http.StatusUnprocessableEntity
 
 		// ========= Create Task Struct ========================================
-
-		task := (&TaskCreator{params: &params}).Perform()
+		task := taskcreator.New(&params).Perform()
 		logger.Info(fmt.Sprintf("Created Task UUID: %s", task.UUID))
 
 		// TODO: Use logger interface or just our logger at taskprinter
