@@ -23,11 +23,12 @@ import (
 
 // TaskSolver provides transport task solution finding algorithm logic
 type TaskSolver struct {
-	task         *taskmodel.Task
-	secondsLimit time.Duration
-	startTime    time.Time
-	elapsedTime  time.Duration
-	logEntry     *log.Entry
+	task            *taskmodel.Task
+	secondsLimit    time.Duration
+	startTime       time.Time
+	elapsedTime     time.Duration
+	logEntry        *log.Entry
+	iterationsCount int
 }
 
 // New returns new TaskSolver instance
@@ -42,25 +43,15 @@ func (ts *TaskSolver) Perform() (err error) {
 	ts.startTime = time.Now()
 
 	ts.logEntry.Info("=== Initial Preparations ===")
-	err = ts.runInitialSteps()
 
-	if err != nil {
-		return err
-	}
-
-	ts.printSolutionPrice()
-
-	iterationsCount, err := ts.runPotentialsMethod()
-
-	if err != nil {
-		return
-	}
-
-	ts.printSolutionPrice()
+	err = ts.runProcessors(
+		initialPreparationsProcessor,
+		potentialsMethodProcessor,
+	)
 
 	ts.logEntry.Infof(
 		"=== Caclulation took %s and %d iterations ===",
-		ts.elapsedTime, iterationsCount,
+		ts.elapsedTime, ts.iterationsCount,
 	)
 
 	return
@@ -86,7 +77,9 @@ func (ts *TaskSolver) checkTimeLimit() (err error) {
 	return
 }
 
-func (ts *TaskSolver) runInitialSteps() error {
+type operationProcessor func(ts *TaskSolver) error
+
+func initialPreparationsProcessor(ts *TaskSolver) error {
 	return sequence.New(
 		balance.New(ts.task),
 		degeneracyprev.New(ts.task),
@@ -96,7 +89,7 @@ func (ts *TaskSolver) runInitialSteps() error {
 	).RunWithLog(ts.logEntry)
 }
 
-func (ts *TaskSolver) runIterationSteps() error {
+func iterationProcessor(ts *TaskSolver) error {
 	return sequence.New(
 		iterationinit.New(ts.task),
 		amountdistribcheck.New(ts.task),
@@ -108,9 +101,9 @@ func (ts *TaskSolver) runIterationSteps() error {
 	).RunWithLog(ts.logEntry)
 }
 
-func (ts *TaskSolver) runPotentialsMethod() (iterationsCount int, err error) {
+func potentialsMethodProcessor(ts *TaskSolver) (err error) {
 	for i := 1; !ts.task.IsOptimalSolution; i++ {
-		iterationsCount = i
+		ts.iterationsCount = i
 		ts.logEntry.Infof("=== Potentials Method. Iteration #%d ===", i)
 		err = ts.checkTimeLimit()
 
@@ -118,11 +111,25 @@ func (ts *TaskSolver) runPotentialsMethod() (iterationsCount int, err error) {
 			break
 		}
 
-		err = ts.runIterationSteps()
+		err = iterationProcessor(ts)
 
 		if err != nil {
 			break
 		}
+	}
+
+	return
+}
+
+func (ts *TaskSolver) runProcessors(processors ...operationProcessor) (err error) {
+	for _, processor := range processors {
+		err = processor(ts)
+
+		if err != nil {
+			break
+		}
+
+		ts.printSolutionPrice()
 	}
 
 	return
