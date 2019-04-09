@@ -104,11 +104,11 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 // APIErrorMessage creates ErrorData struct
 func APIErrorMessage(logger *log.Entry, message string) string {
-	logger.Warn(message)
+	logger.Errorf(message)
 
 	jsonBlob, err := json.Marshal(errdataview.New(message))
 	if err != nil {
-		logger.Warnf("Marshal error: %s", err)
+		logger.Errorf("Marshal error: %s", err)
 	}
 	return string(jsonBlob)
 }
