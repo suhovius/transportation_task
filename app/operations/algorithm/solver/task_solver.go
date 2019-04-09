@@ -42,11 +42,15 @@ func (ts *TaskSolver) Perform() (err error) {
 	ts.startTime = time.Now()
 
 	ts.logEntry.Info("=== Initial Preparations ===")
-	err = sequence.New(
-		balance.New(ts.task),
-		degeneracyprev.New(ts.task),
-		northwestcrnr.New(ts.task),
-	).RunWithLog(ts.logEntry)
+	err = ts.runInitialSteps()
+
+	if err != nil {
+		return err
+	}
+
+	ts.printSolutionPrice()
+
+	iterationsCount, err := ts.runPotentialsMethod()
 
 	if err != nil {
 		return
@@ -54,40 +58,10 @@ func (ts *TaskSolver) Perform() (err error) {
 
 	ts.printSolutionPrice()
 
-	// TODO: This part can also be extracted into separate method or package.
-
-	iterationNum := 0
-	for i := 1; !ts.task.IsOptimalSolution; i++ {
-		iterationNum = i
-		ts.logEntry.Infof("=== Potentials Method. Iteration #%d ===", i)
-		err = ts.checkTimeLimit()
-
-		if err != nil {
-			break
-		}
-
-		err = sequence.New(
-			iterationinit.New(ts.task),
-			amountdistribcheck.New(ts.task),
-			degeneracycheck.New(ts.task),
-			potentialcalc.New(ts.task),
-			optsolcheck.New(ts.task),
-			circuitbuild.New(ts.task),
-			supplyredistrib.New(ts.task),
-		).RunWithLog(ts.logEntry)
-
-		if err != nil {
-			break
-		}
-	}
-
-	if err != nil {
-		return
-	}
-
-	ts.printSolutionPrice()
-
-	ts.logEntry.Infof("=== Caclulation took %s and %d iterations ===", ts.elapsedTime, iterationNum)
+	ts.logEntry.Infof(
+		"=== Caclulation took %s and %d iterations ===",
+		ts.elapsedTime, iterationsCount,
+	)
 
 	return
 }
@@ -109,5 +83,47 @@ func (ts *TaskSolver) checkTimeLimit() (err error) {
 			ts.elapsedTime, ts.secondsLimit,
 		)
 	}
+	return
+}
+
+func (ts *TaskSolver) runInitialSteps() error {
+	return sequence.New(
+		balance.New(ts.task),
+		degeneracyprev.New(ts.task),
+		// TODO: Add Minimal Rates and Vogel approximation methods
+		// Add ability to select approximation method via API
+		northwestcrnr.New(ts.task),
+	).RunWithLog(ts.logEntry)
+}
+
+func (ts *TaskSolver) runIterationSteps() error {
+	return sequence.New(
+		iterationinit.New(ts.task),
+		amountdistribcheck.New(ts.task),
+		degeneracycheck.New(ts.task),
+		potentialcalc.New(ts.task),
+		optsolcheck.New(ts.task),
+		circuitbuild.New(ts.task),
+		supplyredistrib.New(ts.task),
+	).RunWithLog(ts.logEntry)
+}
+
+func (ts *TaskSolver) runPotentialsMethod() (iterationsCount int, err error) {
+	for i := 1; !ts.task.IsOptimalSolution; i++ {
+		iterationsCount = i
+		ts.logEntry.Infof("=== Potentials Method. Iteration #%d ===", i)
+		err = ts.checkTimeLimit()
+
+		if err != nil {
+			break
+		}
+
+		err = ts.runIterationSteps()
+
+		if err != nil {
+			break
+		}
+	}
+
 	return
 }
