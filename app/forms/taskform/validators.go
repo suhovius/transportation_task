@@ -8,7 +8,7 @@ import (
 // Validate performs Params validation
 func (p *Params) Validate() error {
 	return p.performValidations(
-		costTableRowsHasAtLeastOneRowValidator,
+		costTableHasAtLeastOneRowValidator,
 		supplyListSizeValidator,
 		demandListSizeValidator,
 		costTableRowsSizesValidator,
@@ -68,7 +68,7 @@ func costTableRowsSizesValidator(p *Params) (err error) {
 	return
 }
 
-func costTableRowsHasAtLeastOneRowValidator(p *Params) (err error) {
+func costTableHasAtLeastOneRowValidator(p *Params) (err error) {
 	if len(p.CostTable) == 0 {
 		return errors.New("CostTable should have at least one row")
 	}
