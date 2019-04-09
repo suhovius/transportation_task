@@ -11,7 +11,7 @@ type supplyListValidator struct {
 	params *Params
 }
 
-func (v *supplyListValidator) validateSupplyList() (err error) {
+func (v *supplyListValidator) Perform() (err error) {
 	supplyCount := len(v.params.SupplyList)
 	costRowsCount := len(v.params.CostTable)
 	if supplyCount != costRowsCount {

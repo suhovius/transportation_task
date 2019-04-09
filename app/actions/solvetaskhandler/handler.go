@@ -65,6 +65,12 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// TODO: Validate parameters cost table dimensions and supply demand list dimensions
 		// TODO: Validate parameters. At least one supply and at least one demand
 		// respond with http.StatusUnprocessableEntity
+		err = params.Validate()
+		if err != nil {
+			message := fmt.Sprintf("Params Validation Error: %s", err)
+			http.Error(w, APIErrorMessage(le, message), http.StatusUnprocessableEntity)
+			return
+		}
 
 		// ========= Create Task Struct ========================================
 		task := taskcreator.New(&params).Perform()
