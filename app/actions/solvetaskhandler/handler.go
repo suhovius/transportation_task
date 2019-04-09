@@ -71,13 +71,13 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		// ========= Create Task Struct ========================================
 		task := taskcreator.New(&params).Perform()
-		le.Info(fmt.Sprintf("Created Task UUID: %s", task.UUID))
+		le.Infof("Created Task UUID: %s", task.UUID)
 
 		// TODO: Print detailed log (with ASCII tables) into separate file
 		taskprinter.New(&task, os.Stdout).Perform()
 
 		// ========= Find the solution =========================================
-		le.Info(fmt.Sprintf("Process Task UUID: %s", task.UUID))
+		le.Infof("Process Task UUID: %s", task.UUID)
 		// TODO: secondsLimit might be configurable from the API
 		err = solver.New(&task, 1*time.Minute, le).Perform()
 		if err != nil {
