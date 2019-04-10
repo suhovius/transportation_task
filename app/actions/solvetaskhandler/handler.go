@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 	"time"
 
 	"bitbucket.org/suhovius/transportation_task/app/forms/taskform"
@@ -73,8 +72,7 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		task := taskcreator.New(&params).Perform()
 		le.Infof("Created Task UUID: %s", task.UUID)
 
-		// TODO: Print detailed log (with ASCII tables) into separate file
-		taskprinter.New(&task, os.Stdout).Perform()
+		taskprinter.New(&task).LogTaskState(le)
 
 		// ========= Find the solution =========================================
 		le.Infof("Process Task UUID: %s", task.UUID)

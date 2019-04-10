@@ -2,22 +2,43 @@ package taskprinter
 
 import (
 	"fmt"
-	"os"
+	"strings"
 
 	"bitbucket.org/suhovius/transportation_task/app/models/taskmodel"
 	"bitbucket.org/suhovius/transportation_task/utils/mathext"
 	"github.com/olekukonko/tablewriter"
+	log "github.com/sirupsen/logrus"
 )
 
 // TaskPrinter contains information for task printing
 type TaskPrinter struct {
-	task       *taskmodel.Task
-	outputFile *os.File
+	task *taskmodel.Task
 }
 
 // New returns new task printer
-func New(task *taskmodel.Task, outputFile *os.File) *TaskPrinter {
-	return &TaskPrinter{task: task, outputFile: outputFile}
+func New(task *taskmodel.Task) *TaskPrinter {
+	return &TaskPrinter{task: task}
+}
+
+// LogTaskState logs task state with logger
+func (p *TaskPrinter) LogTaskState(le *log.Entry) {
+	le.Infof("Current Task State Table:\n %s\n", p.RenderTableString())
+}
+
+// RenderTableString renders ASCII table to string
+func (p *TaskPrinter) RenderTableString() string {
+	td := p.prepareTableData()
+
+	tableString := &strings.Builder{}
+	table := tablewriter.NewWriter(tableString)
+	table.SetHeader(td.header)
+	table.SetRowLine(true)
+	for _, v := range td.cells {
+		table.Append(v)
+	}
+	table.Render()
+
+	return tableString.String()
 }
 
 func (p *TaskPrinter) buildTableRow() []string {
@@ -58,8 +79,12 @@ func formatSign(sign rune) string {
 	return ""
 }
 
-// Perform prints current task processing state in the form of ASCII table
-func (p *TaskPrinter) Perform() {
+type tableData struct {
+	header []string
+	cells  [][]string
+}
+
+func (p *TaskPrinter) prepareTableData() *tableData {
 	t := p.task
 	data := make([][]string, len(t.SupplyList))
 
@@ -94,11 +119,5 @@ func (p *TaskPrinter) Perform() {
 		data[i] = row
 	}
 
-	table := tablewriter.NewWriter(p.outputFile)
-	table.SetHeader(header)
-	table.SetRowLine(true)
-	for _, v := range data {
-		table.Append(v)
-	}
-	table.Render()
+	return &tableData{header: header, cells: data}
 }

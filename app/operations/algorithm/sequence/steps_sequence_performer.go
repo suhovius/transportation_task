@@ -1,8 +1,6 @@
 package sequence
 
 import (
-	"os"
-
 	"bitbucket.org/suhovius/transportation_task/app/operations/algorithm/step"
 	"bitbucket.org/suhovius/transportation_task/app/operations/printers/taskprinter"
 	log "github.com/sirupsen/logrus"
@@ -28,9 +26,7 @@ func (ssp *StepsSequencePerformer) RunWithLog(le *log.Entry) (err error) {
 		if err != nil {
 			break
 		}
-		// TODO: taskprinter should print into separate file.
-		// Not into the os.Stdout.
-		taskprinter.New(step.Task(), os.Stdout).Perform()
+		taskprinter.New(step.Task()).LogTaskState(le)
 		le.Info(step.ResultMessage())
 		if step.Task().IsOptimalSolution {
 			break
