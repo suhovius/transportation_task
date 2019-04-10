@@ -15,6 +15,9 @@ import (
 	"github.com/tidwall/gjson"
 )
 
+// TODO: Cover all params validations cases
+// TODO: Refactor all these support testing functions. Move them into another package
+
 func assertJSONMatrixIntValues(t *testing.T, expectedMatrix [][]int64, jsonStr, path string) {
 	for i, row := range gjson.Get(jsonStr, path).Array() {
 		for j, cellVal := range row.Array() {
@@ -90,8 +93,7 @@ func assertTaskCreateResponseBody(t *testing.T, result string, exp *TaskResponse
 	)
 }
 
-func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *taskform.Params) (result string) {
-	// Act
+func newRequest(t *testing.T, ts *httptest.Server, taskParams *taskform.Params) (resp *resty.Response) {
 	resp, err := resty.R().
 		SetHeader("Content-Type", "application/json").
 		SetBody(taskParams).
@@ -99,12 +101,45 @@ func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *task
 
 	require.Nil(t, err)
 
+	return
+}
+
+func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *taskform.Params) (result string) {
+	// Act
+	response := newRequest(t, ts, taskParams)
+
 	// Assert
-	assert.Equal(t, http.StatusOK, resp.StatusCode())
-	result = string(resp.Body())
+	assert.Equal(t, http.StatusOK, response.StatusCode())
+	result = string(response.Body())
 	fmt.Printf("%v\n", result)
 
 	return
+}
+
+func prepareValidParams() *taskform.Params {
+	return &taskform.Params{
+		SupplyList: []int{30, 40, 20},
+		DemandList: []int{20, 30, 30, 10},
+		CostTable: [][]int{
+			{2, 3, 2, 4},
+			{3, 2, 5, 1},
+			{4, 3, 2, 6},
+		},
+	}
+}
+
+type ExpectedErrorResponse struct {
+	HTTPStatusCode int
+	ErrorMessage   string
+}
+
+func assertErrorResponse(t *testing.T, eer *ExpectedErrorResponse, resp *resty.Response) {
+	assert.Equal(t, resp.StatusCode(), eer.HTTPStatusCode)
+	result := string(resp.Body())
+	fmt.Printf("%v\n", result)
+
+	receivedErrorMessage := gjson.Get(result, "error_message").String()
+	assert.Equal(t, eer.ErrorMessage, receivedErrorMessage)
 }
 
 func TestCreateTask(t *testing.T) {
@@ -161,18 +196,10 @@ func TestCreateTask(t *testing.T) {
 		t.Log("\ttest:1\tcreates and processes task with valid params.")
 		{
 			// Arrange
-			validParams := taskform.Params{
-				SupplyList: []int{30, 40, 20},
-				DemandList: []int{20, 30, 30, 10},
-				CostTable: [][]int{
-					{2, 3, 2, 4},
-					{3, 2, 5, 1},
-					{4, 3, 2, 6},
-				},
-			}
+			validParams := prepareValidParams()
 
 			// Act
-			result := assertTaskCreateSuccess(t, ts, &validParams)
+			result := assertTaskCreateSuccess(t, ts, validParams)
 
 			// Assert
 			exp := &TaskResponseExpectation{
@@ -305,7 +332,7 @@ func TestCreateTask(t *testing.T) {
 		t.Log("\ttest:5\treturns bad request error when broken json has been sent")
 		{
 
-			resp, err := resty.R().
+			response, err := resty.R().
 				SetBody(`this is not json`).
 				SetHeader("Content-Type", "application/json").
 				Post(ts.URL)
@@ -313,15 +340,48 @@ func TestCreateTask(t *testing.T) {
 			require.Nil(t, err)
 
 			// Assert
-			assert.Equal(t, resp.StatusCode(), http.StatusBadRequest)
-			result := string(resp.Body())
-			fmt.Printf("%v\n", result)
+			eer := &ExpectedErrorResponse{
+				HTTPStatusCode: http.StatusBadRequest,
+				ErrorMessage:   "JSON Decoder: invalid character 'h' in literal true (expecting 'r')",
+			}
+			assertErrorResponse(t, eer, response)
 
-			receivedErrorMessage := gjson.Get(result, "error_message").String()
-			expectedMessage :=
-				"JSON Decoder: invalid character 'h' in literal true (expecting 'r')"
-			assert.Equal(t, expectedMessage, receivedErrorMessage)
+		}
+		t.Log("\ttest:6\treturns bad request error when cost table doesn't have any rows")
+		{
+			// Arrange
+			taskParams := prepareValidParams()
+			// Set empty cost table rows
+			taskParams.CostTable = make([][]int, 0)
+
+			// Act
+			response := newRequest(t, ts, taskParams)
+
+			// Assert
+			eer := &ExpectedErrorResponse{
+				HTTPStatusCode: http.StatusUnprocessableEntity,
+				ErrorMessage:   "Params Validation Error: Cost Table should have at least one row",
+			}
+			assertErrorResponse(t, eer, response)
 		}
 
+		t.Log("\ttest:7\treturns bad request error when supply list is not equal to cost table rows count")
+		{
+			// Arrange
+			taskParams := prepareValidParams()
+			// Set wrong SupplyList elements size
+			taskParams.SupplyList = []int{5, 3}
+
+			// Act
+			response := newRequest(t, ts, taskParams)
+
+			// Assert
+			eer := &ExpectedErrorResponse{
+				HTTPStatusCode: http.StatusUnprocessableEntity,
+				ErrorMessage: "Params Validation Error: Supply List size '2'" +
+					" and Cost Table rows count '3' should be equal",
+			}
+			assertErrorResponse(t, eer, response)
+		}
 	}
 }

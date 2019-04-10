@@ -31,7 +31,7 @@ func supplyListSizeValidator(p *Params) (err error) {
 	costRowsCount := len(p.CostTable)
 	if supplyCount != costRowsCount {
 		err = fmt.Errorf(
-			"SupplyList size '%d' and CostTable rows count '%d' should be equal",
+			"Supply List size '%d' and Cost Table rows count '%d' should be equal",
 			supplyCount, costRowsCount,
 		)
 	}
@@ -44,7 +44,7 @@ func demandListSizeValidator(p *Params) (err error) {
 	columnsCount := len(p.CostTable[0])
 	if demandCount != columnsCount {
 		err = fmt.Errorf(
-			"DemandList size '%d' and CostTable columns count '%d' should be equal",
+			"Demand List size '%d' and Cost Table columns count '%d' should be equal",
 			demandCount, columnsCount,
 		)
 	}
@@ -58,7 +58,7 @@ func costTableRowsSizesValidator(p *Params) (err error) {
 		rowSize := len(row)
 		if demandCount != rowSize {
 			err = fmt.Errorf(
-				"CostTable row [%d] size '%d' and DemandList size '%d' should be equal",
+				"Cost Table row [%d] size '%d' and Demand List size '%d' should be equal",
 				j, rowSize, demandCount,
 			)
 
@@ -70,7 +70,7 @@ func costTableRowsSizesValidator(p *Params) (err error) {
 
 func costTableHasAtLeastOneRowValidator(p *Params) (err error) {
 	if len(p.CostTable) == 0 {
-		return errors.New("CostTable should have at least one row")
+		return errors.New("Cost Table should have at least one row")
 	}
 	return
 }
