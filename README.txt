@@ -150,7 +150,7 @@ INFO[0014] Started 115fe1b9-10e8-4edf-80fe-ffbd88c15531 POST /api/tasks/ [::1]:6
 INFO[0014] Received parameters: {"supply_list":[30,40,20],"demand_list":[20,30,30,10],"cost_table":[[2,3,2,4],[3,2,5,1],[4,3,2,9]]}  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Created Task UUID: 29b7e22b-3b77-4b71-be72-b541b01d0fdf  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -173,7 +173,7 @@ INFO[0014] === Initial Preparations ===                  request_id=115fe1b9-10e
 INFO[0014] === Step #1 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Balancing                             request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -195,7 +195,7 @@ INFO[0014] Balancing: Task is already balanced. Skip balancing  request_id=115fe
 INFO[0014] === Step #2 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Apply Degeneracy Prevention                   request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -217,7 +217,7 @@ INFO[0014] Added 2.500000e-04 to each demand Amount. Added 1.000000e-03 to first
 INFO[0014] === Step #3 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Calculate initial base plan with 'North West Corner' method  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -241,7 +241,7 @@ INFO[0014] === Potentials Method. Iteration #1 ===       request_id=115fe1b9-10e
 INFO[0014] === Step #1 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Initialize task inner state before current iteration start  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -263,7 +263,7 @@ INFO[0014] Reset potentials, grades and circuit data     request_id=115fe1b9-10e
 INFO[0014] === Step #2 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform amount distribution check             request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -285,7 +285,7 @@ INFO[0014] Sums of delivery amounts by columns and rows match each other  reques
 INFO[0014] === Step #3 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Degeneracy Check                      request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -307,7 +307,7 @@ INFO[0014] Solution is not Degenerate                    request_id=115fe1b9-10e
 INFO[0014] === Step #4 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Calculate Potentials                          request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  | V[3]=13  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -329,7 +329,7 @@ INFO[0014] Potentials have been assigned to demand row and supply column  reques
 INFO[0014] === Step #5 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Optimal Solution Check                request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  | V[3]=13  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -353,7 +353,7 @@ INFO[0014] Not Optimal Solution. Min Negative Delta Cell: D[1][3]= -11  request_
 INFO[0014] === Step #6 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Finding the circuit path and minimal theta vertex  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  | V[3]=13  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -379,7 +379,7 @@ INFO[0014] Path: [{1 3} {2 3} {2 2} {1 2}]. Theta cell is at [2][3]  request_id=
 INFO[0014] === Step #7 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Supply Redistribution                 request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  | V[3]=13  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -406,7 +406,7 @@ INFO[0014] === Potentials Method. Iteration #2 ===       request_id=115fe1b9-10e
 INFO[0014] === Step #1 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Initialize task inner state before current iteration start  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -428,7 +428,7 @@ INFO[0014] Reset potentials, grades and circuit data     request_id=115fe1b9-10e
 INFO[0014] === Step #2 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform amount distribution check             request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -450,7 +450,7 @@ INFO[0014] Sums of delivery amounts by columns and rows match each other  reques
 INFO[0014] === Step #3 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Degeneracy Check                      request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -472,7 +472,7 @@ INFO[0014] Solution is not Degenerate                    request_id=115fe1b9-10e
 INFO[0014] === Step #4 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Calculate Potentials                          request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  |  V[3]=2  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -494,7 +494,7 @@ INFO[0014] Potentials have been assigned to demand row and supply column  reques
 INFO[0014] === Step #5 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Optimal Solution Check                request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  |  V[3]=2  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -517,7 +517,7 @@ INFO[0014] Not Optimal Solution. Min Negative Delta Cell: D[0][2]= -4  request_i
 INFO[0014] === Step #6 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Finding the circuit path and minimal theta vertex  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  |  V[3]=2  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -542,7 +542,7 @@ INFO[0014] Path: [{0 2} {1 2} {1 1} {0 1}]. Theta cell is at [1][2]  request_id=
 INFO[0014] === Step #7 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Supply Redistribution                 request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=6  |  V[3]=2  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -568,7 +568,7 @@ INFO[0014] === Potentials Method. Iteration #3 ===       request_id=115fe1b9-10e
 INFO[0014] === Step #1 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Initialize task inner state before current iteration start  request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -590,7 +590,7 @@ INFO[0014] Reset potentials, grades and circuit data     request_id=115fe1b9-10e
 INFO[0014] === Step #2 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform amount distribution check             request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -612,7 +612,7 @@ INFO[0014] Sums of delivery amounts by columns and rows match each other  reques
 INFO[0014] === Step #3 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Degeneracy Check                      request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=0  |  V[1]=0  |  V[2]=0  |  V[3]=0  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -634,7 +634,7 @@ INFO[0014] Solution is not Degenerate                    request_id=115fe1b9-10e
 INFO[0014] === Step #4 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Calculate Potentials                          request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=2  |  V[3]=2  |
 | ↓ SUPPLY ↓ |          |          |          |          |
@@ -656,7 +656,7 @@ INFO[0014] Potentials have been assigned to demand row and supply column  reques
 INFO[0014] === Step #5 ===                               request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Perform Optimal Solution Check                request_id=115fe1b9-10e8-4edf-80fe-ffbd88c15531
 INFO[0014] Current Task State Table:
- +------------+----------+----------+----------+----------+
++------------+----------+----------+----------+----------+
 | → DEMAND → | B[0]=20  | B[1]=30  | B[2]=30  | B[3]=10  |
 | ---------- |  V[0]=2  |  V[1]=3  |  V[2]=2  |  V[3]=2  |
 | ↓ SUPPLY ↓ |          |          |          |          |
