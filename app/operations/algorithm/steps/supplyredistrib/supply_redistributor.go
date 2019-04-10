@@ -36,9 +36,14 @@ func (sr *SupplyRedistributor) ResultMessage() string {
 	)
 }
 
+// ThetaCell finds current theta table cell for the task
+func (sr *SupplyRedistributor) ThetaCell() *taskmodel.TableCell {
+	return sr.task.FindCellByIndexes(sr.task.ThetaCell.I, sr.task.ThetaCell.J)
+}
+
 // Perform implements step processing
 func (sr *SupplyRedistributor) Perform() (err error) {
-	thetaAmount := sr.task.FindCellByVertex(&sr.task.ThetaCell).DeliveryAmount
+	thetaAmount := sr.ThetaCell().DeliveryAmount
 	for i, vertex := range sr.task.Path {
 		cell := sr.task.FindCellByVertex(&vertex)
 		if i%2 == 0 {

@@ -22,7 +22,7 @@ func New(task *taskmodel.Task) *TaskPrinter {
 
 // LogTaskState logs task state with logger
 func (p *TaskPrinter) LogTaskState(le *log.Entry) {
-	le.Infof("Current Task State Table:\n %s\n", p.RenderTableString())
+	le.Infof("Current Task State Table:\n%s\n", p.RenderTableString())
 }
 
 // RenderTableString renders ASCII table to string
@@ -52,21 +52,19 @@ func fakeString(cell taskmodel.TableOuterCell) string {
 	return ""
 }
 
-func (p *TaskPrinter) isMinDeltaCell(i, j int) bool {
-	return p.task.MinDeltaCell.IsSet &&
-		(p.task.MinDeltaCell.I == i && p.task.MinDeltaCell.J == j)
+func isThisCell(cellIndex taskmodel.CellIndexes, i, j int) bool {
+	return cellIndex.IsSet && (cellIndex.I == i && cellIndex.J == j)
 }
 
 func (p *TaskPrinter) minDeltaMarker(i, j int) string {
-	if p.isMinDeltaCell(i, j) {
+	if isThisCell(p.task.MinDeltaCell, i, j) {
 		return "\nmin Δ"
 	}
 	return ""
 }
 
 func (p *TaskPrinter) thetaMarker(i, j int) string {
-	// TODO: Fix zero value. Maybe Use CellIndexes type here
-	if p.task.ThetaCell.I == i && p.task.ThetaCell.J == j {
+	if isThisCell(p.task.ThetaCell, i, j) {
 		return "\nmin θ"
 	}
 	return ""

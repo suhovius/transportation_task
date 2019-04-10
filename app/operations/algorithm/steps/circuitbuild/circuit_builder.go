@@ -90,7 +90,9 @@ func (cb *CircuitBuilder) findPath() (err error) {
 	// path has been found
 	cb.task.Path = cb.path
 	if cb.thetaVertexPtr != nil {
-		cb.task.ThetaCell = *cb.thetaVertexPtr
+		cb.task.ThetaCell.I = (*cb.thetaVertexPtr).I
+		cb.task.ThetaCell.J = (*cb.thetaVertexPtr).J
+		cb.task.ThetaCell.IsSet = true
 	} else {
 		return fmt.Errorf(
 			"Can't find path Theta cell for path %v", cb.task.Path,

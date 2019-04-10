@@ -11,7 +11,7 @@ type Task struct {
 	DemandList        []TableOuterCell `json:"demand_list"`
 	TableCells        [][]TableCell    `json:"table_cells"`
 	MinDeltaCell      CellIndexes      `json:"-"`
-	ThetaCell         PathVertex       `json:"-"` // TODO: Use CellIndexes later for this field
+	ThetaCell         CellIndexes      `json:"-"`
 	Path              []PathVertex     `json:"-"`
 	IsOptimalSolution bool             `json:"is_optimal_solution"`
 	TotalDeliveryCost float64          `json:"-"`

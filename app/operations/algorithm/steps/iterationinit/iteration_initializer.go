@@ -64,7 +64,7 @@ func (ii *IterationInitializer) resetGrades() {
 }
 
 func (ii *IterationInitializer) resetCircuit() {
-	ii.task.ThetaCell = taskmodel.PathVertex{}
+	ii.task.ThetaCell = taskmodel.CellIndexes{}
 
 	for _, vertex := range ii.task.Path {
 		ii.task.TableCells[vertex.I][vertex.J].Sign = 0
