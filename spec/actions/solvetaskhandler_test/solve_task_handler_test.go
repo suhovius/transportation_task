@@ -15,9 +15,6 @@ import (
 	"github.com/tidwall/gjson"
 )
 
-// TODO: Cover all params validations cases
-// TODO: Refactor all these support testing functions. Move them into another package
-
 func assertJSONMatrixIntValues(t *testing.T, expectedMatrix [][]int64, jsonStr, path string) {
 	for i, row := range gjson.Get(jsonStr, path).Array() {
 		for j, cellVal := range row.Array() {
