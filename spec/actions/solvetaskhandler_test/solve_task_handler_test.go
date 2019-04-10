@@ -1,7 +1,7 @@
 package solvetaskhandler_test
 
 import (
-	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -111,7 +111,6 @@ func assertTaskCreateSuccess(t *testing.T, ts *httptest.Server, taskParams *task
 	// Assert
 	assert.Equal(t, http.StatusOK, response.StatusCode())
 	result = string(response.Body())
-	fmt.Printf("%v\n", result)
 
 	return
 }
@@ -136,7 +135,6 @@ type ExpectedErrorResponse struct {
 func assertErrorResponse(t *testing.T, eer *ExpectedErrorResponse, resp *resty.Response) {
 	assert.Equal(t, resp.StatusCode(), eer.HTTPStatusCode)
 	result := string(resp.Body())
-	fmt.Printf("%v\n", result)
 
 	receivedErrorMessage := gjson.Get(result, "error_message").String()
 	assert.Equal(t, eer.ErrorMessage, receivedErrorMessage)
@@ -145,7 +143,9 @@ func assertErrorResponse(t *testing.T, eer *ExpectedErrorResponse, resp *resty.R
 func TestCreateTask(t *testing.T) {
 	t.Log("with initialized server.")
 	{
-		ts := httptest.NewServer(solvetaskhandler.New(log.New()))
+		logger := log.New()
+		logger.Out = ioutil.Discard // disable server logging
+		ts := httptest.NewServer(solvetaskhandler.New(logger))
 
 		defer ts.Close()
 
@@ -323,7 +323,6 @@ func TestCreateTask(t *testing.T) {
 			// Assert
 			assert.Equal(t, http.StatusMethodNotAllowed, resp.StatusCode())
 			result := string(resp.Body())
-			fmt.Printf("%v\n", result)
 
 			receivedErrorMessage := gjson.Get(result, "error_message").String()
 			assert.Equal(t, "Invalid request method", receivedErrorMessage)
@@ -380,6 +379,44 @@ func TestCreateTask(t *testing.T) {
 				HTTPStatusCode: http.StatusUnprocessableEntity,
 				ErrorMessage: "Params Validation Error: Supply List size '2'" +
 					" and Cost Table rows count '3' should be equal",
+			}
+			assertErrorResponse(t, eer, response)
+		}
+
+		t.Log("\ttest:8\treturns bad request error when demand list is not equal to cost table columns count")
+		{
+			// Arrange
+			taskParams := prepareValidParams()
+			// Set wrong DemandList elements size
+			taskParams.DemandList = []int{9, 8, 42}
+
+			// Act
+			response := newRequest(t, ts, taskParams)
+
+			// Assert
+			eer := &ExpectedErrorResponse{
+				HTTPStatusCode: http.StatusUnprocessableEntity,
+				ErrorMessage: "Params Validation Error: Demand List size '3'" +
+					" and Cost Table columns count '4' should be equal",
+			}
+			assertErrorResponse(t, eer, response)
+		}
+
+		t.Log("\ttest:9\treturns bad request error when cost table columns count is not correct at some row")
+		{
+			// Arrange
+			taskParams := prepareValidParams()
+			// Set wrong DemandList elements size
+			taskParams.CostTable[2] = []int{7, 8}
+
+			// Act
+			response := newRequest(t, ts, taskParams)
+
+			// Assert
+			eer := &ExpectedErrorResponse{
+				HTTPStatusCode: http.StatusUnprocessableEntity,
+				ErrorMessage: "Params Validation Error: Cost Table row [2]" +
+					" size '2' and Demand List size '4' should be equal",
 			}
 			assertErrorResponse(t, eer, response)
 		}
