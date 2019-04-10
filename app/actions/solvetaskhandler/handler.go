@@ -96,7 +96,6 @@ func (h *TaskSolvingHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		w.Write(taskJSON)
 	} else {
 		message := "Invalid request method"
-		le.Warn(message)
 		http.Error(w, APIErrorMessage(le, message), http.StatusMethodNotAllowed)
 		return
 	}

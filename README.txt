@@ -654,7 +654,17 @@ INFO[0007] Finished 2b7c0342-4d8a-473a-aadd-db3e24678be6 POST /api/tasks/ [::1]:
 
 Error logging example:
 
-WARN[0011] Invalid request method                        ip="127.0.0.1:63113" method=GET url=/api/tasks/
+INFO[0010] Started 1bbb9979-dcac-40f7-a866-564973566fd9 GET /api/tasks/ [::1]:51369 curl/7.54.0
+ERRO[0010] Invalid request method                        request_id=1bbb9979-dcac-40f7-a866-564973566fd9
+INFO[0010] Finished 1bbb9979-dcac-40f7-a866-564973566fd9 GET /api/tasks/ [::1]:51369 curl/7.54.0
+
+ERRO[0263] Task Solver: Calculation took 1m0.002204546s and exceded allowed limit of 1m0s  request_id=e4feda3e-eef1-41f2-9631-84cddaf0d91c
+INFO[0263] Finished e4feda3e-eef1-41f2-9631-84cddaf0d91c POST /api/tasks/ [::1]:51321 curl/7.54.0
+
+INFO[0310] Started c7748ba1-93e8-48e0-8a29-10fce0bf6580 POST /api/tasks/ [::1]:51335 curl/7.54.0
+INFO[0310] Received parameters: {"supply_list":[30,40,20],"demand_list":[20,30,30,10],"cost_table":[]}  request_id=c7748ba1-93e8-48e0-8a29-10fce0bf6580
+ERRO[0310] Params Validation Error: CostTable should have at least one row  request_id=c7748ba1-93e8-48e0-8a29-10fce0bf6580
+INFO[0310] Finished c7748ba1-93e8-48e0-8a29-10fce0bf6580 POST /api/tasks/ [::1]:51335 curl/7.54.0
 
 Error response example:
 
@@ -666,3 +676,9 @@ Error response example:
 < Content-Length: 96
 <
 {"error_message":"Task Solver: Calculation took 23.451804ms and exceded allowed limit of 10ms"}
+or
+{"error_message":"Params Validation Error: CostTable should have at least one row"}
+or
+{"error_message":"Params Validation Error: DemandList size '1' and CostTable columns count '0' should be equal"}
+
+and other error messages in the same format
