@@ -1,13 +1,10 @@
 package main
 
 import (
-	"context"
 	"flag"
-	"net/http"
 	"os"
 
-	"bitbucket.org/suhovius/transportation_task/app/actions/solvetaskhandler"
-	"bitbucket.org/suhovius/transportation_task/utils/requestid"
+	"bitbucket.org/suhovius/transportation_task/web/server"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -22,65 +19,10 @@ func main() {
 		addr = flag.String("addr", ":8080", "address of the http server")
 	)
 
-	s := NewServer(*addr)
+	s := server.New(*addr, log.New())
+
 	log.Infof("Starting server at port %s", *addr)
 	if err := s.ListenAndServe(); err != nil {
 		log.Fatalf("start server: %v", err)
-	}
-
-}
-
-// TODO needs recover from panic to prevent server process exit
-// TODO All this server setup should be placed into separate module
-
-// NewServer prepares http server.
-func NewServer(addr string) *http.Server {
-	router := http.NewServeMux()
-
-	logger := log.New()
-
-	router.Handle("/api/tasks/", solvetaskhandler.New(logger))
-
-	nextRequestID := requestid.Next
-
-	s := http.Server{
-		Addr:    addr,
-		Handler: tracing(nextRequestID)(logging(logger)(router)),
-	}
-
-	return &s
-}
-
-func logLine(logger *log.Logger, word string, r *http.Request) {
-	requestID, ok := r.Context().Value(requestid.RequestIDKey).(string)
-	if !ok {
-		requestID = "unknown"
-	}
-	logger.Println(word, requestID, r.Method, r.URL.Path, r.RemoteAddr, r.UserAgent())
-}
-
-func logging(logger *log.Logger) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			logLine(logger, "Started", r)
-			defer func() {
-				logLine(logger, "Finished", r)
-			}()
-			next.ServeHTTP(w, r)
-		})
-	}
-}
-
-func tracing(nextRequestID func() string) func(http.Handler) http.Handler {
-	return func(next http.Handler) http.Handler {
-		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			requestID := r.Header.Get("X-Request-Id")
-			if requestID == "" {
-				requestID = nextRequestID()
-			}
-			ctx := context.WithValue(r.Context(), requestid.RequestIDKey, requestID)
-			w.Header().Set("X-Request-Id", requestID)
-			next.ServeHTTP(w, r.WithContext(ctx))
-		})
 	}
 }
