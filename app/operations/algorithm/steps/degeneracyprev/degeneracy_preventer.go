@@ -31,7 +31,7 @@ func (dp *DegeneracyPreventer) Description() string {
 	return "Apply Degeneracy Prevention"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (dp *DegeneracyPreventer) ResultMessage() string {
 	return fmt.Sprintf(
 		"Added %e to each demand Amount. Added %e to first supply Amount."+

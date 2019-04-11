@@ -26,7 +26,7 @@ func (ii *IterationInitializer) Description() string {
 	return "Initialize task inner state before current iteration start"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (ii *IterationInitializer) ResultMessage() string {
 	return "Reset potentials, grades and circuit data"
 }

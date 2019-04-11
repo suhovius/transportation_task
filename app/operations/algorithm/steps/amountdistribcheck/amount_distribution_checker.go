@@ -29,7 +29,7 @@ func (adc *AmountDistributionChecker) Description() string {
 	return "Perform amount distribution check"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (adc *AmountDistributionChecker) ResultMessage() string {
 	return "Sums of delivery amounts by columns and rows match each other"
 }

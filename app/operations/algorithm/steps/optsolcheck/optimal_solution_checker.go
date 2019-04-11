@@ -29,7 +29,7 @@ func (osc *OptimalSolutionChecker) Description() string {
 	return "Perform Optimal Solution Check"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (osc *OptimalSolutionChecker) ResultMessage() string {
 	var message string
 	if osc.task.IsOptimalSolution {

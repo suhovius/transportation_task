@@ -26,14 +26,14 @@ func (pc *PotentialsCalculator) Task() *taskmodel.Task {
 	return pc.task
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (pc *PotentialsCalculator) ResultMessage() string {
 	return "Potentials have been assigned to demand row and supply column"
 }
 
 // Perform implements step processing
 func (pc *PotentialsCalculator) Perform() (err error) {
-	// Info Potentials are nullified at IterationInitializer step
+	// INFO: Potentials are nullified at IterationInitializer step
 	// first Potential is zero. U0= 0
 	t := pc.task
 	t.SupplyList[0].IsPotentialSet = true

@@ -27,7 +27,7 @@ func (b *Balancer) Description() string {
 	return "Perform Balancing"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (b *Balancer) ResultMessage() (message string) {
 	switch b.kind {
 	case "nothing":

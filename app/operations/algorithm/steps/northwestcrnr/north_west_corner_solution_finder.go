@@ -26,7 +26,7 @@ func (nwcsf *NorthWestCornerSolutionFinder) Description() string {
 	return "Calculate initial base plan with 'North West Corner' method"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (nwcsf *NorthWestCornerSolutionFinder) ResultMessage() string {
 	return "Done 'North West Corner' base plan calculation"
 }

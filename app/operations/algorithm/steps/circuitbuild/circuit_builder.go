@@ -30,7 +30,7 @@ func (cb *CircuitBuilder) Description() string {
 	return "Finding the circuit path and minimal theta vertex"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (cb *CircuitBuilder) ResultMessage() string {
 	return fmt.Sprintf(
 		"Path: %v. Theta cell is at [%d][%d]",

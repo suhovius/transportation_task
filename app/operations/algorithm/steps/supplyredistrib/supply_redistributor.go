@@ -28,7 +28,7 @@ func (sr *SupplyRedistributor) Description() string {
 	return "Perform Supply Redistribution"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (sr *SupplyRedistributor) ResultMessage() string {
 	return fmt.Sprintf(
 		"Delivery amounts have been updated according to theta[%d][%d] value and signs (+) (-)",

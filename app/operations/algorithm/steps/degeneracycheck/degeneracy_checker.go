@@ -28,7 +28,7 @@ func (dc *DegeneracyChecker) Description() string {
 	return "Perform Degeneracy Check"
 }
 
-// ResultMessage returns message about reults of step processing
+// ResultMessage returns message about results of step processing
 func (dc *DegeneracyChecker) ResultMessage() string {
 	return "Solution is not Degenerate"
 }
